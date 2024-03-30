@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 21:44:54 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:45:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 // isatty, write
 # include <unistd.h>
 // readline
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
 // printf
 # include <stdio.h>
 // errno
@@ -42,7 +42,8 @@ typedef struct s_mini
 
 // main.c
 void		read_prompt(t_mini *mini);
-//
+
+// format_prompt.c
 char		*format_prompt(char *prompt);
 int			len_prompt_minus_space(char *prompt);
 char		*get_prompt_minus_space(char *prompt);
@@ -59,6 +60,7 @@ char		**ft_split(char const *s, char c);
 // format_prompt_tools1.c
 int			is_space(char c);
 int			is_symbol(char c);
+int			is_quote(char c);
 int			check_after_symbol(char *prompt, int i);
 int			check_before_symbol(char *prompt, int i);
 

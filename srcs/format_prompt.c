@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 23:19:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:15:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,16 @@ int	len_prompt_minus_space(char *prompt)
 		i++;
 	while (prompt[i])
 	{
+		if (is_quote(prompt[i]) == 1)
+		{
+			i++;
+			len++;
+			while (is_quote(prompt[i]) == 0)
+			{
+				i++;
+				len++;
+			}
+		}
 		if (is_space(prompt[i]) == 1)
 		{
 			while (prompt[i + 1] && is_space(prompt[i + 1]) == 1)
@@ -74,6 +84,18 @@ char	*get_prompt_minus_space(char *prompt)
 		j++;
 	while (prompt[j])
 	{
+		if (is_quote(prompt[j]) == 1)
+		{
+			tmp_prompt[i] = prompt[j];
+			i++;
+			j++;
+			while (is_quote(prompt[j]) == 0)
+			{
+				tmp_prompt[i] = prompt[j];
+				i++;
+				j++;
+			}
+		}
 		if (is_space(prompt[j]) == 1)
 		{
 			tmp_prompt[i] = ' ';
@@ -100,6 +122,21 @@ int	len_prompt_plus_space(char *prompt)
 		return (0);
 	while (prompt[i])
 	{
+		if (is_quote(prompt[i]) == 1)
+		{
+			if (prompt[i - 1] && is_space(prompt[i - 1]) == 0)
+			{
+				i++;
+                len++;				
+			}
+            i++;
+			len++;
+			while (is_quote(prompt[i]) == 0)
+			{
+				i++;
+				len++;
+			}
+		}
 		if (is_symbol(prompt[i]) == 1)
 		{
 			if (check_before_symbol(prompt, i) == 0)
@@ -130,6 +167,23 @@ char	*get_prompt_plus_space(char *prompt)
 	j = 0;
 	while (prompt[j])
 	{
+		if (is_quote(prompt[j]) == 1)
+		{
+			if (prompt[j - 1] && is_space(prompt[j - 1]) == 0)
+			{
+				f_prompt[i] = ' ';
+				i++;
+			}
+			f_prompt[i] = prompt[j];
+			i++;
+			j++;
+			while (is_quote(prompt[j]) == 0)
+			{
+				f_prompt[i] = prompt[j];
+				i++;
+				j++;
+			}
+		}
 		if (is_symbol(prompt[j]) == 1)
 		{
 			no_space_to_add = 1;

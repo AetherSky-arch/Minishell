@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 21:04:21 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 21:41:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:31:19 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ int	is_space(char c)
 int	is_symbol(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
+}
+
+// 34 = " / 39 = '
+int	is_quote(char c)
+{
+	if (c == 34 || c == 39 )
 		return (1);
 	return (0);
 }
