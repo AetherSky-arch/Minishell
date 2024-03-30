@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 00:15:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/30 21:44:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 // readline
 # include <readline/readline.h>
+# include <readline/history.h>
 // printf
 # include <stdio.h>
 // errno
@@ -33,7 +34,7 @@
 
 typedef struct s_mini
 {
-	char	*prompt;
+	char	*fprompt;
 	char	**token;
 	char	**type;
 	int		exitcode;
@@ -41,11 +42,24 @@ typedef struct s_mini
 
 // main.c
 void		read_prompt(t_mini *mini);
+//
+char		*format_prompt(char *prompt);
+int			len_prompt_minus_space(char *prompt);
+char		*get_prompt_minus_space(char *prompt);
+int			len_prompt_plus_space(char *prompt);
+char		*get_prompt_plus_space(char *prompt);
 
 // libft.c
 void		ft_putstr_fd(char *str, int fd);
 size_t		ft_strlen(char *str);
+
 // ft_split.c
 char		**ft_split(char const *s, char c);
+
+// format_prompt_tools1.c
+int			is_space(char c);
+int			is_symbol(char c);
+int			check_after_symbol(char *prompt, int i);
+int			check_before_symbol(char *prompt, int i);
 
 #endif

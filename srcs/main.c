@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 00:25:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:20:11 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN))
 	{
 		// display_prompt();
-		read_prompt(&mini);
+		while(1)
+			read_prompt(&mini);
 		// format_prompt();
 		// split_prompt();
 		// get_type()
@@ -48,35 +49,15 @@ void	read_prompt(t_mini *mini)
 	prompt = readline(">");
 	if (prompt)
 	{
-		format_prompt(mini, prompt);
+		(*mini).fprompt = format_prompt(prompt);
+		// update prompt history
 		free(prompt);
+		printf("%s\n", (*mini).fprompt);
+		free((*mini).fprompt);
 	}
 	else
 	{
 		ft_putstr_fd(ERR_RDL, 2);
 		(*mini).exitcode = EXIT_FAILURE;
 	}
-}
-
-void	format_prompt(t_mini *mini, char *prompt)
-{
-	int	i;
-	int	nbr;
-
-	if (!(prompt))
-		return ;
-	i = 0;
-	while (prompt[i])
-	{
-		if (is_symbol(prompt[i]) == 1)
-		{
-			//...
-		}
-		i++;
-	}
-}
-
-int	is_symbol(char c)
-{
-	// < > |
 }
