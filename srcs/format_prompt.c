@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/31 00:15:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:19:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	len_prompt_plus_space(char *prompt)
 	{
 		if (is_quote(prompt[i]) == 1)
 		{
-			if (prompt[i - 1] && is_space(prompt[i - 1]) == 0)
+			if (i > 0 &&  prompt[i - 1] && is_space(prompt[i - 1]) == 0)
 			{
 				i++;
                 len++;				
@@ -169,7 +169,7 @@ char	*get_prompt_plus_space(char *prompt)
 	{
 		if (is_quote(prompt[j]) == 1)
 		{
-			if (prompt[j - 1] && is_space(prompt[j - 1]) == 0)
+			if (i > 0 && prompt[j - 1] && is_space(prompt[j - 1]) == 0)
 			{
 				f_prompt[i] = ' ';
 				i++;

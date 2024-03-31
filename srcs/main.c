@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/30 23:20:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/03/31 23:54:12 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	if (isatty(STDIN))
 	{
 		// display_prompt();
-		while(1)
+		while (1)
 			read_prompt(&mini);
 		// format_prompt();
 		// split_prompt();
@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		if (errno != ENOTTY)
 		{
-			// to execute a script
+			// to execute a script ?
 		}
 		else
 			perror("minishell: tty");
@@ -49,11 +49,20 @@ void	read_prompt(t_mini *mini)
 	prompt = readline(">");
 	if (prompt)
 	{
+		// keep genuine prompt in mini ?
+		// syntax error
 		(*mini).fprompt = format_prompt(prompt);
 		// update prompt history
 		free(prompt);
 		printf("%s\n", (*mini).fprompt);
+		//
+		(*mini).token = ft_split((*mini).fprompt, ' ');
+		(*mini).type = create_type((*mini).token);
+		temp_display_tabs((*mini).token, (*mini).type);
+		//
 		free((*mini).fprompt);
+		// free((*mini).token);
+		free((*mini).type);
 	}
 	else
 	{
@@ -61,3 +70,5 @@ void	read_prompt(t_mini *mini)
 		(*mini).exitcode = EXIT_FAILURE;
 	}
 }
+
+

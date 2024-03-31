@@ -6,7 +6,7 @@
 #    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 23:32:02 by caguillo          #+#    #+#              #
-#    Updated: 2024/03/30 23:18:27 by caguillo         ###   ########.fr        #
+#    Updated: 2024/03/31 23:56:53 by caguillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ SRCS		=	./srcs/main.c \
 				./srcs/ft_split.c \
 				./srcs/format_prompt.c \
 				./srcs/format_prompt_tools1.c \
-				./srcs/libft.c
+				./srcs/type.c \
+				./srcs/libft.c \
+				./srcs/temp.c
 
 INCS_SRCS	=	./includes/minishell.h
 INCS_DIR	=	-Iincludes
