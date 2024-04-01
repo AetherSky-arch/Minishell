@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/01 00:21:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/02 00:21:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_type	*create_type(char **token)
 
 	if (!token)
 		return (NULL);
-	type = malloc(sizeof(t_type) * ft_tablen(token));
+	type = malloc(sizeof(t_type) * ft_tabstr_len(token));
 	if (!type)
 		return (NULL);
 	i = 0;
@@ -73,7 +73,26 @@ t_type	get_type2(char **token, int i)
 		return (ARG);
 }
 
-size_t	ft_tablen(char **tab)
+void	check_type(t_type *type, char **token)
+{
+	size_t	i;
+
+	if (!type)
+		return ;
+	i = 0;
+	while (i < ft_tabstr_len(token))
+	{
+		if (type[i] == ARG)
+		{
+			if (i > 0 && (type[i - 1] == INFILE || type[i - 1] == OUTFILE
+					|| type[i - 1] == OUTFAPP))
+				type[i] = CMD;
+		}
+		i++;
+	}
+}
+
+size_t	ft_tabstr_len(char **tab)
 {
 	size_t	i;
 

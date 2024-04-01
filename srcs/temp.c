@@ -8,26 +8,26 @@ void	temp_display_tabs(char **token, t_type *type)
 			"DGREAT", "LESS", "HEREDOC", "LIMITER", "PIPE", "CMD", "ARG"};
 
 	i = 0;
-	printf("token\n");
+	//printf("token\n");
 	while (token[i])
 	{
 		printf("%s / ", token[i]);
 		i++;
 	}
-	// printf("%ld\n", ft_tablen(token));
-	// printf("%ld\n", temp_ft_tablen2(type));
+	// printf("%ld\n", ft_tabstr_len(token));
+	// printf("%ld\n", ft_tabint_len(type));
 	i = 0;
 	printf("\n");
-	printf("type\n");
-	while (i < (int)ft_tablen(token))
-	{
-		printf("%d / ", type[i]);
-		i++;
-	}
-	i = 0;
-	printf("\n");
-	printf("type name\n");
-	while (i < (int)ft_tablen(token))
+	//printf("type\n");
+	// while (i < (int)ft_tabstr_len(token))
+	// {
+	// 	printf("%d / ", type[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\n");
+	//printf("type name\n");
+	while (i < (int)ft_tabstr_len(token))
 	{
 		printf("%s / ", t_type_names[type[i]]);
 		i++;
@@ -35,14 +35,16 @@ void	temp_display_tabs(char **token, t_type *type)
 	printf("\n");
 }
 
-size_t	temp_ft_tablen2(t_type *tab)
-{
-	size_t i;
+// size_t	ft_tabint_len(int *tab)
+// {
+// 	if (!tab)
+// 		return (0);
+// 	return (sizeof(tab) / sizeof(tab[0]));
+// }
 
-	if (!tab)
-		return (0);
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
+// size_t	ft_tabtype_len(t_type *tab)
+// {
+// 	if (!tab)
+// 		return (0);
+// 	return (sizeof(tab) / sizeof(tab[0]));
+// }
