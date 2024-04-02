@@ -31,7 +31,7 @@ int	is_symbol(char c)
 // 34 = " / 39 = '
 int	is_quote(char c)
 {
-	if (c == 34 || c == 39 )
+	if (c == 34 || c == 39)
 		return (1);
 	return (0);
 }
@@ -50,9 +50,9 @@ int	check_after_symbol(char *prompt, int i)
 
 int	check_before_symbol(char *prompt, int i)
 {
-	if (i > 0 &&  prompt[i - 1] && is_symbol(prompt[i - 1]) == 1)
+	if (i > 0 && prompt[i - 1] && is_symbol(prompt[i - 1]) == 1)
 		return (1);
-	else if (i > 0 &&  prompt[i - 1] && is_space(prompt[i - 1]) == 1)
+	else if (i > 0 && prompt[i - 1] && is_space(prompt[i - 1]) == 1)
 		return (1);
 	else if (i > 0 && prompt[i - 1])
 		return (0);
