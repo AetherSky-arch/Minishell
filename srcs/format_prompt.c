@@ -124,12 +124,12 @@ int	len_prompt_plus_space(char *prompt)
 	{
 		if (is_quote(prompt[i]) == 1)
 		{
-			if (i > 0 &&  prompt[i - 1] && is_space(prompt[i - 1]) == 0)
+			if (i > 0 && prompt[i - 1] && is_space(prompt[i - 1]) == 0)
 			{
 				i++;
-                len++;				
+				len++;
 			}
-            i++;
+			i++;
 			len++;
 			while (is_quote(prompt[i]) == 0)
 			{

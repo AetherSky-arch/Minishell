@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arguez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 19:05:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/01 23:28:10 by caguillo         ###   ########.fr       */
+/*   Created: 2023/11/08 14:35:41 by arguez            #+#    #+#             */
+/*   Updated: 2023/11/08 18:47:26 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	free_tabstr(char **tab)
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
 	int	i;
 
+	if (!s)
+		return ;
 	i = 0;
-	if (tab)
+	while (s[i] != '\0')
 	{
-		while (tab[i])
-		{
-			free(tab[i]);
-			i++;
-		}
-		free(tab);
+		f(i, &s[i]);
+		i++;
 	}
 }

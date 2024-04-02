@@ -25,6 +25,8 @@
 // errno
 # include <errno.h>
 
+# include "../libft/libft.h"
+
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
@@ -81,14 +83,6 @@ t_type		get_type(char **token, int i);
 t_type		get_type2(char **token, int i);
 void	check_type(t_type *type, char **token);
 size_t		ft_tabstr_len(char **tab);
-
-// free.c
-void		free_tabstr(char **tab);
-
-// libft.c
-void		ft_putstr_fd(char *str, int fd);
-size_t		ft_strlen(char *str);
-int			ft_strcmp(char *s1, char *s2);
 
 // ft_split.c
 char		**ft_split(char const *s, char c);
