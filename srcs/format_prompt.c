@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/03/31 23:19:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:35:10 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char	*format_prompt(char *prompt)
 	char	*tmp_prompt;
 	char	*f_prompt;
 
-	if (!(prompt))
-		return (NULL);
 	tmp_prompt = get_prompt_minus_space(prompt);
 	if (!tmp_prompt)
 		return (NULL);
