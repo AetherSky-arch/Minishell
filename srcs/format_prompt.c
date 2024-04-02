@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 15:35:10 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/02 15:45:02 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ int	len_prompt_minus_space(char *prompt)
 
 	i = 0;
 	len = 0;
-	if (!prompt)
-		return (0);
 	while (prompt[i] && is_space(prompt[i]) == 1)
 		i++;
 	while (prompt[i])
@@ -71,8 +69,6 @@ char	*get_prompt_minus_space(char *prompt)
 	int		i;
 	int		j;
 
-	if (!prompt)
-		return (NULL);
 	tmp_prompt = malloc(sizeof(char) * (len_prompt_minus_space(prompt) + 1));
 	if (!tmp_prompt)
 		return (NULL);
