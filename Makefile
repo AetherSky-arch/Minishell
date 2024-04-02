@@ -1,48 +1,41 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/25 23:32:02 by caguillo          #+#    #+#              #
-#    Updated: 2024/04/01 19:16:23 by caguillo         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = minishell
+SRCS := srcs/main.c \
+		srcs/ft_split.c \
+		srcs/format_prompt.c \
+		srcs/format_prompt_utils.c \
+		srcs/type.c \
+		srcs/temp.c
 
-NAME		=	minishell
+OBJS = ${SRCS:.c=.o}
 
-SRCS		=	./srcs/main.c \
-				./srcs/ft_split.c \
-				./srcs/format_prompt.c \
-				./srcs/format_prompt_tools1.c \
-				./srcs/type.c \
-				./srcs/libft.c \
-				./srcs/free.c \
-				./srcs/temp.c
+CC = cc
+RM = rm -f
 
-INCS_SRCS	=	./includes/minishell.h
-INCS_DIR	=	-Iincludes
+CFLAGS = -Wall -Wextra -Werror -g3
 
-CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+LIBFLAGS = -Llibft -lft -lreadline -lncurses
 
-OBJS		=	$(SRCS:.c=.o)
+INCLUDES = -I includes -I libft
 
-%.o:%.c		$(INCS_SRCS)
-			$(CC) $(CFLAGS) $(INCS_DIR) -c $< -o $(<:.c=.o)
+all: libft ${OBJS} ${NAME}
 
-$(NAME):	$(OBJS)
-			$(CC) $(CFLAGS) $(OBJS) -lreadline -lncurses -o $(NAME)
-			
-all:		$(NAME)
+.c.o:
+	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
-re: 		fclean all
-			
+libft:
+	cd libft ; make
+
+$(NAME): ${OBJS}
+	${CC} ${CFLAGS} ${INCLUDES} ${OBJS} ${LIBFLAGS} -o ${NAME}
+
 clean:
-			rm -f $(OBJS)
-			
-fclean: 	clean
-			rm -f $(NAME)
+	cd libft ; make clean
+	${RM} ${OBJS}
 
-.PHONY: 	all clean fclean re
+fclean:	clean
+	cd libft ; make fclean
+	${RM} ${NAME}
+
+re:	fclean all
+
+.PHONY: clean fclean re all libft
