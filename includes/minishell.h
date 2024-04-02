@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 00:22:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/02 23:33:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@
 // printf
 # include <stdio.h>
 // errno
+# include "../libft/libft.h"
 # include <errno.h>
 
-# include "../libft/libft.h"
-
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
+# define STD_IN 0
+# define STD_OUT 1
+# define STD_ERR 2
 # define ERR_RDL "minishell: can't read input\n"
-// bash: syntax error near unexpected token `newline'
-# define ERR_STX "minishell: syntax error near unexpected token ...\n"
+# define ERR_STX "minishell: syntax error\n"
+# define ERR_SQX "minishell: syntax error (quote opened)\n"
+# define ERR_DQX "minishell: syntax error (dquote opened)\n"
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define EXIT_STX 2
@@ -78,11 +78,15 @@ int			check_before_symbol(char *prompt, int i);
 t_type		*create_type(char **token);
 t_type		get_type(char **token, int i);
 t_type		get_type2(char **token, int i);
-void	check_type(t_type *type, char **token);
+void		check_type(t_type *type, char **token);
 size_t		ft_tabstr_len(char **tab);
 
 // ft_split.c
 char		**ft_split(char const *s, char c);
+
+// check_quote.c
+int			check_quotes(char *str);
+int			check_quotes_output(int s_open, int d_open);
 
 // temp.c
 void		temp_display_tabs(char **token, t_type *type);

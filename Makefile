@@ -1,9 +1,11 @@
 NAME = minishell
+
 SRCS := srcs/main.c \
 		srcs/ft_split.c \
 		srcs/format_prompt.c \
 		srcs/format_prompt_utils.c \
 		srcs/type.c \
+		srcs/check_quotes.c \
 		srcs/temp.c
 
 OBJS = ${SRCS:.c=.o}

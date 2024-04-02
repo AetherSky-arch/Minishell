@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 15:45:02 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/03 00:53:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	len_prompt_minus_space(char *prompt)
 		i++;
 	while (prompt[i])
 	{
-		if (is_quote(prompt[i]) == 1)
+		if (prompt[i] == 39)
 		{
 			i++;
 			len++;
-			while (is_quote(prompt[i]) == 0)
+			while (prompt[i] != 39)
 			{
 				i++;
 				len++;
@@ -78,17 +78,18 @@ char	*get_prompt_minus_space(char *prompt)
 		j++;
 	while (prompt[j])
 	{
-		if (is_quote(prompt[j]) == 1)
+		if (prompt[j] == 39)
 		{
 			tmp_prompt[i] = prompt[j];
 			i++;
 			j++;
-			while (is_quote(prompt[j]) == 0)
+			while (prompt[j] != 39)
 			{
 				tmp_prompt[i] = prompt[j];
 				i++;
 				j++;
 			}
+			tmp_prompt[i] = prompt[j];
 		}
 		if (is_space(prompt[j]) == 1)
 		{
@@ -116,18 +117,25 @@ int	len_prompt_plus_space(char *prompt)
 		return (0);
 	while (prompt[i])
 	{
-		if (is_quote(prompt[i]) == 1)
+		if (prompt[i] == 39)
 		{
 			if (i > 0 && prompt[i - 1] && is_space(prompt[i - 1]) == 0)
+			{
+				// i++;
+				len++;
+			}
+			i++;
+			len++;
+			while (prompt[i] != 39)
 			{
 				i++;
 				len++;
 			}
 			i++;
 			len++;
-			while (is_quote(prompt[i]) == 0)
+			if (prompt[i] && is_space(prompt[i]) == 0)
 			{
-				i++;
+				// i++;
 				len++;
 			}
 		}
@@ -161,9 +169,10 @@ char	*get_prompt_plus_space(char *prompt)
 	j = 0;
 	while (prompt[j])
 	{
-		if (is_quote(prompt[j]) == 1)
+		//
+		if (prompt[j] == 39)
 		{
-			if (i > 0 && prompt[j - 1] && is_space(prompt[j - 1]) == 0)
+			if (j > 0 && prompt[j - 1] && is_space(prompt[j - 1]) == 0)
 			{
 				f_prompt[i] = ' ';
 				i++;
@@ -171,13 +180,22 @@ char	*get_prompt_plus_space(char *prompt)
 			f_prompt[i] = prompt[j];
 			i++;
 			j++;
-			while (is_quote(prompt[j]) == 0)
+			while (prompt[j] != 39)
 			{
 				f_prompt[i] = prompt[j];
 				i++;
 				j++;
 			}
+			f_prompt[i] = prompt[j];
+			i++;
+			j++;
+			if (prompt[j] && is_space(prompt[j]) == 0)
+			{
+				f_prompt[i] = ' ';
+				i++;
+			}
 		}
+		//
 		if (is_symbol(prompt[j]) == 1)
 		{
 			no_space_to_add = 1;
@@ -199,6 +217,7 @@ char	*get_prompt_plus_space(char *prompt)
 			if (no_space_to_add == 1)
 				f_prompt[i] = prompt[j];
 		}
+		//
 		else
 			f_prompt[i] = prompt[j];
 		j++;

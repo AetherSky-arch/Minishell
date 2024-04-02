@@ -6,15 +6,16 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 15:32:13 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/02 23:55:25 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	quitter(char *prompt)
+void	quit(char *prompt)
 {
 	free(prompt);
+	rl_clear_history();
 	exit(0);
 }
 
@@ -27,23 +28,30 @@ void	read_prompt(t_mini *mini)
 	{
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
-			quitter(prompt);
-		mini->fprompt = format_prompt(prompt);
-		free(prompt);
-		mini->token = ft_split(mini->fprompt, ' ');
-		mini->type = create_type(mini->token);
-		check_type(mini->type, mini->token);
-		// temp for checking
-		printf("%s\n", mini->fprompt);
-		temp_display_tabs(mini->token, mini->type);
-		// free here for now
-		double_free((void **)mini->token);
-		free(mini->fprompt);
-		free(mini->type);
+			quit(prompt);
+		mini->exitcode = check_quotes(prompt);
+		if (mini->exitcode == 0)
+		{
+			mini->fprompt = format_prompt(prompt);
+			printf("1\n" );
+			free(prompt);
+			mini->token = ft_split(mini->fprompt, ' ');
+			printf("2\n" );
+			mini->type = create_type(mini->token);
+			printf("3\n" );
+			check_type(mini->type, mini->token);			
+			// temp for checking
+			printf("%s\n", mini->fprompt);
+			temp_display_tabs(mini->token, mini->type);
+			// free here for now
+			double_free((void **)mini->token);
+			free(mini->fprompt);
+			free(mini->type);
+		}		
 	}
 	else
 	{
-		ft_putstr_fd(ERR_RDL, 2);
+		ft_putstr_fd(ERR_RDL, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
 	}
 }
@@ -56,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	mini = (t_mini){0};
-	if (isatty(STDIN))
+	if (isatty(STD_IN))
 	{
 		while (1)
 		{
@@ -73,8 +81,7 @@ int	main(int argc, char **argv, char **envp)
 			perror("minishell: tty");
 	}
 	rl_clear_history();
-	// return(exitcode);
-	return (0);
+	return (mini.exitcode);
 }
 
 // if (syntax_error(prompt) == 0)
