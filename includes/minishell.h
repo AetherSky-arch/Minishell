@@ -60,9 +60,6 @@ typedef struct s_mini
 	int		exitcode;
 }			t_mini;
 
-// main.c
-void		read_prompt(t_mini *mini);
-
 // format_prompt.c
 char		*format_prompt(char *prompt);
 int			len_prompt_minus_space(char *prompt);
