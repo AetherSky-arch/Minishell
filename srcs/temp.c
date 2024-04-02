@@ -8,7 +8,7 @@ void	temp_display_tabs(char **token, t_type *type)
 			"DGREAT", "LESS", "HEREDOC", "LIMITER", "PIPE", "CMD", "ARG"};
 
 	i = 0;
-	//printf("token\n");
+	// printf("token\n");
 	while (token[i])
 	{
 		printf("%s / ", token[i]);
@@ -18,7 +18,7 @@ void	temp_display_tabs(char **token, t_type *type)
 	// printf("%ld\n", ft_tabint_len(type));
 	i = 0;
 	printf("\n");
-	//printf("type\n");
+	// printf("type\n");
 	// while (i < (int)ft_tabstr_len(token))
 	// {
 	// 	printf("%d / ", type[i]);
@@ -26,7 +26,7 @@ void	temp_display_tabs(char **token, t_type *type)
 	// }
 	// i = 0;
 	// printf("\n");
-	//printf("type name\n");
+	// printf("type name\n");
 	while (i < (int)ft_tabstr_len(token))
 	{
 		printf("%s / ", t_type_names[type[i]]);

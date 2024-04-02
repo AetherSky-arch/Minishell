@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 00:22:36 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/02 15:07:18 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	read_prompt(t_mini *mini)
 		printf("%s\n", (*mini).fprompt);
 		temp_display_tabs((*mini).token, (*mini).type);
 		// free here for now
-		free_tabstr((*mini).token);
+		double_free((void **)mini->token);
 		free((*mini).fprompt);
 		free((*mini).type);
 	}
