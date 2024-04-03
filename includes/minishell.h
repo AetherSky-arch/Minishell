@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 23:33:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:52:17 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char		*get_prompt_minus_space(char *prompt);
 int			len_prompt_plus_space(char *prompt);
 char		*get_prompt_plus_space(char *prompt);
 
-// format_prompt_tools1.c
+// format_prompt_utils.c
 int			is_space(char c);
 int			is_symbol(char c);
 int			is_quote(char c);
@@ -92,5 +92,8 @@ int			check_quotes_output(int s_open, int d_open);
 void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
+
+int         is_in_quotes(char *prompt, int i);
+int         is_sep(char c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 21:04:21 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/03 00:08:44 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:09:08 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ int	is_symbol(char c)
 	return (0);
 }
 
-// 34 = " / 39 = '
 int	is_quote(char c)
 {
-	if (c == 34 || c == 39)
+	if (c == '\'' || c == '\"')
 		return (1);
 	return (0);
 }
