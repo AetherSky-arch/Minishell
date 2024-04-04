@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 21:00:24 by aether            #+#    #+#             */
-/*   Updated: 2024/04/03 21:01:11 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:54:36 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int  is_in_quotes(char *prompt, int i)
 
     j = 0;
     open_quote = 0;
-    while (j < i)
+    while (j <= i)
     {
         if ((is_quote(prompt[j])) && (open_quote == 0))
             open_quote = 1;
-        if ((is_quote(prompt[j])) && (open_quote == 1))
+		else if ((is_quote(prompt[j])) && (open_quote == 1))
             open_quote = 0;
         j++;
     }

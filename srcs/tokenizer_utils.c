@@ -6,25 +6,17 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:41:00 by aether            #+#    #+#             */
-/*   Updated: 2024/04/03 21:12:30 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/04 15:56:46 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void space_handler(char *fprompt, int *i, int *counter)
-{
-    if (*i > 0) // prevents segfault by attempting to access index -1 of fprompt
-    {
-        if (is_space(fprompt[*i - 1]) == 0)
-            *counter = *counter + 1;
-    }
-    *i = *i + 1;
-}
-
 static void char_handler(char *fprompt, int *i, int *counter)
 {
-    if (is_sep(fprompt[*i - 1]))
+	if (*i == 0)
+		*counter = *counter + 1;
+	else if (is_sep(fprompt[*i - 1]))
         *counter = *counter + 1;
     *i = *i + 1;
 }
@@ -48,22 +40,15 @@ int  blocks_counter(char *fprompt)
     {
         if (is_quote(fprompt[i])) // /!\ doesn't work with intertwined single and double quotes
             quotes_handler(fprompt, &i, &counter); // if found quote, go to end of quote then counter++
-        else if (is_space(fprompt[i])) // if character is a space and previous character isn't then counter++
-            space_handler(fprompt, &i, &counter);
+        else if (is_space(fprompt[i]))
+			i++; // if character is a space and previous character isn't then counter++
         else if (is_sep(fprompt[i])) // (non space separators are counted as words)
         { // (assumes successive '>', '<' will be merged later)
             i++;
             counter++;
         }
-        else if (i > 0) // if previous character is separator then counter++
+        else // if previous character is separator then counter++
             char_handler(fprompt, &i, &counter);
-        else
-            i++;
     }
     return (counter);
-}
-
-int main(void)
-{
-    ft_printf("%d\n", blocks_counter("hel|lo \"th|is is \" a sen>tence. "));
 }
