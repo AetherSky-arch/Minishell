@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:41:00 by aether            #+#    #+#             */
-/*   Updated: 2024/04/04 15:56:46 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:00:26 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,11 @@ int  blocks_counter(char *fprompt)
             char_handler(fprompt, &i, &counter);
     }
     return (counter);
+}
+
+void	token_init(char **token, char *fprompt)
+{
+	token = malloc (blocks_counter(fprompt) * sizeof(char *) + 1);
+	if (token == NULL)
+		return ;
 }

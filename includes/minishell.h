@@ -95,5 +95,6 @@ void		temp_display_tabs(char **token, t_type *type);
 
 int         is_in_quotes(char *prompt, int i);
 int         is_sep(char c);
+void		token_init(char **token, char *fprompt);
 
 #endif
