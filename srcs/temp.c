@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   temp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:17:56 by aether            #+#    #+#             */
-/*   Updated: 2024/04/03 16:17:59 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/04 23:21:36 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	temp_display_tabs(char **token, t_type *type)
 			"DGREAT", "LESS", "HEREDOC", "LIMITER", "PIPE", "CMD", "ARG"};
 
 	i = 0;
-	// printf("token\n");
+	printf("token =");
 	while (token[i])
 	{
 		printf("%s / ", token[i]);
@@ -37,7 +37,7 @@ void	temp_display_tabs(char **token, t_type *type)
 	// }
 	// i = 0;
 	// printf("\n");
-	// printf("type name\n");
+	printf("type name =");
 	while (i < (int)ft_tabstr_len(token))
 	{
 		printf("%s / ", t_type_names[type[i]]);

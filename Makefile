@@ -4,6 +4,9 @@ SRCS := srcs/main.c \
 		srcs/ft_split.c \
 		srcs/format_prompt.c \
 		srcs/format_prompt_utils.c \
+		srcs/format_prompt_utils2.c \
+		srcs/format_prompt_utils3.c \
+		srcs/format_prompt_utils4.c \
 		srcs/type.c \
 		srcs/check_quotes.c \
 		srcs/temp.c

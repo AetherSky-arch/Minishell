@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 03:57:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 23:19:12 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,17 @@ int	len_prompt_minus_space(char *prompt)
 		i++;
 	while (prompt[i])
 	{
-		if (prompt[i] == 39)
-		{
-			i++;
-			len++;
-			while (prompt[i] != 39)
-			{
-				i++;
-				len++;
-			}
-		}
-		if (prompt[i] && is_space(prompt[i]) == 1)
-		{
-			while (prompt[i] && is_space(prompt[i]) == 1)
-				i++;
-			if (prompt[i])
-				i--;
-		}
+		if (prompt[i] == '\'' || prompt[i] == '\"')
+			quote_in_len_minus(prompt, &i, &len, prompt[i]);
+		if (is_space(prompt[i]) == 1)
+			space_in_len_minus(prompt, &i);
 		if (prompt[i])
 		{
 			len++;
 			i++;
 		}
 	}
-	printf("len-=%d\n", len);
+	//printf("len-=%d\n", len);
 	return (len);
 }
 
@@ -84,34 +71,17 @@ char	*get_prompt_minus_space(char *prompt)
 		j++;
 	while (prompt[j])
 	{
-		if (prompt[j] == 39)
-		{
-			tmp_prompt[i] = prompt[j];
-			i++;
-			j++;
-			while (prompt[j] != 39)
-			{
-				tmp_prompt[i] = prompt[j];
-				i++;
-				j++;
-			}
-		}
-		if (prompt[j] && is_space(prompt[j]) == 1)
-		{
-			while (prompt[j] && is_space(prompt[j]) == 1)
-				j++;
-			if (prompt[j])
-				j--;
-		}
+		if (prompt[j] == '\'')
+			squote_in_get_minus(tmp_prompt, prompt, &i, &j);
+		if (prompt[j] == '\"')
+			dquote_in_get_minus(tmp_prompt, prompt, &i, &j);
+		if (is_space(prompt[j]) == 1)
+			space_in_get_minus(prompt, &j);
 		if (prompt[j])
-		{
-			tmp_prompt[i] = prompt[j];
-			i++;
-			j++;
-		}
+			other_in_get_minus(tmp_prompt, prompt, &i, &j);
 	}
 	tmp_prompt[i] = '\0';
-	printf("strlen-=%d\n", (int)ft_strlen(tmp_prompt));
+	//printf("strlen-=%d\n", (int)ft_strlen(tmp_prompt));
 	return (tmp_prompt);
 }
 
@@ -126,36 +96,17 @@ int	len_prompt_plus_space(char *prompt)
 		return (0);
 	while (prompt[i])
 	{
-		if (prompt[i] == 39)
-		{
-			if (i > 0 && prompt[i - 1] && is_space(prompt[i - 1]) == 0)
-				len++;
-			i++;
-			len++;
-			while (prompt[i] != 39)
-			{
-				i++;
-				len++;
-			}
-			i++;
-			len++;
-			if (prompt[i] && is_space(prompt[i]) == 0)
-				len++;
-		}
-		if (is_symbol(prompt[i]) == 1)
-		{
-			if (check_before_symbol(prompt, i) == 0)
-				len++;
-			if (check_after_symbol(prompt, i) == 0)
-				len++;
-		}
-		if (prompt[i])
+		if (prompt[i] == '\'' || prompt[i] == '\"')
+			quote_in_len_plus(prompt, &i, &len, prompt[i]);
+		else if (is_symbol(prompt[i]) == 1)
+			symbol_in_len_plus(prompt, &i, &len);
+		else
 		{
 			i++;
 			len++;
 		}
 	}
-	printf("len+=%d\n", len);
+	//printf("len+=%d\n", len);
 	return (len);
 }
 
@@ -165,7 +116,6 @@ char	*get_prompt_plus_space(char *prompt)
 	char	*f_prompt;
 	int		i;
 	int		j;
-	int		no_space_to_add;
 
 	if (!prompt)
 		return (NULL);
@@ -176,63 +126,16 @@ char	*get_prompt_plus_space(char *prompt)
 	j = 0;
 	while (prompt[j])
 	{
-		//
-		if (prompt[j] == 39)
-		{
-			if (j > 0 && prompt[j - 1] && is_space(prompt[j - 1]) == 0)
-			{
-				f_prompt[i] = ' ';
-				i++;
-			}
-			f_prompt[i] = prompt[j];
-			i++;
-			j++;
-			while (prompt[j] != 39)
-			{
-				f_prompt[i] = prompt[j];
-				i++;
-				j++;
-			}
-			f_prompt[i] = prompt[j];
-			j++;
-			i++;
-			if (prompt[j] && is_space(prompt[j]) == 0)
-			{
-				f_prompt[i] = ' ';
-				i++;
-			}
-		}
-		//
-		if (is_symbol(prompt[j]) == 1)
-		{
-			no_space_to_add = 1;
-			if (check_before_symbol(prompt, j) == 0)
-			{
-				f_prompt[i] = ' ';
-				i++;
-				f_prompt[i] = prompt[j];
-				no_space_to_add = 0;
-			}
-			if (check_after_symbol(prompt, j) == 0)
-			{
-				if (no_space_to_add == 1)
-					f_prompt[i] = prompt[j];
-				i++;
-				f_prompt[i] = ' ';
-				no_space_to_add = 0;
-			}
-			if (no_space_to_add == 1)
-				f_prompt[i] = prompt[j];
-		}
-		//
-		if (prompt[j])
-		{
-			f_prompt[i] = prompt[j];
-			j++;
-			i++;
-		}
+		if (prompt[j] == '\'')
+			squote_in_get_plus(f_prompt, prompt, &i, &j);
+		else if (prompt[j] == '\"')
+			dquote_in_get_plus(f_prompt, prompt, &i, &j);
+		else if (is_symbol(prompt[j]) == 1)
+			symbol_in_get_plus(f_prompt, prompt, &i, &j);
+		else
+			other_in_get_plus(f_prompt, prompt, &i, &j);
 	}
 	f_prompt[i] = '\0';
-	printf("strlen+=%d\n", (int)ft_strlen(f_prompt));
+	//printf("strlen+=%d\n", (int)ft_strlen(f_prompt));
 	return (f_prompt);
 }

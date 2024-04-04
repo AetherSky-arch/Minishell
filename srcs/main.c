@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 18:06:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 23:20:04 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,16 @@ void	read_prompt(t_mini *mini)
 		
 		if (mini->exitcode == 0)
 		{
-			mini->fprompt = format_prompt(prompt);
-			//printf("1\n" );
+			mini->fprompt = format_prompt(prompt);			
 			free(prompt);
-			mini->token = ft_split(mini->fprompt, ' ');
-			//printf("2\n" );
-			mini->type = create_type(mini->token);
-			//printf("3\n" );
+			mini->token = ft_split(mini->fprompt, ' ');			
+			mini->type = create_type(mini->token);			
 			check_type(mini->type, mini->token);
 			
 			// syntax_error of type succesion 
 			
 			// temp for checking
-			printf("%s\n", mini->fprompt);
+			printf("f_prompt =%s\n", mini->fprompt);
 			temp_display_tabs(mini->token, mini->type);
 			
 			// free here for now

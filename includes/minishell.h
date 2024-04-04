@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/03 20:52:17 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/04 23:15:52 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,27 @@ int			len_prompt_minus_space(char *prompt);
 char		*get_prompt_minus_space(char *prompt);
 int			len_prompt_plus_space(char *prompt);
 char		*get_prompt_plus_space(char *prompt);
-
 // format_prompt_utils.c
 int			is_space(char c);
 int			is_symbol(char c);
 int			is_quote(char c);
 int			check_after_symbol(char *prompt, int i);
 int			check_before_symbol(char *prompt, int i);
+// format_prompt_utils2.c
+void		quote_in_len_minus(char *prompt, int *i, int *len, int q);
+void		space_in_len_minus(char *prompt, int *i);
+void		squote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
+void		dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
+void		space_in_get_minus(char *prompt, int *j);
+// format_prompt_utils3.c
+void		other_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
+void		quote_in_len_plus(char *prompt, int *i, int *len, int q);
+void		symbol_in_len_plus(char *prompt, int *i, int *len);
+void		squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+// format_prompt_utils4.c
+void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 
 // type.c
 t_type		*create_type(char **token);
@@ -93,8 +107,8 @@ void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
 
-int         is_in_quotes(char *prompt, int i);
-int         is_sep(char c);
+int			is_in_quotes(char *prompt, int i);
+int			is_sep(char c);
 void		token_init(char **token, char *fprompt);
 
 #endif

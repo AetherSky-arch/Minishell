@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 21:49:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 23:47:40 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 23:24:15 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	check_quotes(char *str)
 			d_open = 0;
 		i++;
 	}
-	printf("sq %d\n", s_open);
-	printf("dq %d\n", d_open);
+	// printf("sq %d\n", s_open);
+	// printf("dq %d\n", d_open);
 	return (check_quotes_output(s_open, d_open));
 }
 
