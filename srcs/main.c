@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 03:58:36 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:06:59 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	read_prompt(t_mini *mini)
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
-		mini->exitcode = check_quotes(prompt);
+		mini->exitcode = check_quotes(prompt);	
+		
+		// simple syntax_error?
+		
 		if (mini->exitcode == 0)
 		{
 			mini->fprompt = format_prompt(prompt);
@@ -39,10 +42,14 @@ void	read_prompt(t_mini *mini)
 			//printf("2\n" );
 			mini->type = create_type(mini->token);
 			//printf("3\n" );
-			check_type(mini->type, mini->token);			
+			check_type(mini->type, mini->token);
+			
+			// syntax_error of type succesion 
+			
 			// temp for checking
 			printf("%s\n", mini->fprompt);
 			temp_display_tabs(mini->token, mini->type);
+			
 			// free here for now
 			double_free((void **)mini->token);
 			free(mini->fprompt);
