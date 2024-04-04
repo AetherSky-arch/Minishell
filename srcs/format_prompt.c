@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/03 00:53:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 03:57:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,20 @@ int	len_prompt_minus_space(char *prompt)
 				len++;
 			}
 		}
-		if (is_space(prompt[i]) == 1)
+		if (prompt[i] && is_space(prompt[i]) == 1)
 		{
-			while (prompt[i + 1] && is_space(prompt[i + 1]) == 1)
+			while (prompt[i] && is_space(prompt[i]) == 1)
 				i++;
+			if (prompt[i])
+				i--;
 		}
-		len++;
-		i++;
+		if (prompt[i])
+		{
+			len++;
+			i++;
+		}
 	}
+	printf("len-=%d\n", len);
 	return (len);
 }
 
@@ -89,20 +95,23 @@ char	*get_prompt_minus_space(char *prompt)
 				i++;
 				j++;
 			}
-			tmp_prompt[i] = prompt[j];
 		}
-		if (is_space(prompt[j]) == 1)
+		if (prompt[j] && is_space(prompt[j]) == 1)
 		{
-			tmp_prompt[i] = ' ';
-			while (prompt[j + 1] && is_space(prompt[j + 1]) == 1)
+			while (prompt[j] && is_space(prompt[j]) == 1)
 				j++;
+			if (prompt[j])
+				j--;
 		}
-		else
+		if (prompt[j])
+		{
 			tmp_prompt[i] = prompt[j];
-		i++;
-		j++;
+			i++;
+			j++;
+		}
 	}
 	tmp_prompt[i] = '\0';
+	printf("strlen-=%d\n", (int)ft_strlen(tmp_prompt));
 	return (tmp_prompt);
 }
 
@@ -120,10 +129,7 @@ int	len_prompt_plus_space(char *prompt)
 		if (prompt[i] == 39)
 		{
 			if (i > 0 && prompt[i - 1] && is_space(prompt[i - 1]) == 0)
-			{
-				// i++;
 				len++;
-			}
 			i++;
 			len++;
 			while (prompt[i] != 39)
@@ -134,10 +140,7 @@ int	len_prompt_plus_space(char *prompt)
 			i++;
 			len++;
 			if (prompt[i] && is_space(prompt[i]) == 0)
-			{
-				// i++;
 				len++;
-			}
 		}
 		if (is_symbol(prompt[i]) == 1)
 		{
@@ -146,9 +149,13 @@ int	len_prompt_plus_space(char *prompt)
 			if (check_after_symbol(prompt, i) == 0)
 				len++;
 		}
-		len++;
-		i++;
+		if (prompt[i])
+		{
+			i++;
+			len++;
+		}
 	}
+	printf("len+=%d\n", len);
 	return (len);
 }
 
@@ -187,8 +194,8 @@ char	*get_prompt_plus_space(char *prompt)
 				j++;
 			}
 			f_prompt[i] = prompt[j];
-			i++;
 			j++;
+			i++;
 			if (prompt[j] && is_space(prompt[j]) == 0)
 			{
 				f_prompt[i] = ' ';
@@ -218,11 +225,14 @@ char	*get_prompt_plus_space(char *prompt)
 				f_prompt[i] = prompt[j];
 		}
 		//
-		else
+		if (prompt[j])
+		{
 			f_prompt[i] = prompt[j];
-		j++;
-		i++;
+			j++;
+			i++;
+		}
 	}
 	f_prompt[i] = '\0';
+	printf("strlen+=%d\n", (int)ft_strlen(f_prompt));
 	return (f_prompt);
 }
