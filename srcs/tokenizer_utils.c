@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:41:00 by aether            #+#    #+#             */
-/*   Updated: 2024/04/04 16:00:26 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:46:35 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int  blocks_counter(char *fprompt)
     counter = 0;
     while (fprompt[i] != '\0')
     {
-        if (is_quote(fprompt[i])) // /!\ doesn't work with intertwined single and double quotes
+        if (is_quote(fprompt[i]))
             quotes_handler(fprompt, &i, &counter); // if found quote, go to end of quote then counter++
         else if (is_space(fprompt[i]))
 			i++; // if character is a space and previous character isn't then counter++

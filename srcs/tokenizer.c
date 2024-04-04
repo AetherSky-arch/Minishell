@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:26:27 by aether            #+#    #+#             */
-/*   Updated: 2024/04/04 17:26:00 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:50:54 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,21 @@ static void	quotes_handler(char **token, char *fprompt, int *i, int *j)
 {
 	int	n;
 
-	while ((is_in_quotes(fprompt, *i)) && (fprompt[*i] != '\0'))
+	while (is_in_quotes(fprompt, *i))
+		*i = *i + 1;
+	n = 0;
+	while (token[n] != NULL)
+		n++;
+	token[n] = ft_substr(fprompt, *j, *i - *j);
+	token[n + 1] = NULL;
+	*j = *i;
+}
+
+static void	char_handler(char **token, char *fprompt, int *i, int *j)
+{
+	int	n;
+
+	while ((is_space(fprompt[*i]) == 0) && (fprompt[*i] != '\0'))
 		*i = *i + 1;
 	n = 0;
 	while (token[n] != NULL)

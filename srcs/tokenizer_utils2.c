@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 21:00:24 by aether            #+#    #+#             */
-/*   Updated: 2024/04/04 15:54:36 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/04 17:36:25 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ int  is_sep(char c)
 
 int  is_in_quotes(char *prompt, int i)
 {
-    int j;
-    int open_quote;
+    int 	j;
+    int 	open_quote;
+	char	q;
 
+	q = prompt[i];
     j = 0;
     open_quote = 0;
     while (j <= i)
     {
-        if ((is_quote(prompt[j])) && (open_quote == 0))
+        if ((prompt[j] == q) && (open_quote == 0))
             open_quote = 1;
-		else if ((is_quote(prompt[j])) && (open_quote == 1))
+		else if ((prompt[j] == q) && (open_quote == 1))
             open_quote = 0;
         j++;
     }
