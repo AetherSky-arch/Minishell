@@ -9,6 +9,9 @@ SRCS := srcs/main.c \
 		srcs/format_prompt_utils4.c \
 		srcs/type.c \
 		srcs/check_quotes.c \
+		srcs/tokenizer.c \
+		srcs/tokenizer_utils.c \
+		srcs/tokenizer_utils2.c \
 		srcs/temp.c
 
 OBJS = ${SRCS:.c=.o}

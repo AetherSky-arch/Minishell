@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 23:15:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/04 23:39:11 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 // format_prompt_utils4.c
 void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+
+// tokenizer
+int			blocks_counter(char *fprompt);
+void		token_init(char **token, char *fprompt);
+int			is_sep(char c);
+int			is_in_quotes(char *prompt, int i);
+void		tokenizer(t_mini *mini);
 
 // type.c
 t_type		*create_type(char **token);
