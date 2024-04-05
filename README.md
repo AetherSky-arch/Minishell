@@ -31,3 +31,5 @@ je prends un "truc" (hors symbol)
 6) << avant => limiter
 7) rien => si 1er => cmd sinon arg du 1er
 
+How to execve:
+~$ >> out cat < Makefile << eof > out2 | << eof ls -la >> out3 | >> out4 > out3 grep mini < out2

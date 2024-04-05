@@ -6,25 +6,23 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 23:39:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/06 01:09:51 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// malloc, free
+
 # include <stdlib.h>
-// isatty, write
 # include <unistd.h>
-// readline
+# include <stdio.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-// printf
-# include <stdio.h>
-// errno
 # include "../libft/libft.h"
-# include <errno.h>
 
 # define STD_IN 0
 # define STD_OUT 1
@@ -58,6 +56,16 @@ typedef struct s_mini
 	char	**token;
 	t_type	*type;
 	int		exitcode;
+	//
+	int		fd_in;
+	int		fd_out;
+	char	**paths;
+	int		fd[2];
+	int		status;
+	pid_t	pid;
+	int		is_heredoc;
+	char	*lim;
+	int		docfd[2];
 }			t_mini;
 
 // format_prompt.c

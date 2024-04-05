@@ -1,0 +1,16 @@
+mini4
+total 96
+drwxr-xr-x  7 caguillo 2023_paris   171 Apr  5 23:39 .
+drwx------ 51 caguillo 2023_paris 12288 Apr  5 23:10 ..
+drwxr-xr-x  8 caguillo 2023_paris  4096 Apr  5 22:43 .git
+drwxr-xr-x  2 caguillo 2023_paris    25 Apr  4 17:51 includes
+drwxr-xr-x  2 caguillo 2023_paris  4096 Apr  5 23:15 libft
+-rw-r--r--  1 caguillo 2023_paris   825 Apr  4 23:33 Makefile
+-rwxr-xr-x  1 caguillo 2023_paris 42200 Apr  5 23:15 minishell
+-rw-r--r--  1 caguillo 2023_paris     0 Apr  5 23:31 out
+-rw-r--r--  1 caguillo 2023_paris     6 Apr  6 00:13 out2
+-rw-r--r--  1 caguillo 2023_paris     6 Apr  6 00:13 out3
+-rw-r--r--  1 caguillo 2023_paris     9 Apr  5 23:39 out4
+-rw-r--r--  1 caguillo 2023_paris   851 Mar 29 21:54 README.md
+drwxr-xr-x  2 caguillo 2023_paris  4096 Apr  5 23:15 srcs
+drwxr-xr-x  2 caguillo 2023_paris    27 Mar 31 22:41 .vscode

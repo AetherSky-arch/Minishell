@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/02 00:21:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/06 00:37:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	check_type(t_type *type, char **token)
 		if (type[i] == ARG)
 		{
 			if (i > 0 && (type[i - 1] == INFILE || type[i - 1] == OUTFILE
-					|| type[i - 1] == OUTFAPP))
+					|| type[i - 1] == OUTFAPP || type[i - 1] == LIMITER))
 				type[i] = CMD;
 		}
 		i++;
