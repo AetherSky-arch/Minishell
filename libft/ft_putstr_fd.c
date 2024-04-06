@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arguez <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 14:41:57 by arguez            #+#    #+#             */
-/*   Updated: 2024/02/08 15:59:44 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/07 00:53:07 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_putstr_fd(char *str, int fd)
 
 	if (!str)
 	{
-		ft_putstr_fd("(null)", 1);
+		ft_putstr_fd("(null)", fd);
 		return (6);
 	}
 	i = 0;

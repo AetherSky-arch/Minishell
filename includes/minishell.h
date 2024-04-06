@@ -6,23 +6,22 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/06 01:09:51 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/07 00:44:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
+# include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
-# include <sys/wait.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include "../libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 # define STD_IN 0
 # define STD_OUT 1
@@ -31,6 +30,8 @@
 # define ERR_STX "minishell: syntax error\n"
 # define ERR_SQX "minishell: syntax error (quote opened)\n"
 # define ERR_DQX "minishell: syntax error (dquote opened)\n"
+# define ERR_GNL "minishell: Can't read input\n"
+# define ERR_MAL "minishell: Malloc failed\n"
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define EXIT_STX 2
@@ -52,10 +53,21 @@ typedef enum e_type
 
 typedef struct s_mini
 {
-	char	*fprompt;
-	char	**token;
-	t_type	*type;
+	char *fprompt; // to be free'd
+	char **token;  // to be free'd
+	t_type *type;  // to be free'd
 	int		exitcode;
+	//
+	char	*cmd;
+	// int		is_infile;
+	// char	*in_file;
+	// int		is_outfile;
+	// char	*out_file;
+	// int		is_outfapp;
+	// char	*out_fapp;
+	// int		is_heredoc;
+	// char	*lim;
+	// int		is_hd_infile;
 	//
 	int		fd_in;
 	int		fd_out;
@@ -64,6 +76,7 @@ typedef struct s_mini
 	int		status;
 	pid_t	pid;
 	int		is_heredoc;
+	int		heredoc_idx;
 	char	*lim;
 	int		docfd[2];
 }			t_mini;
