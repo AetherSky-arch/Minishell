@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/07 00:51:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/07 23:25:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	fill_heredoc(t_mini *mini)
 
 	limiter = ft_strjoin((*mini).lim, "\n");
 	if (!limiter)
-		limiter_err_mal();
+		limiter_err_mal(*mini);
 	while (1)
 	{
 		ft_putstr_fd("> ", STD_IN);
@@ -27,7 +27,7 @@ void	fill_heredoc(t_mini *mini)
 		if (!line)
 		{
 			ft_putstr_fd(ERR_GNL, STD_ERR);
-			exit(EXIT_FAILURE);
+			close_exit(*mini, EXIT_FAILURE);
 		}
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
@@ -40,8 +40,8 @@ void	fill_heredoc(t_mini *mini)
 	close((*mini).docfd[1]);
 }
 
-void	limiter_err_mal(void)
+void	limiter_err_mal(t_mini mini)
 {
 	ft_putstr_fd(ERR_MAL, STD_ERR);
-	exit(EXIT_FAILURE);
+	close_exit(mini, EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/07 00:30:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/08 00:17:11 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,26 @@ void	perror_open(t_mini mini, char *filename)
 
 	tmp = ft_strjoin("minishell: ", filename);
 	perror(tmp);
-	free(tmp);
-	close(mini.fd_in);
-	close(mini.fd_out);
-	close(mini.fd[0]);
-	close(mini.fd[1]);
-	exit(EXIT_FAILURE);
+	free(tmp);	
+	close_exit(mini, EXIT_FAILURE);
+}
+
+void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
+{
+	double_free((void **)(*mini).cmd_arg);
+	if (is_paths == 1)
+		double_free((void **)(*mini).paths);
+	close_exit(*mini, exit_code);
+}
+
+void	putstr_error(char *cmd0, char *err_str)
+{
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_strjoin("minishell: ", cmd0);
+	tmp2 = ft_strjoin(tmp1, err_str);
+	ft_putstr_fd(tmp2, STD_ERR);
+	free(tmp1);
+	free(tmp2);
 }

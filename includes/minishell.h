@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/07 00:44:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/08 00:12:37 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@
 # define ERR_DQX "minishell: syntax error (dquote opened)\n"
 # define ERR_GNL "minishell: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
+# define ERR_CMD ": Command not found\n"
+# define ERR_ACX ": Permission denied\n"
+# define ERR_DIR ": No such file or directory\n"
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define EXIT_STX 2
+# define EXIT_NOCMD 127
+# define EXIT_DENIED 126
+# define EXIT_NODIR 127
 
 typedef enum e_type
 {
@@ -58,20 +64,11 @@ typedef struct s_mini
 	t_type *type;  // to be free'd
 	int		exitcode;
 	//
-	char	*cmd;
-	// int		is_infile;
-	// char	*in_file;
-	// int		is_outfile;
-	// char	*out_file;
-	// int		is_outfapp;
-	// char	*out_fapp;
-	// int		is_heredoc;
-	// char	*lim;
-	// int		is_hd_infile;
+	char **cmd_arg; // to be free'd
+	char **paths;   // to be free'd
 	//
 	int		fd_in;
 	int		fd_out;
-	char	**paths;
 	int		fd[2];
 	int		status;
 	pid_t	pid;
@@ -81,6 +78,9 @@ typedef struct s_mini
 	int		docfd[2];
 }			t_mini;
 
+// check_quote.c
+int			check_quotes(char *str);
+int			check_quotes_output(int s_open, int d_open);
 // format_prompt.c
 char		*format_prompt(char *prompt);
 int			len_prompt_minus_space(char *prompt);
@@ -123,20 +123,47 @@ t_type		get_type2(char **token, int i);
 void		check_type(t_type *type, char **token);
 size_t		ft_tabstr_len(char **tab);
 
-// ft_split.c
-char		**ft_split(char const *s, char c);
+// to_exec.c
+int			nbr_cmd(t_mini mini);
+void		block_to_child(t_mini *mini, char **envp);
+void		get_heredoc(t_mini *mini, int start);
+int			search_infile(t_mini *mini, int start);
+void		open_infile(t_mini *mini, char *infile);
+int			search_outfile(t_mini *mini, int start);
+void		child(t_mini *mini, char **envp, int start);
 
-// check_quote.c
-int			check_quotes(char *str);
-int			check_quotes_output(int s_open, int d_open);
+// exec.c
+int			check_slash(char *str);
+void		exec_arg(t_mini mini, char **envp, int start);
+void		get_cmd_arg(t_mini *mini, int start);
+void		exec_cmd(t_mini mini, char **envp);
+void		exec_abs(t_mini mini, char **envp);
+
+// free_close_exit.c
+void		close_exit(t_mini mini, int k);
+void		perror_close_exit(char *err, t_mini mini, int k);
+void		perror_open(t_mini mini, char *filename);
+void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
+void		putstr_error(char *cmd0, char *err_str);
+
+// heredoc.c
+void		fill_heredoc(t_mini *mini);
+void		limiter_err_mal(t_mini mini);
+
+// path.c
+void		get_paths(t_mini *mini, char **envp);
+void		slash_paths(t_mini *mini);
+int			check_in_str(char *s1, char *s2);
+char		*check_path(char **paths, char **cmd);
+
+/***************temp temp temp *****************/
+
+// ft_split.c -- conflict??
+char		**ft_split(char const *s, char c);
 
 // temp.c
 void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
-
-int			is_in_quotes(char *prompt, int i);
-int			is_sep(char c);
-void		token_init(char **token, char *fprompt);
 
 #endif

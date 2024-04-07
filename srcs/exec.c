@@ -5,191 +5,125 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/07 01:24:21 by caguillo         ###   ########.fr       */
+/*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
+/*   Updated: 2024/04/08 00:13:47 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	nbr_cmd(t_mini mini)
+/********************************************************/
+/****************to be reviewed with the stat functions********/
+/********************************************************/
+int	check_slash(char *str)
 {
-	int	i;
-	int	nbr;
+	size_t	i;
 
-	if (!(mini.type))
+	i = 0;
+	if (!str)
 		return (0);
-	i = 0;
-	nbr = 0;
-	while (mini.type[i])
+	if (str[ft_strlen(str) - 1] == '/')
+		return (0);
+	while (str[i])
 	{
-		if (mini.type[i] == CMD)
-			nbr++;
+		if (str[i] == '/')
+		{
+			if (i > 0 && str[i - 1] == ' ')
+				return (0);
+			return (1);
+		}
 		i++;
 	}
-	return (nbr);
+	return (0);
 }
 
-// void	get_cmd_files(t_mini *mini, int *j)
-// {
-// 	(*mini).is_infile = 0;
-// 	(*mini).is_heredoc = 0;
-// 	(*mini).is_hd_infile = 0;
-// 	(*mini).is_outfile = 0;
-// 	(*mini).is_outfapp = 0;
-// 	while ((*mini).type[j] && (*mini).type[j] != PIPE)
-// 	{
-// 		if ((*mini).type[j] == CMD)
-// 			(*mini).cmd = (*mini).token[j];
-// 		if ((*mini).type[j] == INFILE)
-// 		{
-// 			(*mini).is_infile = 1;
-// 			(*mini).is_hd_infile = 0;
-// 			(*mini).in_file = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == HEREDOC)
-// 		{
-// 			(*mini).is_hd_infile = 1;
-// 			(*mini).is_infile = 0;
-// 			(*mini).is_heredoc = 1;
-// 			(*mini).lim = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == OUTFILE)
-// 		{
-// 			(*mini).is_outfile = 1;
-// 			(*mini).is_outfapp = 0;
-// 			(*mini).out_file = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == OUTFAPP)
-// 		{
-// 			(*mini).is_outfapp = 1;
-// 			(*mini).is_outfile = 0;
-// 			(*mini).out_fapp = (*mini).token[j];
-// 		}
-// 		j++;
-// 	}
-// }
-
-// p_idx = index of the next pipe (so len-1 if no pipe)
-// if no pipe (just one cmd), same as usual case,
-// the pipe is just not used and closed
-void	cmd_to_child(t_mini *mini, char **envp)
+void	exec_arg(t_mini mini, char **envp, int start)
 {
-	int	i;
-	int	start;
-	int	p_idx;
-
-	i = 0;
-	start = 0;
-	p_idx = 0;
-	while (i < nbr_cmd(*mini))
+	get_cmd_arg(&mini, start);
+	if (mini.cmd_arg)
 	{
-		while ((*mini).type[p_idx] && (*mini).type[p_idx] != PIPE)
-		{
-			if ((*mini).type[p_idx] == CMD)
-				(*mini).cmd = (*mini).token[p_idx];
-			p_idx++;
-		}
-		if (pipe((*mini).fd) == -1)
-			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
+		if (check_slash(mini.cmd_arg[0]) == 1)
+			exec_abs(mini, envp);
 		else
-			child(mini, envp, start);
-		i++;
-		if ((*mini).type[p_idx])
-			p_idx++;
-		start = p_idx;
+			exec_cmd(mini, envp);
+	}
+	else
+	{
+		ft_putstr_fd(ERR_MAL, STD_ERR);
+		close_exit(mini, EXIT_FAILURE);
 	}
 }
 
-// we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
-void	get_heredoc(t_mini *mini, int start)
+// Based on the fact there is ONE cmd,
+//	and it is the ONLY ONE cmd in the block.
+// But args can be after files !
+void	get_cmd_arg(t_mini *mini, int start)
 {
-	int	i;
+	int		j;
+	char	*tmp1;
+	char	*tmp2;
 
-	i = start;
-	while ((*mini).type[i] && (*mini).type[i] != PIPE)
+	j = start;
+	while ((*mini).type[j] && (*mini).type[j] != PIPE)
 	{
-		if ((*mini).type[i] == HEREDOC)
+		if ((*mini).type[j] == CMD)
 		{
-			(*mini).is_heredoc = 1;
-			(*mini).heredoc_idx = i;
-			if ((*mini).token[i + 1])
-				(*mini).lim = (*mini).token[i + 1];
-			if (pipe((*mini).docfd) == -1)
-				perror_close_exit("minishell: pipe", mini, EXIT_FAILURE);
-			fill_heredoc(mini);
-		}
-		i++;
-	}
-}
-
-int	search_infile(t_mini *mini, int start)
-{
-	int	i;
-	int	is_infile;
-
-	i = start;
-	is_infile = 0;
-	while ((*mini).type[i] && (*mini).type[i] != PIPE)
-	{
-		if ((*mini).type[i] == INFILE)
-		{
-			open_infile(mini, (*mini).token[i]);
-			if ((*mini).heredoc_idx < i)
-				is_infile = 1;
-		}
-		i++;
-	}
-	return (is_infile);
-}
-
-// if exist and readable --> open
-// else exit (from child)
-void	open_infile(t_mini *mini, char *infile)
-{
-	(*mini).fd_in = open(infile, O_RDONLY);
-	if ((*mini).fd_in < 0)
-		perror_open(*mini, infile);
-}
-
-void	child(t_mini *mini, char **envp, int start)
-{
-	(*mini).pid = fork();
-	if ((*mini).pid == -1)
-		perror_close_exit("minishell: fork", *mini, EXIT_FAILURE);
-	if ((*mini).pid == 0)
-	{
-		close((*mini).fd[0]);
-		// if infile (and the good one) ou heredoc
-		get_heredoc(mini, start);
-		if (search_infile(mini, start) == 1)
-		{
-			dup2((*mini).fd_in, STD_IN);
-			close((*mini).fd_in);
-		}
-		else if ((*mini).is_heredoc == 1)
-		{
-			dup2((*mini).docfd[0], STD_IN);
-			close((*mini).docfd[0]);
-		}
-		// if outfile (and the good one)
-		if (search_outfile(mini, start) == 1)
-		{
-			// open_outfile(argv[k + 1], pipex);
-			dup2((*mini).fd_out, STD_OUT);
-			close((*mini).fd_out);
-			close((*mini).fd[1]);
+			tmp1 = (*mini).token[j];
+			j++;
+			while ((*mini).type[j])
+			{
+				if ((*mini).type[j] == ARG)
+				{
+					tmp2 = ft_strjoin(tmp1, " ");
+					free(tmp1);
+					tmp1 = ft_strjoin(tmp2, (*mini).token[j]);
+					free(tmp2);
+				}
+				j++;
+			}
 		}
 		else
-		{
-			dup2((*mini).fd[1], STD_OUT);
-			close((*mini).fd[1]);
-		}
-		exec_arg(*mini, envp, k);
+			j++;
 	}
-	close((*mini).fd[1]);
-	dup2((*mini).fd[0], STD_IN);
-	close((*mini).fd[0]);
+	(*mini).cmd_arg = ft_split(tmp1, ' ');
+	free(tmp1);
 }
 
-// perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
+// int execve(const char *pathname, char *const argv[], char *const envp[]);
+void	exec_cmd(t_mini mini, char **envp)
+{
+	char	*path_cmd;
+
+	get_paths(&mini, envp);
+	path_cmd = check_path(mini.paths, mini.cmd_arg);
+	if (!path_cmd)
+	{
+		putstr_error(mini.cmd_arg[0], ERR_CMD);
+		free_close_exit(&mini, EXIT_NOCMD, 1);
+	}
+	if (execve(path_cmd, mini.cmd_arg, envp) == -1)
+	{
+		perror("minishell: execve");
+		free(path_cmd);
+		free_close_exit(&mini, EXIT_FAILURE, 1);
+	}
+}
+
+void	exec_abs(t_mini mini, char **envp)
+{
+	if (access(mini.cmd_arg[0], X_OK) != 0)
+	{
+		if (access(mini.cmd_arg[0], F_OK) != 0)
+		{
+			putstr_error(mini.cmd_arg[0], ERR_DIR);
+			free_close_exit(&mini, EXIT_NODIR, 0);
+		}
+		putstr_error(mini.cmd_arg[0], ERR_ACX);
+		free_close_exit(&mini, EXIT_DENIED, 0);
+	}
+	if (execve(mini.cmd_arg[0], mini.cmd_arg, envp) == -1)
+	{
+		perror("pipex: execve");
+		free_close_exit(&mini, EXIT_FAILURE, 0);
+	}
+}
