@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 18:59:03 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:36:52 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_mini
 	char *fprompt; // to be free'd
 	char **token;  // to be free'd
 	t_type *type;  // to be free'd
+	int		type_len;
 	int		exitcode;
 	//
 	char **cmd_arg; // to be free'd
@@ -76,6 +77,8 @@ typedef struct s_mini
 	int		heredoc_idx;
 	char	*lim;
 	int		docfd[2];
+	int		is_pipe;
+	int		is_last_pid;
 }			t_mini;
 
 // check_quote.c
@@ -117,11 +120,11 @@ int			is_in_quotes(char *prompt, int i);
 void		tokenizer(t_mini *mini);
 
 // type.c
-t_type		*create_type(char **token);
+t_type		*create_type(t_mini *mini);
 t_type		get_type(char **token, int i);
 t_type		get_type2(char **token, int i);
 void		check_type(t_type *type, char **token);
-size_t		ft_tabstr_len(char **tab);
+int			ft_tabstr_len(char **tab);
 
 // to_exec.c
 int			nbr_cmd(t_mini mini);
@@ -166,9 +169,9 @@ void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
 
-// syntax checks 
-char        get_next_char(char *prompt, int i);
-int         check_pipes(char *prompt);
-int         syntax_checker(char *prompt);
+// syntax checks
+char		get_next_char(char *prompt, int i);
+int			check_pipes(char *prompt);
+int			syntax_checker(char *prompt);
 
 #endif

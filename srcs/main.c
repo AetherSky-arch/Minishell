@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 19:14:42 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:45:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,36 @@ void	wait_exitcode(t_mini *mini)
 void	read_prompt(t_mini *mini)
 {
 	char	*prompt;
-	
+
 	prompt = readline("~$ ");
+	// prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
+		//if (ft_strcmp(prompt, "exit\n") == 0)
 		add_history(prompt);
-		if (ft_strcmp(prompt, "exit") == 0)
+		if (ft_strcmp(prompt, "exit") == 0)		
 			quit(prompt);
 		mini->exitcode = check_quotes(prompt);
-		// if (syntax_checker(prompt) == 0)
-        // {
-        //     ft_putstr_fd("syntax error\n", 2);
-        //     return ;
-        // }
+		if (mini->exitcode != 0)
+			return (free(prompt));
+		if (syntax_checker(prompt) == 0)
+		{
+			ft_putstr_fd(ERR_STX, STD_ERR);
+			mini->exitcode = EXIT_STX;
+			return (free(prompt));
+		}
 		if (mini->exitcode == 0)
 		{
 			mini->fprompt = format_prompt(prompt);
 			free(prompt);
 			mini->token = ft_split(mini->fprompt, ' ');
 			// tokenizer(mini);
-			mini->type = create_type(mini->token);
+			mini->type = create_type(mini);
 			check_type(mini->type, mini->token);
-			// syntax_error of type succesion
-			// temp: for checking
-			printf("f_prompt =%s\n", mini->fprompt);
+			/*** syntax_error of type succesion ? ***/
+			/***  temp: for checking  ***/
+			printf("f_prompt:%s\n", mini->fprompt);
 			temp_display_tabs(mini->token, mini->type);			
-			// // free here for now
-			// double_free((void **)mini->token);
-			// free(mini->fprompt);
-			// free(mini->type);
-
 		}
 	}
 	else
@@ -73,35 +73,34 @@ void	read_prompt(t_mini *mini)
 	}
 }
 
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
 
 	(void)argc;
-	(void)argv;	
-	(void)envp;	
+	(void)argv;
+	(void)envp;
 	mini = (t_mini){0};
 	if (isatty(STD_IN))
 	{
 		while (1)
 		{
-			read_prompt(&mini);
+			read_prompt(&mini);			
 			// block_to_child(&mini, envp);
-			// // wait_exitcode(&mini);
-			// waitpid(-1, &(mini.status), 0); 
-			// free here for now
+			// wait_exitcode(&mini); // waitpid(-1, &(mini.status), 0);
+			//
+			/*** free here for now ***/
 			double_free((void **)mini.token);
 			free(mini.fprompt);
 			free(mini.type);
+			printf("exitcode:%d\n", mini.exitcode);
 		}
 	}
 	else
 	{
 		if (errno != ENOTTY)
 		{
-			// to execute a script ?
+			/*** to execute a script ? ***/
 		}
 		else
 			perror("minishell: tty");

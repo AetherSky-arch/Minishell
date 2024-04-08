@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 00:10:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:37:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	nbr_cmd(t_mini mini)
 		return (0);
 	i = 0;
 	nbr = 0;
-	while (mini.type[i])
+	while (i < mini.type_len)
 	{
 		if (mini.type[i] == CMD)
 			nbr++;
@@ -33,7 +33,7 @@ int	nbr_cmd(t_mini mini)
 /*******************************************************************/
 /***************** should be at least one CMD by defaults, yes ??? */
 /*******************************************************************/
-// j = index of the next pipe (so len-1 if no pipe)
+// j = index of the ne// printf("%d\n", nbr);xt pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
 // the pipe is just not used and closed
 void	block_to_child(t_mini *mini, char **envp)
@@ -41,24 +41,31 @@ void	block_to_child(t_mini *mini, char **envp)
 	int	i;
 	int	start;
 	int	j;
+	int	nbr;
 
 	i = 0;
 	start = 0;
 	j = 0;
-	while (i < nbr_cmd(*mini))
+	nbr = nbr_cmd(*mini);
+	// (*mini).is_pipe = 0;
+	(*mini).is_last_pid = 0;
+	while (i < nbr)
 	{
-		while ((*mini).type[j] && (*mini).type[j] != PIPE)
-		{
-			// if ((*mini).type[j] == CMD)
-			// 	(*mini).cmd = (*mini).token[j];
+		while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
 			j++;
+		if (j == (*mini).type_len)
+		{
+			(*mini).is_last_pid = 1;
+			(*mini).is_pipe = 0;
 		}
+		else if ((*mini).type[j] == PIPE)
+			(*mini).is_pipe = 1;
 		if (pipe((*mini).fd) == -1)
 			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
 		else
 			child(mini, envp, start);
 		i++;
-		if ((*mini).type[j])
+		if (j < (*mini).type_len)
 			j++;
 		start = j;
 	}
@@ -70,7 +77,7 @@ void	get_heredoc(t_mini *mini, int start)
 	int	i;
 
 	i = start;
-	while ((*mini).type[i] && (*mini).type[i] != PIPE)
+	while ((i < (*mini).type_len) && (*mini).type[i] != PIPE)
 	{
 		if ((*mini).type[i] == HEREDOC)
 		{
@@ -93,7 +100,7 @@ int	search_infile(t_mini *mini, int start)
 
 	i = start;
 	is_infile = 0;
-	while ((*mini).type[i] && (*mini).type[i] != PIPE)
+	while ((i < (*mini).type_len) && (*mini).type[i] != PIPE)
 	{
 		if ((*mini).type[i] == INFILE)
 		{
@@ -122,7 +129,7 @@ int	search_outfile(t_mini *mini, int start)
 
 	i = start;
 	is_outfile = 0;
-	while ((*mini).type[i] && (*mini).type[i] != PIPE)
+	while ((i < (*mini).type_len) && (*mini).type[i] != PIPE)
 	{
 		if ((*mini).type[i] == OUTFILE)
 		{
@@ -145,10 +152,14 @@ int	search_outfile(t_mini *mini, int start)
 
 void	child(t_mini *mini, char **envp, int start)
 {
-	(*mini).pid = fork();
-	if ((*mini).pid == -1)
+	pid_t	pid;
+
+	pid = fork();
+	if ((*mini).is_last_pid == 1)
+		(*mini).pid = pid;
+	if (pid == -1)
 		perror_close_exit("minishell: fork", *mini, EXIT_FAILURE);
-	if ((*mini).pid == 0)
+	if (pid == 0)
 	{
 		close((*mini).fd[0]);
 		// if infile (and the good one) ou heredoc
@@ -170,7 +181,7 @@ void	child(t_mini *mini, char **envp, int start)
 			close((*mini).fd_out);
 			close((*mini).fd[1]);
 		}
-		else
+		else if ((*mini).is_pipe == 1)
 		{
 			dup2((*mini).fd[1], STD_OUT);
 			close((*mini).fd[1]);
@@ -178,8 +189,11 @@ void	child(t_mini *mini, char **envp, int start)
 		exec_arg(*mini, envp, start);
 	}
 	close((*mini).fd[1]);
-	dup2((*mini).fd[0], STD_IN);
-	close((*mini).fd[0]);
+	if ((*mini).is_pipe == 1)
+	{
+		dup2((*mini).fd[0], STD_IN);
+		close((*mini).fd[0]);
+	}
 }
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);

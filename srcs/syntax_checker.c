@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/04/08 19:04:57 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/08 23:46:46 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int  check_less_more(char *prompt)
 int syntax_checker(char *prompt)
 {
     if (check_for_unclosed_quotes(prompt) == 0)
-        return (0);
+    //     return (0);
     if (check_less_more(prompt) == 0)
         return (0);
     if (check_pipes(prompt) == 0)

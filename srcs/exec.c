@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 00:13:47 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:34:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ void	get_cmd_arg(t_mini *mini, int start)
 	char	*tmp2;
 
 	j = start;
-	while ((*mini).type[j] && (*mini).type[j] != PIPE)
+	while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
 	{
 		if ((*mini).type[j] == CMD)
 		{
 			tmp1 = (*mini).token[j];
 			j++;
-			while ((*mini).type[j])
+			while (j < (*mini).type_len)
 			{
 				if ((*mini).type[j] == ARG)
 				{

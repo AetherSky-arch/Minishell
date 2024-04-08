@@ -6,30 +6,31 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/06 00:37:35 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:36:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /****************malloc to be free'd***********/
-t_type	*create_type(char **token)
+t_type *create_type(t_mini *mini)
 {
 	t_type	*type;
 	int		i;
 
-	if (!token)
-		return (NULL);
-	type = malloc(sizeof(t_type) * ft_tabstr_len(token));
+	if (!(*mini).token)
+		return (NULL);	
+	(*mini).type_len = ft_tabstr_len((*mini).token);
+	type = malloc(sizeof(t_type) * (*mini).type_len);
 	if (!type)
 		return (NULL);
 	i = 0;
-	while (token[i])
+	while ((*mini).token[i])
 	{
-		type[i] = get_type(token, i);
+		type[i] = get_type((*mini).token, i);
 		i++;
 	}
-	return (type);
+	return(type);
 }
 
 t_type	get_type(char **token, int i)
@@ -75,7 +76,7 @@ t_type	get_type2(char **token, int i)
 
 void	check_type(t_type *type, char **token)
 {
-	size_t	i;
+	int	i;
 
 	if (!type)
 		return ;
@@ -92,9 +93,9 @@ void	check_type(t_type *type, char **token)
 	}
 }
 
-size_t	ft_tabstr_len(char **tab)
+int	ft_tabstr_len(char **tab)
 {
-	size_t	i;
+	int	i;
 
 	if (!tab)
 		return (0);
