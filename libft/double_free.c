@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 17:31:18 by aether            #+#    #+#             */
-/*   Updated: 2024/02/09 17:32:27 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/08 19:09:19 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	double_free(void **str)
 	i = 0;
 	while (str[i] != NULL)
 	{
-		free(str[i]);
+        if (str[i] != NULL)
+		    free(str[i]);
 		i++;
 	}
 	free(str);

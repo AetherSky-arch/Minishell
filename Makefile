@@ -17,7 +17,9 @@ SRCS := srcs/main.c \
 		srcs/heredoc.c \
 		srcs/free_close_exit.c \
 		srcs/ft_split.c \
-		srcs/temp.c
+		srcs/temp.c \
+		srcs/syntax_checker.c \
+		srcs/syntax_checker_utils.c
 
 OBJS = ${SRCS:.c=.o}
 

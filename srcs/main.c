@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 01:11:06 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:14:42 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ void	read_prompt(t_mini *mini)
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
 		mini->exitcode = check_quotes(prompt);
-		// simple syntax_error?
+		// if (syntax_checker(prompt) == 0)
+        // {
+        //     ft_putstr_fd("syntax error\n", 2);
+        //     return ;
+        // }
 		if (mini->exitcode == 0)
 		{
 			mini->fprompt = format_prompt(prompt);
