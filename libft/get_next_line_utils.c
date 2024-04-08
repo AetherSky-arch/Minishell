@@ -3,75 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arguez <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/29 17:20:14 by arguez            #+#    #+#             */
-/*   Updated: 2024/02/08 16:21:15 by arguez           ###   ########.fr       */
+/*   Created: 2024/03/22 23:18:25 by caguillo          #+#    #+#             */
+/*   Updated: 2024/04/08 20:51:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_list	*ft_lst_get_last(t_list *stash)
+// "" + s2 = s2 ok, mais NULL + s2 = ? donc NULL
+char	*gnl_strjoin(char *s1, char *s2)
 {
-	t_list	*current;
-
-	current = stash;
-	while ((current) && (current->next))
-		current = current->next;
-	return (current);
-}
-
-int	found_newline(t_list *stash)
-{
-	t_list	*current;
+	char	*join;
 	int		i;
+	int		j;
 
-	if (!stash)
-		return (0);
+	if (!s1 || !s2)
+		return (free(s1), NULL);
+	join = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!join)
+		return (free(s1), NULL);
 	i = 0;
-	current = ft_lst_get_last(stash);
-	while (current->buf[i])
+	while (s1[i])
 	{
-		if (current->buf[i] == '\n')
-			return (1);
+		join[i] = s1[i];
 		i++;
 	}
-	return (0);
+	j = 0;
+	while (s2[j])
+	{
+		join[i + j] = s2[j];
+		j++;
+	}
+	join[i + j] = '\0';
+	return (free(s1), join);
 }
 
-void	linegen(char **line, t_list *stash)
+size_t	ft_strlen(char *str)
 {
-	int	i;
-	int	len;
+	size_t	i;
 
-	len = 0;
-	while (stash)
-	{
-		i = 0;
-		while (stash->buf[i])
-		{
-			len++;
-			if (stash->buf[i] == '\n')
-				break ;
-			i++;
-		}
-		stash = stash->next;
-	}
-	*line = (char *)malloc(len + 1);
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-void	free_stash(t_list *stash)
+// because a char is 1 byte = 1 octet (= 8 bits)
+// on each octet, we set 0, (not only on each element)
+void	*ft_calloc(size_t nb_elem, size_t size_in_oct)
 {
-	t_list	*current;
-	t_list	*next;
+	void	*str;
+	size_t	i;
 
-	current = stash;
-	while (current)
+	if (size_in_oct != 0 && (nb_elem > (size_t)(-1) / size_in_oct))
+		return (NULL);
+	str = malloc(nb_elem * size_in_oct);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (i < nb_elem * size_in_oct)
 	{
-		free(current->buf);
-		next = current->next;
-		free(current);
-		current = next;
+		((unsigned char *)str)[i] = 0;
+		i++;
 	}
+	return (str);
+}
+
+// size_t = portable (32/64) unsigned int, so same or bigger
+// start = indice, length = longueur
+// lenght = 0 => ""
+// start = n => NULL
+char	*gnl_substr(char *str, unsigned int start, size_t lenght)
+{
+	char			*sub;
+	unsigned int	i;
+	size_t			size;
+
+	if (!str)
+		return (NULL);
+	if (start >= ft_strlen(str))
+		size = 0;
+	else if (start + lenght - 1 >= ft_strlen(str))
+		size = ft_strlen(str) - start;
+	else
+		size = lenght;
+	sub = malloc(sizeof(char) * (size + 1));
+	if (!sub)
+		return (NULL);
+	i = 0;
+	while (i < size && str[i + start])
+	{
+		sub[i] = str[i + start];
+		i++;
+	}
+	sub[size] = '\0';
+	return (sub);
+}
+
+ssize_t	is_nl(char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return (-1);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (-1);
 }

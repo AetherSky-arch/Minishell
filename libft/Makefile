@@ -4,7 +4,6 @@ SRCS := ft_isalpha.c \
        ft_isalnum.c \
        ft_isascii.c \
        ft_isprint.c \
-       ft_strlen.c \
        ft_memset.c \
        ft_bzero.c \
        ft_memcpy.c \
@@ -31,18 +30,17 @@ SRCS := ft_isalpha.c \
        ft_putstr_fd.c \
        ft_putendl_fd.c \
        ft_putnbr_fd.c \
-       ft_calloc.c \
        ft_strdup.c \
-	   ft_printf.c \
-	   ft_printf_utils.c \
-	   hexa_converter.c \
-	   pointers_converter.c \
-	   get_next_line.c \
-	   get_next_line_utils.c \
-	   double_free.c \
-	   ft_swap.c \
-	   double_print.c \
-	   ft_strcmp.c
+	ft_printf.c \
+	ft_printf_utils.c \
+	hexa_converter.c \
+	pointers_converter.c \
+	get_next_line.c \
+	get_next_line_utils.c \
+	double_free.c \
+	ft_swap.c \
+	double_print.c \
+	ft_strcmp.c
 
 BONUS := ft_lstnew.c \
 	 ft_lstadd_front.c \

@@ -1,90 +1,145 @@
 /* ************************************************************************** */
-/*									      */
-/*							  :::	   ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
-/*						      +:+ +:+	      +:+     */
-/*   By: arguez <marvin@42.fr>			    +#+  +:+	   +#+	      */
-/*						  +#+#+#+#+#+	+#+	      */
-/*   Created: 2023/11/08 12:04:50 by arguez	       #+#    #+#	      */
-/*   Updated: 2024/03/07 17:31:59 by arguez           ###   ########.fr       */
-/*									      */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/11 23:27:44 by caguillo          #+#    #+#             */
+/*   Updated: 2024/03/29 23:45:42 by caguillo         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-static int	count_words(char const *str, char c)
-{
-	int	counter;
-	int	i;
-
-	counter = 0;
-	i = 0;
-	if (str[i] == '\0')
-		return (counter);
-	if (str[i] != c)
-		counter++;
-	i++;
-	while (str[i] != '\0')
-	{
-		if ((str[i] != c) && (str[i - 1] == c))
-			counter++;
-		i++;
-	}
-	return (counter);
-}
-
-static int	goto_nextword(const char *str, int j, char c)
-{
-	while (str[j] == c)
-		j++;
-	return (j);
-}
-
-static char	*getword(char const *str, int *j, char c)
-{
-	int		i;
-	int		k;
-	char	*word;
-
-	i = *j - 1;
-	while ((str[*j] != c) && (str[*j] != '\0'))
-		*j = *j + 1;
-	*j = *j - 1;
-	word = (char *) malloc ((*j - i + 1) * sizeof(char));
-	if (!word)
-		return (NULL);
-	k = 0;
-	while (i++ != *j)
-	{
-		word[k] = str[i];
-		k++;
-	}
-	word[k] = '\0';
-	*j = *j + 1;
-	return (word);
-}
+static size_t	count_words(char const *s, char c);
+static size_t	len_word(char const *s, char c, size_t k);
+static size_t	next_k(char const *s, char c, size_t k);
+static char		**fill_split(char **split, const char *s, char c);
+char			**ft_split(char const *s, char c);
 
 char	**ft_split(char const *s, char c)
 {
-	int		numof_words;
-	int		i;
-	int		j;
-	char	**strs;
+	char	**split;
+	size_t	n;
 
 	if (!s)
 		return (NULL);
-	numof_words = count_words(s, c);
-	strs = (char **) malloc ((numof_words + 1) * sizeof(char *));
-	if (!strs)
+	n = count_words(s, c);
+	split = malloc(sizeof(char *) * (n + 1));
+	if (!split)
 		return (NULL);
+	split = fill_split(split, s, c);
+	if (!split)
+		return (NULL);
+	split[n] = NULL;
+	return (split);
+}
+
+static char	**fill_split(char **split, const char *s, char c)
+{
+	size_t	i;
+	size_t	j;
+	size_t	k;
+
+	k = 0;
 	i = 0;
-	j = 0;
-	while (i < numof_words)
+	while (i < count_words(s, c))
 	{
-		j = goto_nextword(s, j, c);
-		strs[i] = getword(s, &j, c);
+		j = 0;
+		k = next_k(s, c, k);
+		split[i] = malloc(sizeof(char) * (len_word(s, c, k) + 1));
+		if (!split[i])
+		{
+			while (j < i)
+				free(split[j++]);
+			free(split);
+			return (NULL);
+		}
+		while (s[k] && (s[k] != c))
+			split[i][j++] = s[k++];
+		split[i][j] = '\0';
+		k++;
 		i++;
 	}
-	strs[i] = NULL;
-	return (strs);
+	return (split);
 }
+
+static size_t	next_k(char const *s, char c, size_t k)
+{
+	while (s[k] && (s[k] == c))
+		k++;
+	return (k);
+}
+
+static size_t	len_word(char const *s, char c, size_t k)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[k] && (s[k] == c))
+		k++;
+	while (s[k] && (s[k] != c))
+	{
+		len++;
+		k++;
+	}
+	return (len);
+}
+
+static size_t	count_words(char const *s, char c)
+{
+	size_t	count;
+	size_t	i;
+	size_t	new;
+
+	count = 0;
+	i = 0;
+	new = 1;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			if (new == 1)
+			{
+				count++;
+				new = 0;
+			}
+		}
+		else
+			new = 1;
+		i++;
+	}
+	return (count);
+}
+
+/*static char	*free_split(char **split, size_t i)
+{
+	size_t	j;
+	size_t	k;
+	char	**tab;
+
+	j = 0;
+	while (j < i)
+		free(split[j]);
+	free(split);
+	return (NULL);
+}*/
+/*
+int	main(int argc, char **argv)
+{
+	tab = NULL;
+	if (argc == 3)
+	{
+		tab = ft_split(argv[1], argv[2][0]);
+		k = 0;
+		while (k < count_words(argv[1], argv[2][0]))
+		{
+			printf("%s\n", tab[k]);
+			free(tab[k]);
+			k++;
+		}
+	}
+	free(tab);
+}
+*/
