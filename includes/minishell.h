@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 01:36:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:01:30 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 
 // tokenizer
 int			blocks_counter(char *fprompt);
-void		token_init(char **token, char *fprompt);
+char		**token_init(char **token, char *fprompt);
 int			is_sep(char c);
 int			is_in_quotes(char *prompt, int i);
 void		tokenizer(t_mini *mini);

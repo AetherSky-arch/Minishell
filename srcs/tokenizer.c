@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:26:27 by aether            #+#    #+#             */
-/*   Updated: 2024/04/04 17:50:54 by arguez           ###   ########.fr       */
+/*   Updated: 2024/04/09 17:01:08 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void  tokenizer(t_mini *mini)
 
     j = 0;
     i = 0;
-    token_init(mini->token, mini->fprompt);
+    mini->token = token_init(mini->token, mini->fprompt);
 	if (mini->token == NULL)
 		return ;
 	mini->token[0] = NULL;

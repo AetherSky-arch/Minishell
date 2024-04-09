@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 16:44:16 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/09 16:52:30 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	read_prompt(t_mini *mini)
 		{
 			mini->fprompt = format_prompt(prompt);
 			free(prompt);
-			mini->token = ft_split(mini->fprompt, ' ');
-			// tokenizer(mini);
+			// mini->token = ft_split(mini->fprompt, ' ');
+			tokenizer(mini);
 			mini->type = create_type(mini);
 			check_type(mini->type, mini->token);
 			/*** syntax_error of type succesion ? ***/
