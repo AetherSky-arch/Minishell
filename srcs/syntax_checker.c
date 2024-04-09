@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/04/08 23:46:46 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:32:49 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int  check_less_more(char *prompt)
 int syntax_checker(char *prompt)
 {
     if (check_for_unclosed_quotes(prompt) == 0)
-    //     return (0);
+        return (0);
     if (check_less_more(prompt) == 0)
         return (0);
     if (check_pipes(prompt) == 0)

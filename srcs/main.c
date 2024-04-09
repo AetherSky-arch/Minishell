@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 01:45:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:44:16 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,12 @@ int	main(int argc, char **argv, char **envp)
 			// wait_exitcode(&mini); // waitpid(-1, &(mini.status), 0);
 			//
 			/*** free here for now ***/
-			double_free((void **)mini.token);
-			free(mini.fprompt);
-			free(mini.type);
+            if (mini.exitcode != EXIT_STX)
+            {
+			    double_free((void **)mini.token);
+			    free(mini.fprompt);
+			    free(mini.type);
+            }
 			printf("exitcode:%d\n", mini.exitcode);
 		}
 	}
