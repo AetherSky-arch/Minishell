@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 16:52:30 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/10 02:02:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	read_prompt(t_mini *mini)
 		{
 			mini->fprompt = format_prompt(prompt);
 			free(prompt);
-			// mini->token = ft_split(mini->fprompt, ' ');
-			tokenizer(mini);
+			mini->token = ft_split(mini->fprompt, ' ');
+			//tokenizer(mini);
 			mini->type = create_type(mini);
 			check_type(mini->type, mini->token);
 			/*** syntax_error of type succesion ? ***/
@@ -70,6 +70,9 @@ void	read_prompt(t_mini *mini)
 	{
 		ft_putstr_fd(ERR_RDL, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
+		free(prompt);
+		rl_clear_history();
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -87,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			read_prompt(&mini);			
 			// block_to_child(&mini, envp);
-			// wait_exitcode(&mini); // waitpid(-1, &(mini.status), 0);
+			// wait_exitcode(&mini);
 			//
 			/*** free here for now ***/
             if (mini.exitcode != EXIT_STX)

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 01:37:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/10 02:02:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	nbr_cmd(t_mini mini)
 }
 
 /*******************************************************************/
-/***************** should be at least one CMD by defaults, yes ??? */
+/***************** should be at least one CMD by defaults **********/
 /*******************************************************************/
 // j = index of the ne// printf("%d\n", nbr);xt pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
@@ -42,13 +42,15 @@ void	block_to_child(t_mini *mini, char **envp)
 	int	start;
 	int	j;
 	int	nbr;
+	int	save;
 
 	i = 0;
 	start = 0;
 	j = 0;
 	nbr = nbr_cmd(*mini);
-	// (*mini).is_pipe = 0;
+	(*mini).is_pipe = 0;
 	(*mini).is_last_pid = 0;
+	save = dup(STD_IN);
 	while (i < nbr)
 	{
 		while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
@@ -69,6 +71,7 @@ void	block_to_child(t_mini *mini, char **envp)
 			j++;
 		start = j;
 	}
+	dup2(save, STD_IN);
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
@@ -175,6 +178,8 @@ void	child(t_mini *mini, char **envp, int start)
 			close((*mini).docfd[0]);
 		}
 		// if outfile (and the good one)
+		// printf("%s\n", (*mini).token[start]);
+		// printf("pipe c=%d\n", (*mini).is_pipe);
 		if (search_outfile(mini, start) == 1)
 		{
 			dup2((*mini).fd_out, STD_OUT);
@@ -186,54 +191,20 @@ void	child(t_mini *mini, char **envp, int start)
 			dup2((*mini).fd[1], STD_OUT);
 			close((*mini).fd[1]);
 		}
+		else if ((*mini).is_pipe == 0)
+			close((*mini).fd[1]);
 		exec_arg(*mini, envp, start);
 	}
 	close((*mini).fd[1]);
+	// printf("%s\n", (*mini).token[start]);
+	// printf("pipe p=%d\n", (*mini).is_pipe);
 	if ((*mini).is_pipe == 1)
 	{
 		dup2((*mini).fd[0], STD_IN);
 		close((*mini).fd[0]);
 	}
+	else
+		close((*mini).fd[0]);
 }
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
-
-// void	get_cmd_files(t_mini *mini, int *j)
-// {
-// 	(*mini).is_infile = 0;
-// 	(*mini).is_heredoc = 0;
-// 	(*mini).is_hd_infile = 0;
-// 	(*mini).is_outfile = 0;
-// 	(*mini).is_outfapp = 0;
-// 	while ((*mini).type[j] && (*mini).type[j] != PIPE)
-// 	{
-// 		if ((*mini).type[j] == CMD)
-// 			(*mini).cmd = (*mini).token[j];
-// 		if ((*mini).type[j] == INFILE)
-// 		{
-// 			(*mini).is_infile = 1;
-// 			(*mini).is_hd_infile = 0;
-// 			(*mini).in_file = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == HEREDOC)
-// 		{
-// 			(*mini).is_hd_infile = 1;
-// 			(*mini).is_infile = 0;
-// 			(*mini).is_heredoc = 1;
-// 			(*mini).lim = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == OUTFILE)
-// 		{
-// 			(*mini).is_outfile = 1;
-// 			(*mini).is_outfapp = 0;
-// 			(*mini).out_file = (*mini).token[j];
-// 		}
-// 		if ((*mini).type[j] == OUTFAPP)
-// 		{
-// 			(*mini).is_outfapp = 1;
-// 			(*mini).is_outfile = 0;
-// 			(*mini).out_fapp = (*mini).token[j];
-// 		}
-// 		j++;
-// 	}
-// }
