@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/10 19:56:38 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/11 03:43:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <linux/limits.h>
 
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
-# define ERR_RDL "minishell: can't read input\n"
-# define ERR_STX "minishell: syntax error\n"
-# define ERR_SQX "minishell: syntax error (quote opened)\n"
-# define ERR_DQX "minishell: syntax error (dquote opened)\n"
+# define ERR_RDL "minishell: Can't read input\n"
+# define ERR_STX "minishell: Syntax error\n"
+# define ERR_SQX "minishell: Syntax error (quote opened)\n"
+# define ERR_DQX "minishell: Syntax error (dquote opened)\n"
 # define ERR_GNL "minishell: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
 # define ERR_CMD ": Command not found\n"
@@ -80,6 +80,7 @@ typedef struct s_mini
 	int		docfd[2];
 	int		is_pipe;
 	int		is_last_pid;
+	int		dup_in;
 }			t_mini;
 
 // check_quote.c

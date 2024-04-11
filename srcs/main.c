@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/10 02:02:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/11 04:26:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	read_prompt(t_mini *mini)
 	// prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
-		//if (ft_strcmp(prompt, "exit\n") == 0)
+		// if (ft_strcmp(prompt, "exit\n") == 0)
 		add_history(prompt);
-		if (ft_strcmp(prompt, "exit") == 0)		
+		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
@@ -57,13 +57,13 @@ void	read_prompt(t_mini *mini)
 			mini->fprompt = format_prompt(prompt);
 			free(prompt);
 			mini->token = ft_split(mini->fprompt, ' ');
-			//tokenizer(mini);
+			// tokenizer(mini);
 			mini->type = create_type(mini);
 			check_type(mini->type, mini->token);
 			/*** syntax_error of type succesion ? ***/
 			/***  temp: for checking  ***/
 			printf("f_prompt:%s\n", mini->fprompt);
-			temp_display_tabs(mini->token, mini->type);			
+			temp_display_tabs(mini->token, mini->type);
 		}
 	}
 	else
@@ -88,17 +88,17 @@ int	main(int argc, char **argv, char **envp)
 	{
 		while (1)
 		{
-			read_prompt(&mini);			
-			// block_to_child(&mini, envp);
-			// wait_exitcode(&mini);
+			read_prompt(&mini);
+			block_to_child(&mini, envp);
+			wait_exitcode(&mini);
 			//
 			/*** free here for now ***/
-            if (mini.exitcode != EXIT_STX)
-            {
-			    double_free((void **)mini.token);
-			    free(mini.fprompt);
-			    free(mini.type);
-            }
+			if (mini.exitcode != EXIT_STX)
+			{
+				double_free((void **)mini.token);
+				free(mini.fprompt);
+				free(mini.type);
+			}
 			printf("exitcode:%d\n", mini.exitcode);
 		}
 	}

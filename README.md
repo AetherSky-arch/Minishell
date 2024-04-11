@@ -33,3 +33,7 @@ je prends un "truc" (hors symbol)
 
 How to execve:
 ~$ >> out cat < Makefile << eof > out2 | << eof ls -la >> out3 | >> out4 > out3 grep mini < out2
+
+Issues:
+1) << eof echo toto | << eof2 cat
+2) cat < Makefile | echo toto | wc >> out

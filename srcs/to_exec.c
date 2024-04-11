@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/10 18:47:11 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/11 04:05:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	nbr_cmd(t_mini mini)
 }
 
 /*******************************************************************/
-/***************** should be at least one CMD by defaults **********/
+/***************** should be at least one CMD by default ***********/
 /*******************************************************************/
-// j = index of the ne// printf("%d\n", nbr);xt pipe (so len-1 if no pipe)
+// j = index of the next pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
 // the pipe is just not used and closed
 void	block_to_child(t_mini *mini, char **envp)
@@ -42,7 +42,6 @@ void	block_to_child(t_mini *mini, char **envp)
 	int	start;
 	int	j;
 	int	nbr;
-	int	save;
 
 	i = 0;
 	start = 0;
@@ -50,7 +49,7 @@ void	block_to_child(t_mini *mini, char **envp)
 	nbr = nbr_cmd(*mini);
 	mini->is_pipe = 0;
 	mini->is_last_pid = 0;
-	save = dup(STD_IN);
+	mini->dup_in = dup(STD_IN);
 	while (i < nbr)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
@@ -71,7 +70,8 @@ void	block_to_child(t_mini *mini, char **envp)
 			j++;
 		start = j;
 	}
-	dup2(save, STD_IN);
+	dup2(mini->dup_in, STD_IN);
+	close(mini->dup_in);
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
@@ -136,14 +136,14 @@ int	search_outfile(t_mini *mini, int start)
 	{
 		if (mini->type[i] == OUTFILE)
 		{
-			mini->fd_out = open(mini->token[i],
-					O_WRONLY | O_TRUNC | O_CREAT, 0666);
+			mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT,
+					0666);
 			is_outfile = 1;
 		}
 		if (mini->type[i] == OUTFAPP)
 		{
-			mini->fd_out = open(mini->token[i],
-					O_WRONLY | O_APPEND | O_CREAT, 0666);
+			mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
+					0666);
 			is_outfile = 1;
 		}
 		if (mini->fd_out < 0)
@@ -157,6 +157,7 @@ void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
 
+	// int		dup_in;
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->pid = pid;
@@ -165,6 +166,7 @@ void	child(t_mini *mini, char **envp, int start)
 	if (pid == 0)
 	{
 		close(mini->fd[0]);
+		close(mini->dup_in);
 		// if infile (and the good one) ou heredoc
 		get_heredoc(mini, start);
 		if (search_infile(mini, start) == 1)
@@ -178,33 +180,20 @@ void	child(t_mini *mini, char **envp, int start)
 			close(mini->docfd[0]);
 		}
 		// if outfile (and the good one)
-		// printf("%s\n", mini->token[start]);
-		// printf("pipe c=%d\n", mini->is_pipe);
 		if (search_outfile(mini, start) == 1)
 		{
 			dup2(mini->fd_out, STD_OUT);
 			close(mini->fd_out);
-			close(mini->fd[1]);
 		}
 		else if (mini->is_pipe == 1)
-		{
 			dup2(mini->fd[1], STD_OUT);
-			close(mini->fd[1]);
-		}
-		else if (mini->is_pipe == 0)
-			close(mini->fd[1]);
+		close(mini->fd[1]);
 		exec_arg(*mini, envp, start);
 	}
 	close(mini->fd[1]);
-	// printf("%s\n", mini->token[start]);
-	// printf("pipe p=%d\n", mini->is_pipe);
 	if (mini->is_pipe == 1)
-	{
 		dup2(mini->fd[0], STD_IN);
-		close(mini->fd[0]);
-	}
-	else
-		close(mini->fd[0]);
+	close(mini->fd[0]);
 }
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
