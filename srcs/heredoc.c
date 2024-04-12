@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/07 23:25:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/12 04:28:00 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ void	fill_heredoc(t_mini *mini)
 		line = get_next_line(STD_IN);
 		if (!line)
 		{
+			// printf("OUT=%d\n", fcntl(mini->fd[1], F_GETFL));
+			// printf("OUTgnl=%d\n", fcntl(STD_OUT, F_GETFL));
+			// printf("INgnl=%d\n", fcntl(STD_IN, F_GETFL));
 			ft_putstr_fd(ERR_GNL, STD_ERR);
 			close_exit(*mini, EXIT_FAILURE);
 		}

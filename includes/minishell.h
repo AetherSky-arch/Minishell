@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/11 03:43:10 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/12 00:35:43 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
-# define ERR_RDL "minishell: Can't read input\n"
+# define ERR_RDL "minishell: readline: Can't read input\n"
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
-# define ERR_GNL "minishell: Can't read input\n"
+# define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
 # define ERR_CMD ": Command not found\n"
 # define ERR_ACX ": Permission denied\n"
@@ -81,6 +81,7 @@ typedef struct s_mini
 	int		is_pipe;
 	int		is_last_pid;
 	int		dup_in;
+	int		dup_out;
 }			t_mini;
 
 // check_quote.c

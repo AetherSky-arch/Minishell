@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/11 04:05:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/12 04:21:08 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	block_to_child(t_mini *mini, char **envp)
 	mini->is_pipe = 0;
 	mini->is_last_pid = 0;
 	mini->dup_in = dup(STD_IN);
+	//printf("dupin=%d\n", mini->dup_in);
+	// mini->dup_out = dup(STD_OUT);
 	while (i < nbr)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
@@ -72,6 +74,8 @@ void	block_to_child(t_mini *mini, char **envp)
 	}
 	dup2(mini->dup_in, STD_IN);
 	close(mini->dup_in);
+	// dup2(mini->dup_out, STD_OUT);
+	// close(mini->dup_out);
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
@@ -157,7 +161,6 @@ void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
 
-	// int		dup_in;
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->pid = pid;
@@ -166,16 +169,20 @@ void	child(t_mini *mini, char **envp, int start)
 	if (pid == 0)
 	{
 		close(mini->fd[0]);
-		close(mini->dup_in);
+		// close(mini->dup_in);
 		// if infile (and the good one) ou heredoc
 		get_heredoc(mini, start);
 		if (search_infile(mini, start) == 1)
 		{
+			// dup2(mini->dup_in, STD_IN);
+			// close(mini->dup_in);
 			dup2(mini->fd_in, STD_IN);
 			close(mini->fd_in);
 		}
 		else if (mini->is_heredoc == 1)
 		{
+			// dup2(mini->dup_in, STD_IN);
+			// close(mini->dup_in);
 			dup2(mini->docfd[0], STD_IN);
 			close(mini->docfd[0]);
 		}
@@ -188,6 +195,7 @@ void	child(t_mini *mini, char **envp, int start)
 		else if (mini->is_pipe == 1)
 			dup2(mini->fd[1], STD_OUT);
 		close(mini->fd[1]);
+		close(mini->dup_in);
 		exec_arg(*mini, envp, start);
 	}
 	close(mini->fd[1]);
