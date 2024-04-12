@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/12 00:35:43 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:29:22 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -56,125 +58,132 @@ typedef enum e_type
 	PIPE,
 	CMD,
 	ARG
-}			t_type;
+}					t_type;
 
 typedef struct s_mini
 {
-	char *fprompt; // to be free'd
-	char **token;  // to be free'd
-	t_type *type;  // to be free'd
-	int		type_len;
-	int		exitcode;
+    char  *fprompt; // to be free'd
+	char  **token;  // to be free'd
+	t_type  *type;  // to be free'd
+	int				type_len;
+	int				exitcode;
 	//
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
 	//
-	int		fd_in;
-	int		fd_out;
-	int		fd[2];
-	int		status;
-	pid_t	pid;
-	int		is_heredoc;
-	int		heredoc_idx;
-	char	*lim;
-	int		docfd[2];
-	int		is_pipe;
-	int		is_last_pid;
-	int		dup_in;
-	int		dup_out;
-}			t_mini;
+	int				fd_in;
+	int				fd_out;
+	int				fd[2];
+	int				status;
+	pid_t			pid;
+	int				is_heredoc;
+	int				heredoc_idx;
+	char			*lim;
+	int				docfd[2];
+	int				is_pipe;
+	int				is_last_pid;
+	int				dup_in;
+	int				dup_out;
+}					t_mini;
 
 // check_quote.c
-int			check_quotes(char *str);
-int			check_quotes_output(int s_open, int d_open);
+int					check_quotes(char *str);
+int					check_quotes_output(int s_open, int d_open);
 // format_prompt.c
-char		*format_prompt(char *prompt);
-int			len_prompt_minus_space(char *prompt);
-char		*get_prompt_minus_space(char *prompt);
-int			len_prompt_plus_space(char *prompt);
-char		*get_prompt_plus_space(char *prompt);
+char				*format_prompt(char *prompt);
+int					len_prompt_minus_space(char *prompt);
+char				*get_prompt_minus_space(char *prompt);
+int					len_prompt_plus_space(char *prompt);
+char				*get_prompt_plus_space(char *prompt);
 // format_prompt_utils.c
-int			is_space(char c);
-int			is_symbol(char c);
-int			is_quote(char c);
-int			check_after_symbol(char *prompt, int i);
-int			check_before_symbol(char *prompt, int i);
+int					is_space(char c);
+int					is_symbol(char c);
+int					is_quote(char c);
+int					check_after_symbol(char *prompt, int i);
+int					check_before_symbol(char *prompt, int i);
 // format_prompt_utils2.c
-void		quote_in_len_minus(char *prompt, int *i, int *len, int q);
-void		space_in_len_minus(char *prompt, int *i);
-void		squote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
-void		dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
-void		space_in_get_minus(char *prompt, int *j);
+void				quote_in_len_minus(char *prompt, int *i, int *len, int q);
+void				space_in_len_minus(char *prompt, int *i);
+void				squote_in_get_minus(char *tmp_prompt, char *prompt, int *i,
+						int *j);
+void				dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i,
+						int *j);
+void				space_in_get_minus(char *prompt, int *j);
 // format_prompt_utils3.c
-void		other_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
-void		quote_in_len_plus(char *prompt, int *i, int *len, int q);
-void		symbol_in_len_plus(char *prompt, int *i, int *len);
-void		squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
-void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void				other_in_get_minus(char *tmp_prompt, char *prompt, int *i,
+						int *j);
+void				quote_in_len_plus(char *prompt, int *i, int *len, int q);
+void				symbol_in_len_plus(char *prompt, int *i, int *len);
+void				squote_in_get_plus(char *f_prompt, char *prompt, int *i,
+						int *j);
+void				dquote_in_get_plus(char *f_prompt, char *prompt, int *i,
+						int *j);
 // format_prompt_utils4.c
-void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
-void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void				symbol_in_get_plus(char *f_prompt, char *prompt, int *i,
+						int *j);
+void				other_in_get_plus(char *f_prompt, char *prompt, int *i,
+						int *j);
 
 // tokenizer
-int			blocks_counter(char *fprompt);
-char		**token_init(char **token, char *fprompt);
-int			is_sep(char c);
-int			is_in_quotes(char *prompt, int i);
-void		tokenizer(t_mini *mini);
+int					blocks_counter(char *fprompt);
+char				**token_init(char **token, char *fprompt);
+int					is_sep(char c);
+int					is_in_quotes(char *prompt, int i);
+void				tokenizer(t_mini *mini);
 
 // type.c
-t_type		*create_type(t_mini *mini);
-t_type		get_type(char **token, int i);
-t_type		get_type2(char **token, int i);
-void		check_type(t_type *type, char **token);
-int			ft_tabstr_len(char **tab);
+t_type				*create_type(t_mini *mini);
+t_type				get_type(char **token, int i);
+t_type				get_type2(char **token, int i);
+void				check_type(t_type *type, char **token);
+int					ft_tabstr_len(char **tab);
 
 // to_exec.c
-int			nbr_cmd(t_mini mini);
-void		block_to_child(t_mini *mini, char **envp);
-void		get_heredoc(t_mini *mini, int start);
-int			search_infile(t_mini *mini, int start);
-void		open_infile(t_mini *mini, char *infile);
-int			search_outfile(t_mini *mini, int start);
-void		child(t_mini *mini, char **envp, int start);
+int					nbr_cmd(t_mini mini);
+void				block_to_child(t_mini *mini, char **envp);
+void				get_heredoc(t_mini *mini, int start);
+int					search_infile(t_mini *mini, int start);
+void				open_infile(t_mini *mini, char *infile);
+int					search_outfile(t_mini *mini, int start);
+void				child(t_mini *mini, char **envp, int start);
 
 // exec.c
-int			check_slash(char *str);
-void		exec_arg(t_mini mini, char **envp, int start);
-void		get_cmd_arg(t_mini *mini, int start);
-void		exec_cmd(t_mini mini, char **envp);
-void		exec_abs(t_mini mini, char **envp);
+int					check_slash(char *str);
+void				exec_arg(t_mini mini, char **envp, int start);
+void				get_cmd_arg(t_mini *mini, int start);
+void				exec_cmd(t_mini mini, char **envp);
+void				exec_abs(t_mini mini, char **envp);
 
 // free_close_exit.c
-void		close_exit(t_mini mini, int k);
-void		perror_close_exit(char *err, t_mini mini, int k);
-void		perror_open(t_mini mini, char *filename);
-void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
-void		putstr_error(char *cmd0, char *err_str);
+void				close_exit(t_mini mini, int k);
+void				perror_close_exit(char *err, t_mini mini, int k);
+void				perror_open(t_mini mini, char *filename);
+void				free_close_exit(t_mini *mini, int exit_code, int is_paths);
+void				putstr_error(char *cmd0, char *err_str);
 
 // heredoc.c
-void		fill_heredoc(t_mini *mini);
-void		limiter_err_mal(t_mini mini);
+void				fill_heredoc(t_mini *mini);
+void				limiter_err_mal(t_mini mini);
 
 // path.c
-void		get_paths(t_mini *mini, char **envp);
-void		slash_paths(t_mini *mini);
-int			check_in_str(char *s1, char *s2);
-char		*check_path(char **paths, char **cmd);
+void				get_paths(t_mini *mini, char **envp);
+void				slash_paths(t_mini *mini);
+int					check_in_str(char *s1, char *s2);
+char				*check_path(char **paths, char **cmd);
 
 /***************temp temp temp *****************/
 
 // ft_split.c -- conflict??
-char		**ft_split(char const *s, char c);
+char				**ft_split(char const *s, char c);
 
 // temp.c
-void		temp_display_tabs(char **token, t_type *type);
+void				temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
 
 // syntax checks
-char		get_next_char(char *prompt, int i);
-int			check_pipes(char *prompt);
-int			syntax_checker(char *prompt);
+char				get_next_char(char *prompt, int i);
+int					check_pipes(char *prompt);
+int					syntax_checker(char *prompt);
 
 #endif
