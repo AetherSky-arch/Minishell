@@ -1,52 +1,42 @@
 /* ************************************************************************** */
-/*									      */
-/*							  :::	   ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
-/*						      +:+ +:+	      +:+     */
-/*   By: arguez <marvin@42.fr>			    +#+  +:+	   +#+	      */
-/*						  +#+#+#+#+#+	+#+	      */
-/*   Created: 2023/11/07 18:34:37 by arguez	       #+#    #+#	      */
-/*   Updated: 2023/11/09 15:26:11 by arguez           ###   ########.fr       */
-/*									      */
+/*                                                    +:+ +:+         +:+     */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/10 20:46:43 by caguillo          #+#    #+#             */
+/*   Updated: 2023/11/18 20:17:37 by caguillo         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_strlength(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*str;
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	len1;
+	size_t	len2;
+	char	*join;
 
-	if ((!s1) || (!s2))
+	if (!s1 || !s2)
 		return (NULL);
-	str = (char *) malloc (ft_strlength(s1) + ft_strlength(s2) + 1);
-	if (!str)
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	join = malloc(sizeof(char) * (len1 + len2 + 1));
+	if (!join)
 		return (NULL);
-	i = -1;
-	j = 0;
-	while (s1[++i] != '\0')
-	{
-		str[j] = s1[i];
-		j++;
-	}
 	i = 0;
-	while (s2[i] != '\0')
+	while (i < len1)
 	{
-		str[j] = s2[i];
+		join[i] = s1[i];
 		i++;
-		j++;
 	}
-	str[j] = '\0';
-	return (str);
+	while (i < len1 + len2)
+	{
+		join[i] = s2[i - len1];
+		i++;
+	}
+	join[i] = '\0';
+	return (join);
 }
