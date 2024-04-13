@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/12 04:21:08 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/13 01:03:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ void	block_to_child(t_mini *mini, char **envp)
 	nbr = nbr_cmd(*mini);
 	mini->is_pipe = 0;
 	mini->is_last_pid = 0;
-	mini->dup_in = dup(STD_IN);
-	//printf("dupin=%d\n", mini->dup_in);
-	// mini->dup_out = dup(STD_OUT);
+	mini->prev_fd0 = -1;
 	while (i < nbr)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
@@ -66,16 +64,17 @@ void	block_to_child(t_mini *mini, char **envp)
 		if (pipe(mini->fd) == -1)
 			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
 		else
+		{
+			// get_heredoc(mini, start);
 			child(mini, envp, start);
+		}
 		i++;
 		if (j < mini->type_len)
 			j++;
 		start = j;
 	}
-	dup2(mini->dup_in, STD_IN);
-	close(mini->dup_in);
-	// dup2(mini->dup_out, STD_OUT);
-	// close(mini->dup_out);
+	if (mini->prev_fd0 > -1)
+		close(mini->prev_fd0);
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
@@ -169,23 +168,23 @@ void	child(t_mini *mini, char **envp, int start)
 	if (pid == 0)
 	{
 		close(mini->fd[0]);
-		// close(mini->dup_in);
-		// if infile (and the good one) ou heredoc
+		// if infile (and the good one) or heredoc or the pipe of the previous cmd
 		get_heredoc(mini, start);
 		if (search_infile(mini, start) == 1)
 		{
-			// dup2(mini->dup_in, STD_IN);
-			// close(mini->dup_in);
 			dup2(mini->fd_in, STD_IN);
 			close(mini->fd_in);
 		}
 		else if (mini->is_heredoc == 1)
 		{
-			// dup2(mini->dup_in, STD_IN);
-			// close(mini->dup_in);
 			dup2(mini->docfd[0], STD_IN);
 			close(mini->docfd[0]);
 		}
+		else if (mini->prev_fd0 > -1)
+			dup2(mini->prev_fd0, STD_IN);
+		if (mini->prev_fd0 > -1)
+			close(mini->prev_fd0);
+		//printf("prev=%d\n", mini->prev_fd0);
 		// if outfile (and the good one)
 		if (search_outfile(mini, start) == 1)
 		{
@@ -195,13 +194,35 @@ void	child(t_mini *mini, char **envp, int start)
 		else if (mini->is_pipe == 1)
 			dup2(mini->fd[1], STD_OUT);
 		close(mini->fd[1]);
-		close(mini->dup_in);
 		exec_arg(*mini, envp, start);
 	}
 	close(mini->fd[1]);
-	if (mini->is_pipe == 1)
-		dup2(mini->fd[0], STD_IN);
+	if (mini->prev_fd0 > -1)
+		close(mini->prev_fd0);
+	mini->prev_fd0 = dup(mini->fd[0]);
 	close(mini->fd[0]);
 }
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
+
+// // forcely something else after a pipe otherwise Stx Error
+// void	fill_pipe(t_mini *mini, int next_block)
+// {
+// 	int	i;
+
+// 	mini->fill_pipe = 1;
+// 	i = next_block;
+// 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+// 	{
+// 		if ((mini->type[i] == INFILE) || (mini->type[i] == HEREDOC))
+// 		{
+// 			mini->fill_pipe = 0;
+// 			break ;
+// 		}
+// 		i++;
+// 	}
+// }
+
+// printf("OUT=%d\n", fcntl(mini->fd[1], F_GETFL));
+// printf("OUTgnl=%d\n", fcntl(STD_OUT, F_GETFL));
+// printf("INgnl=%d\n", fcntl(STD_IN, F_GETFL));

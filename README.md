@@ -37,3 +37,4 @@ How to execve:
 Issues:
 1) << eof echo toto | << eof2 cat
 2) cat < Makefile | echo toto | wc >> out
+3) cat | wc << eof
