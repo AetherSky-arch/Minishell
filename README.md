@@ -32,13 +32,21 @@ je prends un "truc" (hors symbol)
 7) rien => si 1er => cmd sinon arg du 1er
 
 How to execve:
-~$ >> out cat < Makefile << eof > out2 | << eof ls -la >> out3 | >> out4 > out3 grep mini < out2
+~$ >> out cat < Makefile << eof > out2 | << eof ls -la >> out3 | >> out4 > out3 grep mini < out2 --> ok
 
-Issues:
-1) << eof echo toto | << eof2 cat
+Solved:
+1) << eof echo toto | << eof2 cat --> ok
 2) cat < Makefile | echo toto | wc >> out --> ok
-3) cat | wc << eof --> ok as bash but next weird (need to enter on each new prompt)
-4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f
+3) cat | wc << eof --> ok as bash (~~but next weird (need to enter on each new prompt)~~)
+4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f --> ok
+5) wc << eof | cat --> ok
+Issues:
+6) wc << eof | ls | wc << e | cat
+7) wc << eof | cat > out | wc << eof | cat
 
 un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
  
+Syntax error to be checked
+1) at least one CMD by block (and only one ?)
+2) last word of the prompt is not a pipe
+3) we need to be sure there is a LIMITER just after HEREDOC

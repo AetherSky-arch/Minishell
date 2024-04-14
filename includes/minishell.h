@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/14 02:21:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/15 01:32:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <asm-generic/fcntl.h>
 
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
+# define WH_HEREDOC 1
+# define NO_HEREDOC 0
 # define ERR_RDL "minishell: readline: Can't read input\n"
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
@@ -71,18 +74,22 @@ typedef struct s_mini
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
 	//
-	int		fd_in;
-	int		fd_out;
-	int		fd[2];
-	int		prev_fd0;
+	int fd_in;    // to be closed
+	int fd_out;   // to be closed
+	int fd[2];    // to be closed
+	int prev_fd0; // to be closed
+	int		is_pipe;
+	//
+	pid_t	last_pid;
 	int		status;
-	pid_t	last_pid;	
+	int		is_last_pid;
+	//
 	int		is_heredoc;
 	int		heredoc_idx;
-	char	*lim;
-	int		docfd[2];
-	int		is_pipe;
-	int		is_last_pid;
+	char *lim;    // to be free'd ???
+	int docfd[2]; // to be closed
+	//
+	int		hd_fd[1024];
 }			t_mini;
 
 // check_quote.c
@@ -132,9 +139,10 @@ int			ft_tabstr_len(char **tab);
 
 // to_exec.c
 int			nbr_cmd(t_mini mini);
-void		blocks_to_child(t_mini *mini, char **envp);
-void		blocks_to_child_heredoc(t_mini *mini, char **envp);
-// void		fill_pipe(t_mini *mini, int next_block);
+void		re_init_mini(t_mini *mini);
+void		close_prev_pipe(t_mini mini);
+void		blocks_to_child(t_mini *mini, char **envp, int nbr_cmd,
+				int do_heredoc);
 void		get_heredoc(t_mini *mini, int start);
 int			search_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);

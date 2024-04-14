@@ -6,11 +6,36 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/13 01:02:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/15 01:33:27 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/****** limiter: to be free'd ?????????******/
+void	open_heredoc(t_mini *mini)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	while ((i < mini->type_len)) // && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == HEREDOC)
+		{
+			if (mini->token[i + 1])
+				mini->lim = mini->token[i + 1];
+			fd = open(".", O_TMPFILE | O_RDWR);
+			if (fd < 0)
+				perror_open(*mini, "here_doc");
+			/****** update tab des fd 'entier*******/
+			// dans l'exec des cmd si here_doc => aller chercher son fd,
+			//	puis traiter comme un infile
+			fill_heredoc(mini);
+		}
+		i++;
+	}
+}
 
 void	fill_heredoc(t_mini *mini)
 {

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/14 02:21:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/14 23:47:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,38 @@ int	nbr_cmd(t_mini mini)
 	return (nbr);
 }
 
-/*******************************************************************/
-/***************** should be at least one CMD by default ***********/
-/*******************************************************************/
+void	re_init_mini(t_mini *mini)
+{
+	mini->is_pipe = 0;
+	mini->is_last_pid = 0;
+	mini->prev_fd0 = -1;
+}
+
+void	close_prev_pipe(t_mini mini)
+{
+	if (mini.prev_fd0 > -1)
+		close(mini.prev_fd0);
+}
+
 // j = index of the next pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
 // the pipe is just not used and closed
-void	blocks_to_child(t_mini *mini, char **envp)
+void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd, int do_heredoc)
 {
 	int	i;
 	int	start;
 	int	j;
-	int	nbr;
-	int	do_heredoc;
-	
+
 	i = 0;
 	start = 0;
 	j = 0;
-	nbr = nbr_cmd(*mini);
-	mini->is_pipe = 0;
-	mini->is_last_pid = 0;
-	mini->prev_fd0 = -1;
-	while (i < nbr)
+	while (i < nbr_cmd)
 	{
-		do_heredoc = 0;
+		mini->is_heredoc = 0;
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
 		{
 			if (mini->type[j] == HEREDOC)
-				do_heredoc = 1;
+				mini->is_heredoc = 1;
 			j++;
 		}
 		if (j == mini->type_len)
@@ -71,7 +75,7 @@ void	blocks_to_child(t_mini *mini, char **envp)
 			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
 		else
 		{
-			if (do_heredoc == 0)
+			if (mini->is_heredoc == do_heredoc)
 				child(mini, envp, start);
 		}
 		i++;
@@ -79,56 +83,6 @@ void	blocks_to_child(t_mini *mini, char **envp)
 			j++;
 		start = j;
 	}
-	if (mini->prev_fd0 > -1)
-		close(mini->prev_fd0);
-}
-
-void	blocks_to_child_heredoc(t_mini *mini, char **envp)
-{
-	int	i;
-	int	start;
-	int	j;
-	int	nbr;
-	int	do_heredoc;
-
-	i = 0;
-	start = 0;
-	j = 0;
-	nbr = nbr_cmd(*mini);
-	mini->is_pipe = 0;
-	mini->is_last_pid = 0;
-	mini->prev_fd0 = -1;
-	do_heredoc = 0;
-	while (i < nbr)
-	{
-		do_heredoc = 0;
-		while ((j < mini->type_len) && (mini->type[j] != PIPE))
-		{
-			if (mini->type[j] == HEREDOC)
-				do_heredoc = 1;
-			j++;
-		}
-		if (j == mini->type_len)
-		{
-			mini->is_last_pid = 1;
-			mini->is_pipe = 0;
-		}
-		else if (mini->type[j] == PIPE)
-			mini->is_pipe = 1;
-		if (pipe(mini->fd) == -1)
-			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
-		else
-		{
-			if (do_heredoc == 1)
-				child(mini, envp, start);
-		}
-		i++;
-		if (j < mini->type_len)
-			j++;
-		start = j;
-	}
-	if (mini->prev_fd0 > -1)
-		close(mini->prev_fd0);
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
@@ -137,7 +91,7 @@ void	get_heredoc(t_mini *mini, int start)
 	int	i;
 
 	i = start;
-	mini->is_heredoc = 0;	
+	mini->is_heredoc = 0;
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
@@ -146,6 +100,7 @@ void	get_heredoc(t_mini *mini, int start)
 			mini->heredoc_idx = i;
 			if (mini->token[i + 1])
 				mini->lim = mini->token[i + 1];
+			/******to be free'd ?????????******/
 			if (pipe(mini->docfd) == -1)
 				perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
 			fill_heredoc(mini);
@@ -214,11 +169,11 @@ int	search_outfile(t_mini *mini, int start)
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
-	
+
 	get_heredoc(mini, start);
 	pid = fork();
 	if (mini->is_last_pid == 1)
-		mini->last_pid = pid;	
+		mini->last_pid = pid;
 	if (pid == -1)
 		perror_close_exit("minishell: fork", *mini, EXIT_FAILURE);
 	if (pid == 0)
@@ -253,10 +208,12 @@ void	child(t_mini *mini, char **envp, int start)
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > -1)
 		close(mini->prev_fd0);
-	mini->prev_fd0 = dup(mini->fd[0]);
-	close(mini->fd[0]);	
+	mini->prev_fd0 = dup(mini->fd[0]);	
+	close(mini->fd[0]);
 }
 
+// ft_putstr_fd("pipe OUT", STD_ERR);
+// ft_putnbr_fd(start, STD_ERR);
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
 
 // // forcely something else after a pipe otherwise Stx Error
