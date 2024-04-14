@@ -39,3 +39,6 @@ Issues:
 2) cat < Makefile | echo toto | wc >> out --> ok
 3) cat | wc << eof --> ok as bash but next weird (need to enter on each new prompt)
 4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f
+
+un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
+ 
