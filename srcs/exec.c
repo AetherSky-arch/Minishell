@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 01:34:24 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/14 00:30:04 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	get_cmd_arg(t_mini *mini, int start)
 		{
 			tmp1 = (*mini).token[j];
 			j++;
-			while (j < (*mini).type_len)
+			while (j < (*mini).type_len && (*mini).type[j] != PIPE)
 			{
 				if ((*mini).type[j] == ARG)
 				{
@@ -123,7 +123,7 @@ void	exec_abs(t_mini mini, char **envp)
 	}
 	if (execve(mini.cmd_arg[0], mini.cmd_arg, envp) == -1)
 	{
-		perror("pipex: execve");
+		perror("minishell: execve");
 		free_close_exit(&mini, EXIT_FAILURE, 0);
 	}
 }

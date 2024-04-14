@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/13 00:39:19 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/14 02:21:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ typedef struct s_mini
 	int		fd[2];
 	int		prev_fd0;
 	int		status;
-	pid_t	pid;
+	pid_t	last_pid;	
 	int		is_heredoc;
 	int		heredoc_idx;
 	char	*lim;
 	int		docfd[2];
 	int		is_pipe;
-	int		is_last_pid;	
+	int		is_last_pid;
 }			t_mini;
 
 // check_quote.c
@@ -132,8 +132,9 @@ int			ft_tabstr_len(char **tab);
 
 // to_exec.c
 int			nbr_cmd(t_mini mini);
-void		block_to_child(t_mini *mini, char **envp);
-//void		fill_pipe(t_mini *mini, int next_block);
+void		blocks_to_child(t_mini *mini, char **envp);
+void		blocks_to_child_heredoc(t_mini *mini, char **envp);
+// void		fill_pipe(t_mini *mini, int next_block);
 void		get_heredoc(t_mini *mini, int start);
 int			search_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);

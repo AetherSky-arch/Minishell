@@ -36,5 +36,6 @@ How to execve:
 
 Issues:
 1) << eof echo toto | << eof2 cat
-2) cat < Makefile | echo toto | wc >> out
-3) cat | wc << eof
+2) cat < Makefile | echo toto | wc >> out --> ok
+3) cat | wc << eof --> ok as bash but next weird (need to enter on each new prompt)
+4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f

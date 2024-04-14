@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/13 01:03:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/14 02:21:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ int	nbr_cmd(t_mini mini)
 // j = index of the next pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
 // the pipe is just not used and closed
-void	block_to_child(t_mini *mini, char **envp)
+void	blocks_to_child(t_mini *mini, char **envp)
 {
 	int	i;
 	int	start;
 	int	j;
 	int	nbr;
-
+	int	do_heredoc;
+	
 	i = 0;
 	start = 0;
 	j = 0;
@@ -52,8 +53,13 @@ void	block_to_child(t_mini *mini, char **envp)
 	mini->prev_fd0 = -1;
 	while (i < nbr)
 	{
+		do_heredoc = 0;
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
+		{
+			if (mini->type[j] == HEREDOC)
+				do_heredoc = 1;
 			j++;
+		}
 		if (j == mini->type_len)
 		{
 			mini->is_last_pid = 1;
@@ -65,8 +71,56 @@ void	block_to_child(t_mini *mini, char **envp)
 			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
 		else
 		{
-			// get_heredoc(mini, start);
-			child(mini, envp, start);
+			if (do_heredoc == 0)
+				child(mini, envp, start);
+		}
+		i++;
+		if (j < mini->type_len)
+			j++;
+		start = j;
+	}
+	if (mini->prev_fd0 > -1)
+		close(mini->prev_fd0);
+}
+
+void	blocks_to_child_heredoc(t_mini *mini, char **envp)
+{
+	int	i;
+	int	start;
+	int	j;
+	int	nbr;
+	int	do_heredoc;
+
+	i = 0;
+	start = 0;
+	j = 0;
+	nbr = nbr_cmd(*mini);
+	mini->is_pipe = 0;
+	mini->is_last_pid = 0;
+	mini->prev_fd0 = -1;
+	do_heredoc = 0;
+	while (i < nbr)
+	{
+		do_heredoc = 0;
+		while ((j < mini->type_len) && (mini->type[j] != PIPE))
+		{
+			if (mini->type[j] == HEREDOC)
+				do_heredoc = 1;
+			j++;
+		}
+		if (j == mini->type_len)
+		{
+			mini->is_last_pid = 1;
+			mini->is_pipe = 0;
+		}
+		else if (mini->type[j] == PIPE)
+			mini->is_pipe = 1;
+		if (pipe(mini->fd) == -1)
+			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
+		else
+		{
+			if (do_heredoc == 1)
+				child(mini, envp, start);
 		}
 		i++;
 		if (j < mini->type_len)
@@ -83,6 +137,7 @@ void	get_heredoc(t_mini *mini, int start)
 	int	i;
 
 	i = start;
+	mini->is_heredoc = 0;	
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
@@ -159,17 +214,17 @@ int	search_outfile(t_mini *mini, int start)
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
-
+	
+	get_heredoc(mini, start);
 	pid = fork();
 	if (mini->is_last_pid == 1)
-		mini->pid = pid;
+		mini->last_pid = pid;	
 	if (pid == -1)
 		perror_close_exit("minishell: fork", *mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		close(mini->fd[0]);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
-		get_heredoc(mini, start);
 		if (search_infile(mini, start) == 1)
 		{
 			dup2(mini->fd_in, STD_IN);
@@ -184,7 +239,6 @@ void	child(t_mini *mini, char **envp, int start)
 			dup2(mini->prev_fd0, STD_IN);
 		if (mini->prev_fd0 > -1)
 			close(mini->prev_fd0);
-		//printf("prev=%d\n", mini->prev_fd0);
 		// if outfile (and the good one)
 		if (search_outfile(mini, start) == 1)
 		{
@@ -200,7 +254,7 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->prev_fd0 > -1)
 		close(mini->prev_fd0);
 	mini->prev_fd0 = dup(mini->fd[0]);
-	close(mini->fd[0]);
+	close(mini->fd[0]);	
 }
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);

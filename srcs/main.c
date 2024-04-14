@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/11 04:26:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/14 02:04:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	wait_exitcode(t_mini *mini)
 {
 	while (errno != ECHILD)
 	{
-		if (wait(&((*mini).status)) == (*mini).pid)
+		if (wait(&((*mini).status)) == (*mini).last_pid)
 		{
 			if (WIFEXITED((*mini).status))
 				(*mini).exitcode = WEXITSTATUS((*mini).status);
@@ -89,7 +89,8 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			read_prompt(&mini);
-			block_to_child(&mini, envp);
+			blocks_to_child_heredoc(&mini, envp);
+			blocks_to_child(&mini, envp);
 			wait_exitcode(&mini);
 			//
 			/*** free here for now ***/
