@@ -6,14 +6,18 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/15 01:32:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 01:44:06 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define _GNU_SOURCE
+
 # include "../libft/libft.h"
+// # include <asm-generic/fcntl.h>
+// # include <bits/fcntl-linux.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <linux/limits.h>
@@ -25,7 +29,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-#include <asm-generic/fcntl.h>
 
 # define STD_IN 0
 # define STD_OUT 1
@@ -86,10 +89,9 @@ typedef struct s_mini
 	//
 	int		is_heredoc;
 	int		heredoc_idx;
-	char *lim;    // to be free'd ???
-	int docfd[2]; // to be closed
-	//
-	int		hd_fd[1024];
+	char *lim;       // to be free'd ???
+	int hd_fd[1024]; // to be closed
+	int		heredoc_fd;
 }			t_mini;
 
 // check_quote.c
@@ -141,12 +143,11 @@ int			ft_tabstr_len(char **tab);
 int			nbr_cmd(t_mini mini);
 void		re_init_mini(t_mini *mini);
 void		close_prev_pipe(t_mini mini);
-void		blocks_to_child(t_mini *mini, char **envp, int nbr_cmd,
-				int do_heredoc);
+void		blocks_to_child(t_mini *mini, char **envp, int nbr_cmd);
 void		get_heredoc(t_mini *mini, int start);
-int			search_infile(t_mini *mini, int start);
+int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);
-int			search_outfile(t_mini *mini, int start);
+int			is_outfile(t_mini *mini, int start);
 void		child(t_mini *mini, char **envp, int start);
 
 // exec.c
@@ -164,7 +165,8 @@ void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
 // heredoc.c
-void		fill_heredoc(t_mini *mini);
+void		open_heredoc(t_mini *mini);
+void		fill_heredoc(t_mini *mini, int fd);
 void		limiter_err_mal(t_mini mini);
 
 // path.c

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/14 23:43:32 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 01:42:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		while (1)
 		{
+			mini = (t_mini){0};
+			// re_init_mini(&mini);
 			read_prompt(&mini);
-			re_init_mini(&mini);
-			blocks_to_child(&mini, envp, nbr_cmd(mini), WH_HEREDOC);
-			blocks_to_child(&mini, envp, nbr_cmd(mini), NO_HEREDOC);
+			open_heredoc(&mini);
+			blocks_to_child(&mini, envp, nbr_cmd(mini));
+			// blocks_to_child(&mini, envp, nbr_cmd(mini), NO_HEREDOC);
 			close_prev_pipe(mini);
 			wait_exitcode(&mini);
 			//
