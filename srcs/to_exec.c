@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 01:41:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:14:31 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void	child(t_mini *mini, char **envp, int start)
 		close(mini->fd[1]);
 		exec_arg(*mini, envp, start);
 	}
-	close(mini->heredoc_fd);
+	// close(mini->heredoc_fd);
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);

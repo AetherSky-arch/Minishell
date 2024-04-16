@@ -40,7 +40,8 @@ SRCS := ft_isalpha.c \
 	double_free.c \
 	ft_swap.c \
 	double_print.c \
-	ft_strcmp.c
+	ft_strcmp.c \
+	double_dup.c
 
 BONUS := ft_lstnew.c \
 	 ft_lstadd_front.c \
