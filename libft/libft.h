@@ -6,7 +6,7 @@
 /*   By: arguez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:05:19 by arguez            #+#    #+#             */
-/*   Updated: 2024/02/28 18:04:57 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/16 17:52:30 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ void				double_free(void **str);
 void				ft_swap(int *a, int *b);
 void				double_print(char **tab);
 int					ft_strcmp(char *s1, char *s2);
+char                **double_dup(char **tab);
 
 #endif
