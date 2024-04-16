@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 01:41:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 21:51:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd)
 }
 
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
-/******to be free'd ?????????******/
 void	get_heredoc(t_mini *mini, int start)
 {
 	int	i;
@@ -99,8 +98,7 @@ void	get_heredoc(t_mini *mini, int start)
 				while (j < 1024 && (mini->heredoc_fd != mini->hd_fd[j]))
 					j++;
 				close(mini->heredoc_fd);
-				j++;
-				mini->heredoc_fd = mini->hd_fd[j];
+				mini->heredoc_fd = mini->hd_fd[j + 1];
 			}
 			else
 				mini->heredoc_fd = mini->hd_fd[0];
@@ -180,9 +178,9 @@ void	child(t_mini *mini, char **envp, int start)
 	pid_t	pid;
 
 	get_heredoc(mini, start);
-	// ft_putstr_fd("heredoc fd=", STD_ERR);
-	// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-	// ft_putstr_fd("\n", STD_ERR);
+	ft_putstr_fd("heredoc fd=", STD_ERR);
+	ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
+	ft_putstr_fd("\n", STD_ERR);
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -201,9 +199,9 @@ void	child(t_mini *mini, char **envp, int start)
 		{
 			dup2(mini->heredoc_fd, STD_IN);
 			close(mini->heredoc_fd);
-			// ft_putstr_fd("c heredoc fd=", STD_ERR);
-			// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-			// ft_putstr_fd("\n", STD_ERR);
+			ft_putstr_fd("c heredoc fd=", STD_ERR);
+			ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
+			ft_putstr_fd("\n", STD_ERR);
 		}
 		else if (mini->prev_fd0 > 0)
 			dup2(mini->prev_fd0, STD_IN);
@@ -220,7 +218,8 @@ void	child(t_mini *mini, char **envp, int start)
 		close(mini->fd[1]);
 		exec_arg(*mini, envp, start);
 	}
-	close(mini->heredoc_fd);
+	if (mini->heredoc_fd > 0)
+		close(mini->heredoc_fd);
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);

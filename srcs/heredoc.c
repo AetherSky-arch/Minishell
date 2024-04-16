@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 01:22:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 21:42:56 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	open_heredoc(t_mini *mini)
 		{
 			if (mini->token[i + 1])
 				mini->lim = mini->token[i + 1];
-			//fd = open(".", O_TMPFILE | O_RDWR, 0666);
-			fd = open("/tmp", O_TMPFILE | O_RDWR, 0666);			
+			fd = open(".", O_TMPFILE | O_RDWR, 0666);
+			// fd = open("/tmp", O_TMPFILE | O_RDWR, 0666);
 			ft_putstr_fd("fd=", STD_ERR);
 			ft_putnbr_fd(fd, STD_ERR);
 			ft_putstr_fd("\n", STD_ERR);
@@ -69,7 +69,7 @@ void	fill_heredoc(t_mini *mini, int fd)
 	}
 	free(line);
 	free(limiter);
-	// close((*mini).docfd[1]);	
+	// close((*mini).docfd[1]);
 }
 
 void	limiter_err_mal(t_mini mini)

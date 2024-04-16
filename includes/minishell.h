@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 01:44:06 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:27:27 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
-# define WH_HEREDOC 1
-# define NO_HEREDOC 0
+// # define WH_HEREDOC 1
+// # define NO_HEREDOC 0
 # define ERR_RDL "minishell: readline: Can't read input\n"
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
@@ -91,7 +91,7 @@ typedef struct s_mini
 	int		heredoc_idx;
 	char *lim;       // to be free'd ???
 	int hd_fd[1024]; // to be closed
-	int		heredoc_fd;
+	int heredoc_fd;  // to be closed
 }			t_mini;
 
 // check_quote.c
