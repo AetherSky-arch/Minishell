@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 21:42:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/17 01:59:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,31 @@ void	open_heredoc(t_mini *mini)
 {
 	int	i;
 	int	fd;
+	int	newfd;
 	int	j;
 
 	i = 0;
+	newfd = -1;
 	while (i < mini->type_len)
 	{
 		if (mini->type[i] == HEREDOC)
 		{
 			if (mini->token[i + 1])
 				mini->lim = mini->token[i + 1];
-			fd = open(".", O_TMPFILE | O_RDWR, 0666);
+			// fd = open(".", O_TMPFILE | O_RDWR, 0666);
 			// fd = open("/tmp", O_TMPFILE | O_RDWR, 0666);
-			ft_putstr_fd("fd=", STD_ERR);
-			ft_putnbr_fd(fd, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);
+			fd = open("heredoc", O_RDWR | O_APPEND | O_CREAT, 0666);
+			// ft_putstr_fd("fd=", STD_ERR);
+			// ft_putnbr_fd(fd, STD_ERR);
+			// ft_putstr_fd("\n", STD_ERR);
 			if (fd < 0)
 				perror_open(*mini, "here_doc");
+			fill_heredoc(mini, fd);
 			j = 0;
 			while (mini->hd_fd[j] != 0)
 				j++;
-			mini->hd_fd[j] = fd;
-			fill_heredoc(mini, fd);
+			mini->hd_fd[j] = dup(fd);
+			close(fd);
 		}
 		i++;
 	}

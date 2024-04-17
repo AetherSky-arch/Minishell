@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/16 21:56:19 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/17 02:00:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,11 +176,16 @@ int	is_outfile(t_mini *mini, int start)
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
+	// char buff[42];
+	// ssize_t n;
 
 	get_heredoc(mini, start);
-	ft_putstr_fd("heredoc fd=", STD_ERR);
-	ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-	ft_putstr_fd("\n", STD_ERR);
+	// n = read(mini->heredoc_fd, buff, 42);
+	// ft_putnbr_fd(n, STD_ERR);
+	// ft_putstr_fd(buff, STD_ERR);
+	// ft_putstr_fd("heredoc fd=", STD_ERR);
+	// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
+	// ft_putstr_fd("\n", STD_ERR);
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -199,9 +204,9 @@ void	child(t_mini *mini, char **envp, int start)
 		{
 			dup2(mini->heredoc_fd, STD_IN);
 			close(mini->heredoc_fd);
-			ft_putstr_fd("c heredoc fd=", STD_ERR);
-			ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);
+			// ft_putstr_fd("c heredoc fd=", STD_ERR);
+			// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
+			// ft_putstr_fd("\n", STD_ERR);
 		}
 		else if (mini->prev_fd0 > 0)
 			dup2(mini->prev_fd0, STD_IN);
@@ -219,7 +224,7 @@ void	child(t_mini *mini, char **envp, int start)
 		exec_arg(*mini, envp, start);
 	}
 	if (mini->heredoc_fd > 0)
-		close(mini->heredoc_fd);
+	 	close(mini->heredoc_fd);
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
