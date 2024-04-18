@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/17 02:00:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/18 03:44:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,26 +82,22 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd)
 void	get_heredoc(t_mini *mini, int start)
 {
 	int	i;
-	int	j;
+	//int	j;
 
 	i = start;
-	j = 0;
+	//j = 0;
 	mini->is_heredoc = 0;
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
 		{
 			mini->is_heredoc = 1;
-			mini->heredoc_idx = i;
-			if (mini->heredoc_fd > 0)
-			{
-				while (j < 1024 && (mini->heredoc_fd != mini->hd_fd[j]))
-					j++;
-				close(mini->heredoc_fd);
-				mini->heredoc_fd = mini->hd_fd[j + 1];
-			}
-			else
-				mini->heredoc_fd = mini->hd_fd[0];
+			mini->hd_pos = i;
+			if (mini->hd_fd > 0)
+				close(mini->hd_fd);
+			if (mini->hd_name[mini->hd_idx])
+				mini->hd_fd = open(mini->hd_name[mini->hd_idx], O_RDONLY);
+			mini->hd_idx++;
 		}
 		i++;
 	}
@@ -121,7 +117,7 @@ int	is_infile(t_mini *mini, int start)
 		if (mini->type[i] == INFILE)
 		{
 			open_infile(mini, mini->token[i]);
-			if (mini->heredoc_idx < i)
+			if (mini->hd_pos < i)
 			{
 				is_infile = 1;
 				if (prev_fd_in > -1)
@@ -176,9 +172,9 @@ int	is_outfile(t_mini *mini, int start)
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
+
 	// char buff[42];
 	// ssize_t n;
-
 	get_heredoc(mini, start);
 	// n = read(mini->heredoc_fd, buff, 42);
 	// ft_putnbr_fd(n, STD_ERR);
@@ -202,8 +198,8 @@ void	child(t_mini *mini, char **envp, int start)
 		}
 		else if (mini->is_heredoc == 1)
 		{
-			dup2(mini->heredoc_fd, STD_IN);
-			close(mini->heredoc_fd);
+			dup2(mini->hd_fd, STD_IN);
+			close(mini->hd_fd);
 			// ft_putstr_fd("c heredoc fd=", STD_ERR);
 			// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
 			// ft_putstr_fd("\n", STD_ERR);
@@ -223,8 +219,8 @@ void	child(t_mini *mini, char **envp, int start)
 		close(mini->fd[1]);
 		exec_arg(*mini, envp, start);
 	}
-	if (mini->heredoc_fd > 0)
-	 	close(mini->heredoc_fd);
+	if (mini->hd_fd > 0)
+		close(mini->hd_fd);
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/15 23:26:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/18 03:45:00 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	close_exit(t_mini mini, int k)
 	close(mini.fd[1]);
 	// close(mini.docfd[0]);
 	// close(mini.docfd[1]);
-	close(mini.heredoc_fd);
+	close(mini.hd_fd);
 	close(mini.prev_fd0);
 	exit(k);
 }
