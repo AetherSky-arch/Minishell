@@ -38,11 +38,14 @@ Solved:
 1) << eof echo toto | << eof2 cat --> ok
 2) cat < Makefile | echo toto | wc >> out --> ok
 3) cat | wc << eof --> ok as bash (~~but next weird (need to enter on each new prompt)~~)
-4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f --> ok
 5) wc << eof | cat --> ok
 Issues:
+4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f
 6) wc << eof | ls | wc << e | cat
 7) wc << eof | cat > out | wc << eof | cat
+8) << eof
+9) << eof | << rt
+10) << eof | << rt wc
 
 un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
  
@@ -50,3 +53,8 @@ Syntax error to be checked
 1) at least one CMD by block (and only one ?)
 2) last word of the prompt is not a pipe
 3) we need to be sure there is a LIMITER just after HEREDOC
+
+Ask
+- open (0666), mais rw/r/r ??? 
+- double_free((void **)(mini->cmd_arg));
+- mettre NULL apres free

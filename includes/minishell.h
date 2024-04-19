@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/18 03:34:55 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:35:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ typedef struct s_mini
 	int		is_heredoc;
 	int		hd_pos;
 	char	*lim;
-	// int hd_fd[1024]; // to be closed
 	char	*hd_name[1024];
 	int		hd_idx;
 	int hd_fd; // to be closed
@@ -143,10 +142,11 @@ void		check_type(t_type *type, char **token);
 int			ft_tabstr_len(char **tab);
 
 // to_exec.c
-int			nbr_cmd(t_mini mini);
+int			nbr_block(t_mini mini);
 void		re_init_mini(t_mini *mini);
 void		close_prev_pipe(t_mini mini);
-void		blocks_to_child(t_mini *mini, char **envp, int nbr_cmd);
+void		unlink_free_heredoc(t_mini *mini);
+void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
 void		get_heredoc(t_mini *mini, int start);
 int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);

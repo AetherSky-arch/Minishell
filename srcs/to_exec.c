@@ -6,13 +6,13 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/18 03:44:28 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:54:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	nbr_cmd(t_mini mini)
+int	nbr_block(t_mini mini)
 {
 	int	i;
 	int	nbr;
@@ -20,10 +20,10 @@ int	nbr_cmd(t_mini mini)
 	if (!(mini.type))
 		return (0);
 	i = 0;
-	nbr = 0;
+	nbr = 1;
 	while (i < mini.type_len)
 	{
-		if (mini.type[i] == CMD)
+		if (mini.type[i] == PIPE)
 			nbr++;
 		i++;
 	}
@@ -44,10 +44,24 @@ void	close_prev_pipe(t_mini mini)
 		close(mini.prev_fd0);
 }
 
+void	unlink_free_heredoc(t_mini *mini)
+{
+	int	i;
+
+	i = 0;
+	while (i < 1023 && mini->hd_name[i])
+	{
+		unlink(mini->hd_name[i]);
+		free(mini->hd_name[i]);
+		// mini->hd_name[i] = NULL; /******useful ?*/
+		i++;
+	}
+}
+
 // j = index of the next pipe (so len-1 if no pipe)
 // if no pipe (just one cmd), same as usual case,
 // the pipe is just not used and closed
-void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd)
+void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 {
 	int	i;
 	int	start;
@@ -56,7 +70,7 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd)
 	i = 0;
 	start = 0;
 	j = 0;
-	while (i < nbr_cmd)
+	while (i < nbr_block)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
 			j++;
@@ -82,11 +96,10 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_cmd)
 void	get_heredoc(t_mini *mini, int start)
 {
 	int	i;
-	//int	j;
 
 	i = start;
-	//j = 0;
 	mini->is_heredoc = 0;
+	//mini->hd_idx = 0; /***** to be checked here *****/
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)

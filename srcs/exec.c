@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/18 04:31:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:19:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,15 @@ void	exec_arg(t_mini mini, char **envp, int start)
 		else
 			exec_cmd(mini, envp);
 	}
+	else if (mini.fprompt)
+		free_close_exit(&mini, EXIT_SUCCESS, 0);
 	else
 	{
 		ft_putstr_fd(ERR_MAL, STD_ERR);
-		close_exit(mini, EXIT_FAILURE);
+		free_close_exit(&mini, EXIT_FAILURE, 0);
 	}
 }
 
-// Based on the fact there is ONE cmd,
-//	and it is the ONLY ONE cmd in the block.
-// But args can be after files !
 void	get_cmd_arg(t_mini *mini, int start)
 {
 	int		j;
@@ -64,6 +63,7 @@ void	get_cmd_arg(t_mini *mini, int start)
 	char	*tmp2;
 
 	j = start;
+	tmp1 = NULL;
 	while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
 	{
 		if ((*mini).type[j] == CMD)
@@ -86,7 +86,6 @@ void	get_cmd_arg(t_mini *mini, int start)
 			j++;
 	}
 	(*mini).cmd_arg = ft_split(tmp1, ' ');
-	ft_putstr_fd((*mini).cmd_arg[0], STD_ERR); /*************issue here*/
 	free(tmp1);
 }
 

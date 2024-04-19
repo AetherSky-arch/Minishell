@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/17 01:58:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:36:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ int	main(int argc, char **argv, char **envp)
 			//re_init_mini(&mini);
 			read_prompt(&mini);
 			open_heredoc(&mini);			
-			blocks_to_child(&mini, envp, nbr_cmd(mini));			
+			blocks_to_child(&mini, envp, nbr_block(mini));			
 			close_prev_pipe(mini);
+			unlink_free_heredoc(&mini);
 			wait_exitcode(&mini);
 			//
 			/*** free here for now ***/

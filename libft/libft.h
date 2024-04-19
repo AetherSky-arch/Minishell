@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arguez <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:05:19 by arguez            #+#    #+#             */
-/*   Updated: 2024/04/16 17:52:30 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/19 00:51:04 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void				*ft_memchr(const void *s, int c, size_t n);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_itoa(int n);
+char				*ft_ulitoa(unsigned long int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				**ft_split(char const *s, char c);
 
@@ -85,6 +86,6 @@ void				double_free(void **str);
 void				ft_swap(int *a, int *b);
 void				double_print(char **tab);
 int					ft_strcmp(char *s1, char *s2);
-char                **double_dup(char **tab);
+char				**double_dup(char **tab);
 
 #endif

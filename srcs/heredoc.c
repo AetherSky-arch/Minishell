@@ -6,57 +6,67 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/18 04:17:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:54:01 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// name to be free'd
 char	*heredoc_name(void)
 {
-	char	*name;
+	char				*name;
+	unsigned long int	nbr;
+	int					tmp_fd;
+	char				*number;
 
-	name = "heredoc";
+	nbr = 0;
+	tmp_fd = -1;
+	name = NULL;
+	while (nbr < ULONG_MAX)
+	{
+		number = ft_ulitoa(nbr);
+		name = ft_strjoin("/tmp/heredoc_", number);
+		free(number);
+		if (name)
+			tmp_fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0666);
+		if (tmp_fd != -1)
+			break ;
+		nbr++;
+	}
 	return (name);
 }
 
-/****** limiter: to be free'd ?????????******/
+// keep 1023 for a NULL (set at init)
 void	open_heredoc(t_mini *mini)
 {
 	int		i;
 	int		fd;
-	int		j;
-	char	*heredoc;
+	int		j;	
 
 	i = 0;
+	j = 0;
 	while (i < mini->type_len)
 	{
 		if (mini->type[i] == HEREDOC)
 		{
 			if (mini->token[i + 1])
 				mini->lim = mini->token[i + 1];
-			// fd = open(".", O_TMPFILE | O_RDWR, 0666);
-			// fd = open("/tmp", O_TMPFILE | O_RDWR, 0666);
-			// ft_putstr_fd("fd=", STD_ERR);
-			// ft_putnbr_fd(fd, STD_ERR);
-			// ft_putstr_fd("\n", STD_ERR);
-			heredoc = heredoc_name();
-			fd = open(heredoc, O_RDWR | O_TRUNC | O_CREAT, 0666);
-			if (fd < 0)
-				perror_open(*mini, "here_doc");
-			fill_heredoc(mini, fd);
-			j = 0;
-			while (mini->hd_name[j])
+			while (j < 1023 && mini->hd_name[j])
 				j++;
-			mini->hd_name[j] = heredoc;
-			// 1024 max -- to be checked
-			mini->hd_name[j+1] = NULL;
+			mini->hd_name[j] = heredoc_name();
+			fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
+			if (fd < 0)				
+				perror_open(*mini, mini->hd_name[j]);						
+			fill_heredoc(mini, fd);
 			close(fd);
+			//mini->hd_idx++; /***** to be checked here *****/
 		}
 		i++;
 	}
 }
 
+//********** !!! in case of kill, MUST FREE heredoc name ***************//
 void	fill_heredoc(t_mini *mini, int fd)
 {
 	char	*line;
@@ -77,13 +87,11 @@ void	fill_heredoc(t_mini *mini, int fd)
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
 		else
-			ft_putstr_fd(line, fd);
-		// ft_putstr_fd(line, (*mini).docfd[1]);
+			ft_putstr_fd(line, fd);		
 		free(line);
 	}
 	free(line);
-	free(limiter);
-	// close((*mini).docfd[1]);
+	free(limiter);	
 }
 
 void	limiter_err_mal(t_mini mini)
