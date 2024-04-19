@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 01:36:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/20 01:51:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,20 +84,19 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	mini = (t_mini){0}; // ok?
-    // mini.envvars = double_dup(envp);
-    // if (mini.envvars == NULL)
-    // {
-    //     return (1);
-    // }
+						// mini.envvars = double_dup(envp);
+						// if (mini.envvars == NULL)
+						// {
+						//     return (1);
+						// }
 	if (isatty(STD_IN))
 	{
 		while (1)
 		{
 			mini = (t_mini){0};
-			//re_init_mini(&mini);
 			read_prompt(&mini);
-			open_heredoc(&mini);			
-			blocks_to_child(&mini, envp, nbr_block(mini));			
+			open_heredoc(&mini);
+			blocks_to_child(&mini, envp, nbr_block(mini));
 			close_prev_pipe(mini);
 			unlink_free_heredoc(&mini);
 			wait_exitcode(&mini);

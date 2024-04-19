@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 04:31:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/20 01:48:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
+# define ERR_NHD "minishell: Too many heredoc\n"
 # define ERR_CMD ": Command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -93,6 +94,7 @@ typedef struct s_mini
 	int		hd_pos;
 	char	*lim;
 	char *hd_name[1024]; // to be free'd
+	// char **hd_name; // to be free'd
 	int		hd_idx;
 	int hd_fd; // to be closed
 }			t_mini;
@@ -144,7 +146,6 @@ int			ft_tabstr_len(char **tab);
 
 // to_exec.c
 int			nbr_block(t_mini mini);
-void		re_init_mini(t_mini *mini);
 void		close_prev_pipe(t_mini mini);
 void		unlink_free_heredoc(t_mini *mini);
 void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
@@ -173,6 +174,8 @@ void		putstr_error(char *cmd0, char *err_str);
 void		open_heredoc(t_mini *mini);
 void		fill_heredoc(t_mini *mini, int fd);
 void		limiter_err_mal(t_mini mini);
+int			nbr_heredoc(t_mini mini);
+char		**create_hd_name(t_mini *mini);
 
 // path.c
 void		get_paths(t_mini *mini, char **envp);

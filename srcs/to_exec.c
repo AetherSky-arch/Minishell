@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 19:42:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/20 01:49:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,6 @@ int	nbr_block(t_mini mini)
 	return (nbr);
 }
 
-void	re_init_mini(t_mini *mini)
-{
-	mini->is_pipe = 0;
-	mini->is_last_pid = 0;
-	// mini->prev_fd0 = -1;
-	mini->prev_fd0 = 0;
-}
-
 void	close_prev_pipe(t_mini mini)
 {
 	if (mini.prev_fd0 > 0)
@@ -49,13 +41,17 @@ void	unlink_free_heredoc(t_mini *mini)
 	int	i;
 
 	i = 0;
+	if (mini->hd_fd > 0)
+		close(mini->hd_fd);
 	while ((i < 1023) && mini->hd_name[i])
 	{
 		unlink(mini->hd_name[i]);
 		free(mini->hd_name[i]);
+		
 		// mini->hd_name[i] = NULL; /******useful ?*/
 		i++;
 	}
+	// free (mini->hd_name);
 }
 
 // j = index of the next pipe (so len-1 if no pipe)
@@ -115,6 +111,8 @@ void	get_heredoc(t_mini *mini, int start)
 
 	i = start;
 	mini->is_heredoc = 0;
+	if (mini->hd_fd > 0)
+		close(mini->hd_fd);
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
@@ -122,16 +120,8 @@ void	get_heredoc(t_mini *mini, int start)
 			mini->is_heredoc = 1;
 			mini->hd_pos = i;
 			mini->hd_idx = get_heredoc_idx(mini, i);
-			ft_putstr_fd("idx=", STD_ERR);
-			ft_putnbr_fd(mini->hd_idx, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);
-			if (mini->hd_fd > 0)
-				close(mini->hd_fd);
 			if (mini->hd_name[mini->hd_idx])
 				mini->hd_fd = open(mini->hd_name[mini->hd_idx], O_RDONLY);
-			ft_putstr_fd("get fd=", STD_ERR);
-			ft_putnbr_fd(mini->hd_fd, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);	
 		}
 		i++;
 	}
@@ -208,12 +198,6 @@ void	child(t_mini *mini, char **envp, int start)
 	pid_t	pid;
 
 	get_heredoc(mini, start);
-	ft_putstr_fd("start=", STD_ERR);	
-	ft_putnbr_fd(start, STD_ERR);
-	ft_putstr_fd("\n", STD_ERR);
-	ft_putstr_fd("heredoc fd=", STD_ERR);	
-	ft_putnbr_fd(mini->hd_fd, STD_ERR);
-	ft_putstr_fd("\n", STD_ERR);
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -232,9 +216,6 @@ void	child(t_mini *mini, char **envp, int start)
 		{
 			dup2(mini->hd_fd, STD_IN);
 			close(mini->hd_fd);
-			ft_putstr_fd("c heredoc fd=", STD_ERR);
-			ft_putnbr_fd(mini->hd_fd, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);
 		}
 		else if (mini->prev_fd0 > 0)
 			dup2(mini->prev_fd0, STD_IN);
@@ -251,8 +232,6 @@ void	child(t_mini *mini, char **envp, int start)
 		close(mini->fd[1]);
 		exec_arg(*mini, envp, start);
 	}
-	if (mini->hd_fd > 0)
-		close(mini->hd_fd);
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
@@ -262,6 +241,25 @@ void	child(t_mini *mini, char **envp, int start)
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
 // // forcely something else after a pipe otherwise Stx Error
+
+// ft_putstr_fd("start=", STD_ERR);
+// ft_putnbr_fd(start, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
+// ft_putstr_fd("is hd=", STD_ERR);
+// ft_putnbr_fd(mini->is_heredoc, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
+// ft_putstr_fd("heredoc fd=", STD_ERR);
+// ft_putnbr_fd(mini->hd_fd, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
+// ft_putstr_fd("idx=", STD_ERR);
+// ft_putnbr_fd(mini->hd_idx, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
+// ft_putstr_fd("is pipe + start=", STD_ERR);
+// ft_putnbr_fd(mini->is_pipe + start, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
+// ft_putstr_fd("get fd=", STD_ERR);
+// ft_putnbr_fd(mini->hd_fd, STD_ERR);
+// ft_putstr_fd("\n", STD_ERR);
 
 // printf("OUT=%d\n", fcntl(mini->fd[1], F_GETFL));
 // printf("OUTgnl=%d\n", fcntl(STD_OUT, F_GETFL));
@@ -304,4 +302,12 @@ void	child(t_mini *mini, char **envp, int start)
 // 			j++;
 // 		start = j;
 // 	}
+// }
+
+// void	re_init_mini(t_mini *mini)
+// {
+// 	mini->is_pipe = 0;
+// 	mini->is_last_pid = 0;
+// 	// mini->prev_fd0 = -1;
+// 	mini->prev_fd0 = 0;
 // }

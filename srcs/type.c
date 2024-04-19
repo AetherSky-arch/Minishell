@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/09 01:36:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/20 00:49:47 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_type *create_type(t_mini *mini)
 	if (!(*mini).token)
 		return (NULL);	
 	(*mini).type_len = ft_tabstr_len((*mini).token);
-	type = malloc(sizeof(t_type) * (*mini).type_len);
+	//type = malloc(sizeof(t_type) * (*mini).type_len);
+	type = malloc(sizeof(int) * (*mini).type_len);
 	if (!type)
 		return (NULL);
 	i = 0;
@@ -29,7 +30,7 @@ t_type *create_type(t_mini *mini)
 	{
 		type[i] = get_type((*mini).token, i);
 		i++;
-	}
+	}	
 	return(type);
 }
 

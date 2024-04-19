@@ -40,18 +40,18 @@ Solved:
 3) cat | wc << eof --> ok as bash (~~but next weird (need to enter on each new prompt)~~)
 5) wc << eof | cat --> ok
 Issues:
-4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f
-6) wc << eof | ls | wc << e | cat
-7) wc << eof | cat > out | wc << eof | cat
-8) << eof
-9) << eof | << rt
-10) << eof | << rt wc
-11) cat << ty  | cat << eof | wc
+4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f --> ok
+6) wc << eof | ls | wc << e | cat --> ok
+7) wc << eof | cat > out | wc << eof | cat --> ok
+8) << eof --> ok
+9) << eof | << rt --> ok
+10) << eof | << rt wc --> ok
+11) cat << ty  | cat << eof | wc --> ok
 
 un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
  
 Syntax error to be checked
-1) at least one CMD by block (and only one ?)
+1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc, solved 
 2) last word of the prompt is not a pipe
 3) we need to be sure there is a LIMITER just after HEREDOC
 
