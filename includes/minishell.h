@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 01:35:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 04:31:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,31 @@ typedef enum e_type
 
 typedef struct s_mini
 {
+	// prompt
 	char *fprompt; // to be free'd
 	char **token;  // to be free'd
 	t_type *type;  // to be free'd
 	int		type_len;
 	int		exitcode;
-	//
+	// exec
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
 	char	**envvars;
-	//
+	// file descriptor
 	int fd_in;    // to be closed
 	int fd_out;   // to be closed
 	int fd[2];    // to be closed
 	int prev_fd0; // to be closed
 	int		is_pipe;
-	//
+	// fork/wait
 	pid_t	last_pid;
 	int		status;
 	int		is_last_pid;
-	//
+	// heredoc
 	int		is_heredoc;
 	int		hd_pos;
 	char	*lim;
-	char	*hd_name[1024];
+	char *hd_name[1024]; // to be free'd
 	int		hd_idx;
 	int hd_fd; // to be closed
 }			t_mini;
@@ -147,6 +148,7 @@ void		re_init_mini(t_mini *mini);
 void		close_prev_pipe(t_mini mini);
 void		unlink_free_heredoc(t_mini *mini);
 void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
+int			get_heredoc_idx(t_mini *mini, int hd_pos);
 void		get_heredoc(t_mini *mini, int start);
 int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);

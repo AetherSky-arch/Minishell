@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 01:54:10 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 04:35:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	unlink_free_heredoc(t_mini *mini)
 	int	i;
 
 	i = 0;
-	while (i < 1023 && mini->hd_name[i])
+	while ((i < 1023) && mini->hd_name[i])
 	{
 		unlink(mini->hd_name[i]);
 		free(mini->hd_name[i]);
@@ -59,7 +59,7 @@ void	unlink_free_heredoc(t_mini *mini)
 }
 
 // j = index of the next pipe (so len-1 if no pipe)
-// if no pipe (just one cmd), same as usual case,
+// if no pipe (just one cmd or heredoc), same as usual case,
 // the pipe is just not used and closed
 void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 {
@@ -92,6 +92,22 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 	}
 }
 
+// no need if child order is well the executed order - just to be sure
+int	get_heredoc_idx(t_mini *mini, int hd_pos)
+{
+	int	i;
+
+	i = 0;
+	mini->hd_idx = -1;
+	while (i <= hd_pos)
+	{
+		if (mini->type[i] == HEREDOC)
+			mini->hd_idx++;
+		i++;
+	}
+	return (mini->hd_idx);
+}
+
 // we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
 void	get_heredoc(t_mini *mini, int start)
 {
@@ -99,18 +115,17 @@ void	get_heredoc(t_mini *mini, int start)
 
 	i = start;
 	mini->is_heredoc = 0;
-	//mini->hd_idx = 0; /***** to be checked here *****/
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
 		{
 			mini->is_heredoc = 1;
 			mini->hd_pos = i;
+			mini->hd_idx = get_heredoc_idx(mini, i);
 			if (mini->hd_fd > 0)
 				close(mini->hd_fd);
 			if (mini->hd_name[mini->hd_idx])
 				mini->hd_fd = open(mini->hd_name[mini->hd_idx], O_RDONLY);
-			mini->hd_idx++;
 		}
 		i++;
 	}
@@ -186,15 +201,11 @@ void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
 
-	// char buff[42];
-	// ssize_t n;
-	get_heredoc(mini, start);
-	// n = read(mini->heredoc_fd, buff, 42);
-	// ft_putnbr_fd(n, STD_ERR);
-	// ft_putstr_fd(buff, STD_ERR);
-	// ft_putstr_fd("heredoc fd=", STD_ERR);
-	// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-	// ft_putstr_fd("\n", STD_ERR);
+	
+	get_heredoc(mini, start);	
+	ft_putstr_fd("heredoc fd=", STD_ERR);
+	ft_putnbr_fd(mini->hd_fd, STD_ERR);
+	ft_putstr_fd("\n", STD_ERR);
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -213,9 +224,9 @@ void	child(t_mini *mini, char **envp, int start)
 		{
 			dup2(mini->hd_fd, STD_IN);
 			close(mini->hd_fd);
-			// ft_putstr_fd("c heredoc fd=", STD_ERR);
-			// ft_putnbr_fd(mini->heredoc_fd, STD_ERR);
-			// ft_putstr_fd("\n", STD_ERR);
+			ft_putstr_fd("c heredoc fd=", STD_ERR);
+			ft_putnbr_fd(mini->hd_fd, STD_ERR);
+			ft_putstr_fd("\n", STD_ERR);
 		}
 		else if (mini->prev_fd0 > 0)
 			dup2(mini->prev_fd0, STD_IN);
@@ -241,27 +252,8 @@ void	child(t_mini *mini, char **envp, int start)
 	close(mini->fd[0]);
 }
 
-// ft_putstr_fd("pipe OUT", STD_ERR);
-// ft_putnbr_fd(start, STD_ERR);
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
-
 // // forcely something else after a pipe otherwise Stx Error
-// void	fill_pipe(t_mini *mini, int next_block)
-// {
-// 	int	i;
-
-// 	mini->fill_pipe = 1;
-// 	i = next_block;
-// 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
-// 	{
-// 		if ((mini->type[i] == INFILE) || (mini->type[i] == HEREDOC))
-// 		{
-// 			mini->fill_pipe = 0;
-// 			break ;
-// 		}
-// 		i++;
-// 	}
-// }
 
 // printf("OUT=%d\n", fcntl(mini->fd[1], F_GETFL));
 // printf("OUTgnl=%d\n", fcntl(STD_OUT, F_GETFL));
