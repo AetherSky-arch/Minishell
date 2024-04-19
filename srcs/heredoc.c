@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 01:54:01 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:35:31 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*heredoc_name(void)
 			break ;
 		nbr++;
 	}
+	close(tmp_fd);
 	return (name);
 }
 

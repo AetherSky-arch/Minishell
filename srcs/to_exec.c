@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/19 04:35:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/19 19:42:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,16 @@ void	get_heredoc(t_mini *mini, int start)
 			mini->is_heredoc = 1;
 			mini->hd_pos = i;
 			mini->hd_idx = get_heredoc_idx(mini, i);
+			ft_putstr_fd("idx=", STD_ERR);
+			ft_putnbr_fd(mini->hd_idx, STD_ERR);
+			ft_putstr_fd("\n", STD_ERR);
 			if (mini->hd_fd > 0)
 				close(mini->hd_fd);
 			if (mini->hd_name[mini->hd_idx])
 				mini->hd_fd = open(mini->hd_name[mini->hd_idx], O_RDONLY);
+			ft_putstr_fd("get fd=", STD_ERR);
+			ft_putnbr_fd(mini->hd_fd, STD_ERR);
+			ft_putstr_fd("\n", STD_ERR);	
 		}
 		i++;
 	}
@@ -201,9 +207,11 @@ void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
 
-	
-	get_heredoc(mini, start);	
-	ft_putstr_fd("heredoc fd=", STD_ERR);
+	get_heredoc(mini, start);
+	ft_putstr_fd("start=", STD_ERR);	
+	ft_putnbr_fd(start, STD_ERR);
+	ft_putstr_fd("\n", STD_ERR);
+	ft_putstr_fd("heredoc fd=", STD_ERR);	
 	ft_putnbr_fd(mini->hd_fd, STD_ERR);
 	ft_putstr_fd("\n", STD_ERR);
 	pid = fork();

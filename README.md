@@ -46,6 +46,7 @@ Issues:
 8) << eof
 9) << eof | << rt
 10) << eof | << rt wc
+11) cat << ty  | cat << eof | wc
 
 un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
  
