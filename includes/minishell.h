@@ -6,14 +6,12 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:20:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:57:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# define _GNU_SOURCE
 
 # include "../libft/libft.h"
 // # include <asm-generic/fcntl.h>
@@ -30,11 +28,11 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+// # define _GNU_SOURCE
+
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
-// # define WH_HEREDOC 1
-// # define NO_HEREDOC 0
 # define ERR_RDL "minishell: readline: Can't read input\n"
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
@@ -74,7 +72,6 @@ typedef struct s_mini
 	char **token;  // to be free'd
 	t_type *type;  // to be free'd
 	int		type_len;
-	int		exitcode;
 	// exec
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
@@ -89,19 +86,25 @@ typedef struct s_mini
 	pid_t	last_pid;
 	int		status;
 	int		is_last_pid;
+	int		exitcode;
 	// heredoc
 	int		is_heredoc;
 	int		hd_pos;
-	char	*lim;
-	// char *hd_name[1024]; // to be free'd
-	char **hd_name; // to be free'd
 	int		hd_idx;
-	int hd_fd; // to be closed
+	char	*lim;
+	int hd_fd;      // to be closed
+	char **hd_name; // to be free'd
 }			t_mini;
 
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
+
+// syntax checks
+char		get_next_char(char *prompt, int i);
+int			check_pipes(char *prompt);
+int			syntax_checker(char *prompt);
+
 // format_prompt.c
 char		*format_prompt(char *prompt);
 int			len_prompt_minus_space(char *prompt);
@@ -144,17 +147,35 @@ t_type		get_type2(char **token, int i);
 void		check_type(t_type *type, char **token);
 int			ft_tabstr_len(char **tab);
 
-// to_exec.c
-int			nbr_block(t_mini mini);
-void		close_prev_pipe(t_mini mini);
-void		unlink_free_heredoc(t_mini *mini);
-void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
-int			get_heredoc_idx(t_mini *mini, int hd_pos);
-void		get_heredoc(t_mini *mini, int start);
+// heredoc_setting.c
+void		open_heredoc(t_mini *mini);
+char		**create_hd_name(t_mini *mini);
+char		*heredoc_name(void);
+void		fill_heredoc(t_mini *mini, int fd);
+void		limiter_err_mal(t_mini mini);
+
+// files.c
 int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);
 int			is_outfile(t_mini *mini, int start);
+
+// heredoc_to_exec.c
+int			nbr_heredoc(t_mini mini);
+void		get_heredoc(t_mini *mini, int start);
+int			get_heredoc_idx(t_mini *mini, int hd_pos);
+void		unlink_free_hdname(t_mini *mini);
+
+// to_exec.c
+int			nbr_block(t_mini mini);
+void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
 void		child(t_mini *mini, char **envp, int start);
+void		close_prev_pipe(t_mini mini);
+
+// path.c
+void		get_paths(t_mini *mini, char **envp);
+void		slash_paths(t_mini *mini);
+int			check_in_str(char *s1, char *s2);
+char		*check_path(char **paths, char **cmd);
 
 // exec.c
 int			check_slash(char *str);
@@ -170,19 +191,6 @@ void		perror_open(t_mini mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
-// heredoc.c
-void		open_heredoc(t_mini *mini);
-void		fill_heredoc(t_mini *mini, int fd);
-void		limiter_err_mal(t_mini mini);
-int			nbr_heredoc(t_mini mini);
-char		**create_hd_name(t_mini *mini);
-
-// path.c
-void		get_paths(t_mini *mini, char **envp);
-void		slash_paths(t_mini *mini);
-int			check_in_str(char *s1, char *s2);
-char		*check_path(char **paths, char **cmd);
-
 /***************temp temp temp *****************/
 
 // ft_split.c
@@ -192,10 +200,5 @@ char		**ft_split(char const *s, char c);
 void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
-
-// syntax checks
-char		get_next_char(char *prompt, int i);
-int			check_pipes(char *prompt);
-int			syntax_checker(char *prompt);
 
 #endif

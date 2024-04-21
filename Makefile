@@ -2,6 +2,8 @@ NAME = minishell
 
 SRCS := srcs/main.c \
 		srcs/check_quotes.c \
+		srcs/syntax_checker.c \
+		srcs/syntax_checker_utils.c \
 		srcs/format_prompt.c \
 		srcs/format_prompt_utils.c \
 		srcs/format_prompt_utils2.c \
@@ -11,14 +13,15 @@ SRCS := srcs/main.c \
 		srcs/tokenizer_utils.c \
 		srcs/tokenizer_utils2.c \
 		srcs/type.c \
+		srcs/heredoc_setting.c \
+		srcs/files.c \
+		srcs/heredoc_to_exec.c \
 		srcs/to_exec.c \
-		srcs/exec.c \
 		srcs/path.c \
-		srcs/heredoc.c \
+		srcs/exec.c \
 		srcs/free_close_exit.c \
-		srcs/temp.c \
-		srcs/syntax_checker.c \
-		srcs/syntax_checker_utils.c
+		srcs/temp.c
+		
 
 OBJS = ${SRCS:.c=.o}
 

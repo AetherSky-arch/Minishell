@@ -1,47 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   heredoc_setting.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:59:04 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:19:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// name to be free'd
-char	*heredoc_name(void)
-{
-	char				*name;
-	unsigned long int	nbr;
-	char				*number;
-
-	// int					tmp_fd;
-	// tmp_fd = -1;
-	nbr = 0;
-	name = NULL;
-	while (nbr < ULONG_MAX)
-	{
-		number = ft_ulitoa(nbr);
-		name = ft_strjoin("/tmp/heredoc_", number);
-		free(number);
-		if (name)
-		{
-			if (access(name, F_OK) != 0)
-				break ;
-		}
-		// if (name)
-		// 	tmp_fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0666);
-		// if (tmp_fd != -1)
-		// 	break ;
-		nbr++;
-	}
-	// close(tmp_fd);
-	return (name);
-}
 
 void	open_heredoc(t_mini *mini)
 {
@@ -49,7 +18,6 @@ void	open_heredoc(t_mini *mini)
 	int	fd;
 	int	j;
 
-	// char	*name;
 	i = 0;
 	j = 0;
 	if (nbr_heredoc(*mini))
@@ -73,6 +41,62 @@ void	open_heredoc(t_mini *mini)
 			i++;
 		}
 	}
+}
+
+/*************** how to exit in case of failure *****************************/
+/*************** how to exit in case of failure *****************************/
+/*************** how to exit in case of failure *****************************/
+char	**create_hd_name(t_mini *mini)
+{
+	char	**hd_name;
+	int		i;
+	int		nb;
+
+	nb = nbr_heredoc(*mini);
+	if (nb >= 1024)
+	{
+		ft_putstr_fd(ERR_NHD, STD_ERR);
+		mini->exitcode = EXIT_FAILURE;
+		/*****exit****/
+		return (NULL);
+	}
+	hd_name = malloc(sizeof(char *) * (nb + 1));
+	if (!hd_name)
+		return (NULL);
+	/*****malloc error + exit ******/
+	i = 0;
+	while (i < nb)
+	{
+		hd_name[i] = NULL;
+		i++;
+	}
+	hd_name[i] = NULL;
+	return (hd_name);
+}
+
+// name to be free'd
+char	*heredoc_name(void)
+{
+	char				*name;
+	unsigned long int	nbr;
+	char				*number;
+
+	nbr = 0;
+	name = NULL;
+	while (nbr < ULONG_MAX)
+	{
+		number = ft_ulitoa(nbr);
+		name = ft_strjoin("/tmp/heredoc_", number);
+		free(number);
+		if (name)
+		{
+			if (access(name, F_OK) != 0)
+				break ;
+		}
+		nbr++;
+		free(name);
+	}
+	return (name);
 }
 
 //********** !!! in case of kill, MUST FREE heredoc name ***************//
@@ -109,49 +133,12 @@ void	limiter_err_mal(t_mini mini)
 	close_exit(mini, EXIT_FAILURE);
 }
 
-int	nbr_heredoc(t_mini mini)
-{
-	int	count;
-	int	i;
+/***draft ****/
 
-	count = 0;
-	i = 0;
-	while (i < mini.type_len)
-	{
-		if (mini.type[i] == HEREDOC)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-/*************** how to exit in case of failure *****************************/
-/*************** how to exit in case of failure *****************************/
-/*************** how to exit in case of failure *****************************/
-char	**create_hd_name(t_mini *mini)
-{
-	char	**hd_name;
-	int		i;
-	int		nb;
-
-	nb = nbr_heredoc(*mini);
-	if (nb >= 1024)
-	{
-		ft_putstr_fd(ERR_NHD, STD_ERR);
-		mini->exitcode = EXIT_FAILURE;
-		/*****exit****/
-		return (NULL);
-	}
-	hd_name = malloc(sizeof(char *) * (nb + 1));
-	if (!hd_name)
-		return (NULL);
-	/*****malloc error + exit ******/
-	i = 0;
-	while (i < nb)
-	{
-		hd_name[i] = NULL;
-		i++;
-	}
-	hd_name[i] = NULL;
-	return (hd_name);
-}
+// int					tmp_fd;
+// tmp_fd = -1;
+// if (name)
+// 	tmp_fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0666);
+// if (tmp_fd != -1)
+// 	break ;
+// close(tmp_fd);

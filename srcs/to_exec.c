@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 01:39:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:34:40 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,6 @@ int	nbr_block(t_mini mini)
 		i++;
 	}
 	return (nbr);
-}
-
-void	close_prev_pipe(t_mini mini)
-{
-	if (mini.prev_fd0 > 0)
-		close(mini.prev_fd0);
-}
-
-void	unlink_free_heredoc(t_mini *mini)
-{
-	int	i;
-
-	if (mini->hd_fd > 0)
-		close(mini->hd_fd);
-	if (mini->hd_name)
-	{
-		i = 0;
-		while (mini->hd_name[i])
-		{
-			unlink(mini->hd_name[i]);
-			free(mini->hd_name[i]);
-			// mini->hd_name[i] = NULL; /******useful ?*/
-			i++;
-		}
-		free(mini->hd_name);
-	}
 }
 
 // j = index of the next pipe (so len-1 if no pipe)
@@ -88,111 +62,6 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 		start = j;
 		i++;
 	}
-}
-
-// no need if child order is well the executed order - just to be sure
-int	get_heredoc_idx(t_mini *mini, int hd_pos)
-{
-	int	i;
-
-	i = 0;
-	mini->hd_idx = -1;
-	while (i <= hd_pos)
-	{
-		if (mini->type[i] == HEREDOC)
-			mini->hd_idx++;
-		i++;
-	}
-	return (mini->hd_idx);
-}
-
-// we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
-void	get_heredoc(t_mini *mini, int start)
-{
-	int	i;
-
-	i = start;
-	mini->is_heredoc = 0;
-	if (mini->hd_fd > 0)
-		close(mini->hd_fd);
-	while ((i < mini->type_len) && (mini->type[i] != PIPE))
-	{
-		if (mini->type[i] == HEREDOC)
-		{
-			mini->is_heredoc = 1;
-			mini->hd_pos = i;
-			mini->hd_idx = get_heredoc_idx(mini, i);
-			if (mini->hd_name[mini->hd_idx])
-				mini->hd_fd = open(mini->hd_name[mini->hd_idx], O_RDONLY);
-		}
-		i++;
-	}
-}
-
-int	is_infile(t_mini *mini, int start)
-{
-	int	i;
-	int	is_infile;
-	int	prev_fd_in;
-
-	i = start;
-	is_infile = 0;
-	prev_fd_in = -1;
-	while ((i < mini->type_len) && (mini->type[i] != PIPE))
-	{
-		if (mini->type[i] == INFILE)
-		{
-			open_infile(mini, mini->token[i]);
-			if (mini->hd_pos < i)
-			{
-				is_infile = 1;
-				if (prev_fd_in > -1)
-					close(prev_fd_in);
-				prev_fd_in = mini->fd_in;
-			}
-			else
-				close(mini->fd_in);
-		}
-		i++;
-	}
-	return (is_infile);
-}
-
-// if exist and readable --> open
-// else exit (from child)
-void	open_infile(t_mini *mini, char *infile)
-{
-	mini->fd_in = open(infile, O_RDONLY);
-	if (mini->fd_in < 0)
-		perror_open(*mini, infile);
-}
-
-int	is_outfile(t_mini *mini, int start)
-{
-	int	i;
-	int	is_outfile;
-
-	i = start;
-	is_outfile = 0;
-	while ((i < mini->type_len) && (mini->type[i] != PIPE))
-	{
-		if (mini->type[i] == OUTFILE)
-		{
-			mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT,
-					0666);
-			is_outfile = 1;
-		}
-		if (mini->type[i] == OUTFAPP)
-		{
-			mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
-					0666);
-			is_outfile = 1;
-		}
-		if (mini->fd_out < 0)
-			perror_open(*mini, mini->token[i]);
-		i++;
-	}
-	return (is_outfile);
 }
 
 void	child(t_mini *mini, char **envp, int start)
@@ -240,6 +109,16 @@ void	child(t_mini *mini, char **envp, int start)
 	mini->prev_fd0 = dup(mini->fd[0]);
 	close(mini->fd[0]);
 }
+
+void	close_prev_pipe(t_mini mini)
+{
+	if (mini.prev_fd0 > 0)
+		close(mini.prev_fd0);
+	if (mini.hd_fd > 0)
+		close(mini.hd_fd);
+}
+
+/****draft ******/
 
 // perror_close_exit("pipex: dup2", *mini, EXIT_FAILURE);
 // // forcely something else after a pipe otherwise Stx Error

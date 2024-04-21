@@ -39,7 +39,6 @@ Solved:
 2) cat < Makefile | echo toto | wc >> out --> ok
 3) cat | wc << eof --> ok as bash (~~but next weird (need to enter on each new prompt)~~)
 5) wc << eof | cat --> ok
-Issues:
 4) sleep 2 | sleep 2 | cat << e | sleep 2 | cat << f --> ok
 6) wc << eof | ls | wc << e | cat --> ok
 7) wc << eof | cat > out | wc << eof | cat --> ok
@@ -48,14 +47,32 @@ Issues:
 10) << eof | << rt wc --> ok
 11) cat << ty  | cat << eof | wc --> ok
 
-un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
- 
+Issues:
+1) << eof | <<
+2) << | << eof
+
+Valgrind:
+valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes
+1) << eof --> ok
+2) << eof < Makefile | << eof > out -->ok
+3) << eof | Makefile --> ok
+3) < Makefile | << eof toto --> ok
+3) toto --> ok
+4) << eof | < Makefile --> ok
+4) < Makefile | << eof --> ok
+5) << eof < Makefile | wc --> ok
+6) cat Makefile | < out --> SIGPIPE ok fd ?
+
+
 Syntax error to be checked
 1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc, solved 
 2) last word of the prompt is not a pipe
 3) we need to be sure there is a LIMITER just after HEREDOC
 
-Ask
+Ask:
 - open (0666), mais rw/r/r ??? 
 - double_free((void **)(mini->cmd_arg));
 - mettre NULL apres free
+
+NB:
+un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif

@@ -6,15 +6,15 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/18 22:19:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 22:27:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/********************************************************/
+/**************************************************************/
 /****************to be reviewed with the stat functions********/
-/********************************************************/
+/**************************************************************/
 int	check_slash(char *str)
 {
 	size_t	i;
@@ -47,7 +47,8 @@ void	exec_arg(t_mini mini, char **envp, int start)
 		else
 			exec_cmd(mini, envp);
 	}
-	else if (mini.fprompt)
+	//else if (mini.fprompt)
+	else if (mini.type)
 		free_close_exit(&mini, EXIT_SUCCESS, 0);
 	else
 	{
@@ -86,7 +87,7 @@ void	get_cmd_arg(t_mini *mini, int start)
 			j++;
 	}
 	(*mini).cmd_arg = ft_split(tmp1, ' ');
-	free(tmp1);
+	//free(tmp1);
 }
 
 // int execve(const char *pathname, char *const argv[], char *const envp[]);
