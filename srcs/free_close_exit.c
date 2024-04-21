@@ -6,27 +6,11 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 22:30:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 01:12:58 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	free_double(char **cmd)
-{
-	int	i;
-
-	i = 0;
-	if (cmd)
-	{
-		while (cmd[i])
-		{
-			free(cmd[i]);
-			i++;
-		}
-		free(cmd);
-	}
-}
 
 void	close_exit(t_mini mini, int k)
 {
@@ -39,20 +23,27 @@ void	close_exit(t_mini mini, int k)
 	exit(k);
 }
 
+/************************************************/
+/********* need to free here *******************/
+/************************************************/
 void	perror_close_exit(char *err, t_mini mini, int k)
 {
 	perror(err);
 	close_exit(mini, k);
 }
 
-void	perror_open(t_mini mini, char *filename)
+void	perror_open_free(t_mini *mini, char *filename)
 {
 	char	*tmp;
 
 	tmp = ft_strjoin("minishell: ", filename);
 	perror(tmp);
 	free(tmp);
-	close_exit(mini, EXIT_FAILURE);
+	double_free((void **)(mini->hd_name));
+	double_free((void **)mini->token);
+	free(mini->fprompt);
+	free(mini->type);
+	close_exit(*mini, EXIT_FAILURE);
 }
 
 void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
@@ -64,6 +55,12 @@ void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 	double_free((void **)mini->token);
 	free(mini->fprompt);
 	free(mini->type);
+	// //
+	// ft_putstr_fd("exit=", STD_ERR);
+	// ft_putnbr_fd(exit_code, STD_ERR);
+	// ft_putstr_fd("\n", STD_ERR);
+	// //
+	// mini->exitcode = exit_code;
 	close_exit(*mini, exit_code);
 }
 

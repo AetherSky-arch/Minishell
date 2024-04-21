@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 21:47:10 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 01:14:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	quit(char *prompt)
 {
 	free(prompt);
-	// rl_clear_history();
+	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
 
@@ -35,13 +35,13 @@ void	read_prompt(t_mini *mini)
 {
 	char	*prompt;
 
-	// prompt = readline("~$ ");
-	prompt = get_next_line(STD_IN);
+	prompt = readline("~$ ");
+	// prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
-		if (ft_strcmp(prompt, "exit\n") == 0)
-			// add_history(prompt);
-			// if (ft_strcmp(prompt, "exit") == 0)
+		// if (ft_strcmp(prompt, "exit\n") == 0)
+		add_history(prompt);
+		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
@@ -71,7 +71,7 @@ void	read_prompt(t_mini *mini)
 		ft_putstr_fd(ERR_RDL, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
 		free(prompt);
-		// rl_clear_history();
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -120,6 +120,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			perror("minishell: tty");
 	}
-	// rl_clear_history();
+	rl_clear_history();
 	return (mini.exitcode);
+	/***never returned ? ***/
 }

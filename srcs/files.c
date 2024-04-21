@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 20:08:12 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:21:46 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	open_infile(t_mini *mini, char *infile)
 {
 	mini->fd_in = open(infile, O_RDONLY);
 	if (mini->fd_in < 0)
-		perror_open(*mini, infile);
+		perror_open_free(mini, infile);
 }
 
 int	is_outfile(t_mini *mini, int start)
@@ -72,7 +72,7 @@ int	is_outfile(t_mini *mini, int start)
 			is_outfile = 1;
 		}
 		if (mini->fd_out < 0)
-			perror_open(*mini, mini->token[i]);
+			perror_open_free(mini, mini->token[i]);
 		i++;
 	}
 	return (is_outfile);

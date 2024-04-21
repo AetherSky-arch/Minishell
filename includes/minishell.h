@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 20:57:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:20:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void		exec_abs(t_mini mini, char **envp);
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
 void		perror_close_exit(char *err, t_mini mini, int k);
-void		perror_open(t_mini mini, char *filename);
+void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 

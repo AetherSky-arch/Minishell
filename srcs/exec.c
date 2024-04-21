@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 22:27:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 00:14:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	exec_arg(t_mini mini, char **envp, int start)
 	}
 }
 
+/********pourquoi pas free tmp1??? ************************/
 void	get_cmd_arg(t_mini *mini, int start)
 {
 	int		j;

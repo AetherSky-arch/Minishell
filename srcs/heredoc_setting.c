@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 20:19:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 23:27:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	open_heredoc(t_mini *mini)
 				mini->hd_name[j] = heredoc_name();
 				fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
 				if (fd < 0)
-					perror_open(*mini, mini->hd_name[j]);
+					perror_open_free(mini, mini->hd_name[j]);
 				fill_heredoc(mini, fd);
 				close(fd);
 			}
