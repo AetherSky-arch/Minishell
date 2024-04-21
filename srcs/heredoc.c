@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/20 01:47:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:59:04 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,40 +43,36 @@ char	*heredoc_name(void)
 	return (name);
 }
 
-// keep 1023 for a NULL (set at init)
 void	open_heredoc(t_mini *mini)
 {
-	int		i;
-	int		fd;
-	int		j;
-	char	*name;
+	int	i;
+	int	fd;
+	int	j;
 
-	// if (nbr_heredoc(*mini))
-	// 	mini->hd_name = create_hd_name(mini);
-	// if (mini->hd_name)
-	// {
+	// char	*name;
 	i = 0;
 	j = 0;
-	while (i < mini->type_len)
+	if (nbr_heredoc(*mini))
 	{
-		if (mini->type[i] == HEREDOC)
+		mini->hd_name = create_hd_name(mini);
+		while (i < mini->type_len)
 		{
-			if (mini->token[i + 1])
-				mini->lim = mini->token[i + 1];
-			while (j < 1023 && mini->hd_name[j])
-				j++;
-			name = heredoc_name();
-			mini->hd_name[j] = ft_strdup(name);
-			free(name);
-			fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
-			if (fd < 0)
-				perror_open(*mini, mini->hd_name[j]);
-			fill_heredoc(mini, fd);
-			close(fd);
+			if (mini->type[i] == HEREDOC)
+			{
+				if (mini->token[i + 1])
+					mini->lim = mini->token[i + 1];
+				while (mini->hd_name[j])
+					j++;
+				mini->hd_name[j] = heredoc_name();
+				fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
+				if (fd < 0)
+					perror_open(*mini, mini->hd_name[j]);
+				fill_heredoc(mini, fd);
+				close(fd);
+			}
+			i++;
 		}
-		i++;
 	}
-	// }
 }
 
 //********** !!! in case of kill, MUST FREE heredoc name ***************//
@@ -129,7 +125,9 @@ int	nbr_heredoc(t_mini mini)
 	return (count);
 }
 
-//
+/*************** how to exit in case of failure *****************************/
+/*************** how to exit in case of failure *****************************/
+/*************** how to exit in case of failure *****************************/
 char	**create_hd_name(t_mini *mini)
 {
 	char	**hd_name;
@@ -141,10 +139,13 @@ char	**create_hd_name(t_mini *mini)
 	{
 		ft_putstr_fd(ERR_NHD, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
+		/*****exit****/
+		return (NULL);
 	}
 	hd_name = malloc(sizeof(char *) * (nb + 1));
-	if (hd_name)
+	if (!hd_name)
 		return (NULL);
+	/*****malloc error + exit ******/
 	i = 0;
 	while (i < nb)
 	{

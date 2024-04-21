@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/20 01:49:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:39:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,20 @@ void	unlink_free_heredoc(t_mini *mini)
 {
 	int	i;
 
-	i = 0;
 	if (mini->hd_fd > 0)
 		close(mini->hd_fd);
-	while ((i < 1023) && mini->hd_name[i])
+	if (mini->hd_name)
 	{
-		unlink(mini->hd_name[i]);
-		free(mini->hd_name[i]);
-		
-		// mini->hd_name[i] = NULL; /******useful ?*/
-		i++;
+		i = 0;
+		while (mini->hd_name[i])
+		{
+			unlink(mini->hd_name[i]);
+			free(mini->hd_name[i]);
+			// mini->hd_name[i] = NULL; /******useful ?*/
+			i++;
+		}
+		free(mini->hd_name);
 	}
-	// free (mini->hd_name);
 }
 
 // j = index of the next pipe (so len-1 if no pipe)

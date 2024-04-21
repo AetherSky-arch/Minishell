@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/20 01:48:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/21 01:20:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ typedef struct s_mini
 	int		is_heredoc;
 	int		hd_pos;
 	char	*lim;
-	char *hd_name[1024]; // to be free'd
-	// char **hd_name; // to be free'd
+	// char *hd_name[1024]; // to be free'd
+	char **hd_name; // to be free'd
 	int		hd_idx;
 	int hd_fd; // to be closed
 }			t_mini;
