@@ -6,12 +6,13 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:27:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 22:06:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// << | << eof = stx_err vs << eof | << = open before stx_err
 void	open_heredoc(t_mini *mini)
 {
 	int	i;
@@ -23,9 +24,9 @@ void	open_heredoc(t_mini *mini)
 	if (nbr_heredoc(*mini))
 	{
 		mini->hd_name = create_hd_name(mini);
-		while (i < mini->type_len)
+		while (i < mini->type_len - 1)
 		{
-			if (mini->type[i] == HEREDOC)
+			if (mini->type[i] == HEREDOC && mini->type[i + 1] == LIMITER)
 			{
 				if (mini->token[i + 1])
 					mini->lim = mini->token[i + 1];

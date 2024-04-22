@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:20:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 22:28:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
+# define ERR_HDX "minishell: Syntax error near unexpected token: "
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
-# define ERR_NHD "minishell: Too many heredoc\n"
+# define ERR_NHD "minishell: Too many heredocs\n"
 # define ERR_CMD ": Command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -164,6 +165,7 @@ int			nbr_heredoc(t_mini mini);
 void		get_heredoc(t_mini *mini, int start);
 int			get_heredoc_idx(t_mini *mini, int hd_pos);
 void		unlink_free_hdname(t_mini *mini);
+int			check_heredoc(t_mini *mini);
 
 // to_exec.c
 int			nbr_block(t_mini mini);

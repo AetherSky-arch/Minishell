@@ -50,6 +50,11 @@ Solved:
 Issues:
 1) << eof | <<
 2) << | << eof
+3) << eof << <<<
+4) cat || wc (cat is working until ctrl+c)
+5) wc < Makefile || wc (exec 1er wc, exit 0) --> pour nous syntax error
+6) wc < Makefile wc (wc: wc: No such file or directory)
+7) < >>
 
 Valgrind:
 valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes
@@ -65,9 +70,10 @@ valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kind
 
 
 Syntax error to be checked
-1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc, solved 
+1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc or file, solved 
 2) last word of the prompt is not a pipe
 3) we need to be sure there is a LIMITER just after HEREDOC
+
 
 Ask:
 - open (0666), mais rw/r/r ??? 

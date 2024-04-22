@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 01:14:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/23 01:23:51 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	wait_exitcode(t_mini *mini)
 	}
 }
 
-void	read_prompt(t_mini *mini)
+int	read_prompt(t_mini *mini)
 {
 	char	*prompt;
 
@@ -43,28 +43,17 @@ void	read_prompt(t_mini *mini)
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
-		mini->exitcode = check_quotes(prompt);
-		if (mini->exitcode != 0)
-			return (free(prompt));
-		if (syntax_checker(prompt) == 0)
-		{
-			ft_putstr_fd(ERR_STX, STD_ERR);
-			mini->exitcode = EXIT_STX;
-			return (free(prompt));
-		}
-		if (mini->exitcode == 0)
-		{
-			mini->fprompt = format_prompt(prompt);
-			free(prompt);
-			mini->token = ft_split(mini->fprompt, ' ');
-			// tokenizer(mini);
-			mini->type = create_type(mini);
-			check_type(mini->type, mini->token);
-			/*** syntax_error of type succesion ? ***/
-			/***  temp: for checking  ***/
-			printf("f_prompt:%s\n", mini->fprompt);
-			temp_display_tabs(mini->token, mini->type);
-		}
+		mini->fprompt = format_prompt(prompt);
+		free(prompt);
+		mini->token = ft_split(mini->fprompt, ' ');
+		// tokenizer(mini);
+		mini->type = create_type(mini);
+		check_type(mini->type, mini->token);
+		/*** syntax_error of type succesion ? ***/
+		/***  temp: for checking  ***/
+		printf("f_prompt:%s\n", mini->fprompt);
+		temp_display_tabs(mini->token, mini->type);
+		return (0);
 	}
 	else
 	{
@@ -76,6 +65,21 @@ void	read_prompt(t_mini *mini)
 	}
 }
 
+// check_syntax return: 1 on failure (error), 0 on success (no error)
+int	check_syntax(t_mini *mini)
+{
+	mini->exitcode = check_quotes(mini->fprompt);
+	if (mini->exitcode != 0)
+		return (1);
+	if (syntax_checker(mini->fprompt) == 0)
+	{
+		ft_putstr_fd(ERR_STX, STD_ERR);
+		mini->exitcode = EXIT_STX;
+		return (1);
+	}
+	return (check_heredoc(mini));
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
@@ -83,7 +87,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	// mini = (t_mini){0}; // ok?
 	// mini.envvars = double_dup(envp);
 	// if (mini.envvars == NULL)
 	// {
@@ -94,16 +97,17 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			mini = (t_mini){0};
-			read_prompt(&mini);
-			open_heredoc(&mini);
-			blocks_to_child(&mini, envp, nbr_block(mini));
-			close_prev_pipe(mini);
-			unlink_free_hdname(&mini);
-			wait_exitcode(&mini);
-			//
-			/*** free here for now ***/
-			if (mini.exitcode != EXIT_STX)
+			if (read_prompt(&mini) == 0)
 			{
+				if (check_syntax(&mini) == 0)
+				{
+					open_heredoc(&mini);
+					blocks_to_child(&mini, envp, nbr_block(mini));
+					close_prev_pipe(mini);
+					wait_exitcode(&mini);
+				}
+				unlink_free_hdname(&mini);
+				/*** free here for now ***/
 				double_free((void **)mini.token);
 				free(mini.fprompt);
 				free(mini.type);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 20:02:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/22 22:28:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ int	nbr_heredoc(t_mini mini)
 
 	count = 0;
 	i = 0;
-	while (i < mini.type_len)
+	while (i < mini.type_len - 1)
 	{
 		if (mini.type[i] == HEREDOC)
-			count++;
+		{
+			if (mini.type[i + 1] != LIMITER)
+				return (count);
+			else
+				count++;
+		}
 		i++;
 	}
 	return (count);
@@ -82,4 +87,32 @@ void	unlink_free_hdname(t_mini *mini)
 		}
 		free(mini->hd_name);
 	}
+}
+
+int	check_heredoc(t_mini *mini)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (i < mini->type_len)
+	{
+		if (mini->type[i] == HEREDOC)
+		{
+			if ((i + 1 == mini->type_len) || (mini->type[i + 1] != LIMITER))
+			{
+				if (i + 1 == mini->type_len)
+					tmp = ft_strjoin(ERR_HDX, "newline");
+				else
+					tmp = ft_strjoin(ERR_HDX, mini->token[i + 1]);
+				ft_putstr_fd(tmp, STD_ERR);
+				ft_putstr_fd("\n", STD_ERR);
+				free(tmp);
+				mini->exitcode = EXIT_STX;
+				return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
 }
