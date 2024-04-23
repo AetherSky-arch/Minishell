@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 22:28:53 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 00:55:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct s_mini
 	char **token;  // to be free'd
 	t_type *type;  // to be free'd
 	int		type_len;
+	int		stx_err_idx;
 	// exec
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
@@ -98,8 +99,8 @@ typedef struct s_mini
 }			t_mini;
 
 // check_quote.c
-int			check_quotes(char *str);
-int			check_quotes_output(int s_open, int d_open);
+int			check_quotes(t_mini *mini);
+int			check_quotes_output(int s_open, int d_open, t_mini *mini);
 
 // syntax checks
 char		get_next_char(char *prompt, int i);
@@ -149,7 +150,7 @@ void		check_type(t_type *type, char **token);
 int			ft_tabstr_len(char **tab);
 
 // heredoc_setting.c
-void		open_heredoc(t_mini *mini);
+void		open_heredoc(t_mini *mini, int nbr_hd);
 char		**create_hd_name(t_mini *mini);
 char		*heredoc_name(void);
 void		fill_heredoc(t_mini *mini, int fd);
@@ -188,7 +189,7 @@ void		exec_abs(t_mini mini, char **envp);
 
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
-void		perror_close_exit(char *err, t_mini mini, int k);
+void		perror_close_exit(char *err, t_mini *mini, int k);
 void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 01:12:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/23 23:17:06 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,15 @@ void	close_exit(t_mini mini, int k)
 	exit(k);
 }
 
-/************************************************/
-/********* need to free here *******************/
-/************************************************/
-void	perror_close_exit(char *err, t_mini mini, int k)
+/***** exit minishell ou retour au prompt ? *************/
+void	perror_close_exit(char *err, t_mini *mini, int k)
 {
 	perror(err);
-	close_exit(mini, k);
+	double_free((void **)(mini->hd_name));
+	double_free((void **)mini->token);
+	free(mini->fprompt);
+	free(mini->type);
+	close_exit(*mini, k);
 }
 
 void	perror_open_free(t_mini *mini, char *filename)

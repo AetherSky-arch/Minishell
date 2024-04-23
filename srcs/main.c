@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/23 01:23:51 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:31:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int	read_prompt(t_mini *mini)
 // check_syntax return: 1 on failure (error), 0 on success (no error)
 int	check_syntax(t_mini *mini)
 {
-	mini->exitcode = check_quotes(mini->fprompt);
-	if (mini->exitcode != 0)
+	// mini->exitcode = check_quotes(mini->fprompt);
+	if (check_quotes(mini) != 0)
 		return (1);
 	if (syntax_checker(mini->fprompt) == 0)
 	{
@@ -99,9 +99,11 @@ int	main(int argc, char **argv, char **envp)
 			mini = (t_mini){0};
 			if (read_prompt(&mini) == 0)
 			{
-				if (check_syntax(&mini) == 0)
+				if (check_syntax(&mini) == 1)
+					open_heredoc(&mini, nbr_heredoc(mini));
+				else
 				{
-					open_heredoc(&mini);
+					open_heredoc(&mini, nbr_heredoc(mini));
 					blocks_to_child(&mini, envp, nbr_block(mini));
 					close_prev_pipe(mini);
 					wait_exitcode(&mini);

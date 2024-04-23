@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 22:28:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:22:39 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	nbr_heredoc(t_mini mini)
 	{
 		if (mini.type[i] == HEREDOC)
 		{
-			if (mini.type[i + 1] != LIMITER)
+			if ((mini.type[i + 1] != LIMITER) || (mini.stx_err_idx == i + 1))
 				return (count);
 			else
 				count++;
@@ -105,6 +105,7 @@ int	check_heredoc(t_mini *mini)
 					tmp = ft_strjoin(ERR_HDX, "newline");
 				else
 					tmp = ft_strjoin(ERR_HDX, mini->token[i + 1]);
+				mini->stx_err_idx = i + 1;				
 				ft_putstr_fd(tmp, STD_ERR);
 				ft_putstr_fd("\n", STD_ERR);
 				free(tmp);
