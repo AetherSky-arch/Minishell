@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 01:07:35 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/23 23:17:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 		else if (mini->type[j] == PIPE)
 			mini->is_pipe = 1;
 		if (pipe(mini->fd) == -1)
-			perror_close_exit("minishell: pipe", *mini, EXIT_FAILURE);
+			perror_close_exit("minishell: pipe", mini, EXIT_FAILURE);
 		else
 			child(mini, envp, start);
 		if (j < mini->type_len)
@@ -73,7 +73,7 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
 	if (pid == -1)
-		perror_close_exit("minishell: fork", *mini, EXIT_FAILURE);
+		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
 		close(mini->fd[0]);

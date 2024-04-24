@@ -37,9 +37,10 @@
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (quote opened)\n"
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
+# define ERR_HDX "minishell: Syntax error near unexpected token: "
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
-# define ERR_NHD "minishell: Too many heredoc\n"
+# define ERR_NHD "minishell: Too many heredocs\n"
 # define ERR_CMD ": Command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -72,6 +73,7 @@ typedef struct s_mini
 	char **token;  // to be free'd
 	t_type *type;  // to be free'd
 	int		type_len;
+	int		stx_err_idx;
 	// exec
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
@@ -97,8 +99,8 @@ typedef struct s_mini
 }			t_mini;
 
 // check_quote.c
-int			check_quotes(char *str);
-int			check_quotes_output(int s_open, int d_open);
+int			check_quotes(t_mini *mini);
+int			check_quotes_output(int s_open, int d_open, t_mini *mini);
 
 // syntax checks
 char		get_next_char(char *prompt, int i);
@@ -148,7 +150,7 @@ void		check_type(t_type *type, char **token);
 int			ft_tabstr_len(char **tab);
 
 // heredoc_setting.c
-void		open_heredoc(t_mini *mini);
+void		open_heredoc(t_mini *mini, int nbr_hd);
 char		**create_hd_name(t_mini *mini);
 char		*heredoc_name(void);
 void		fill_heredoc(t_mini *mini, int fd);
@@ -164,6 +166,7 @@ int			nbr_heredoc(t_mini mini);
 void		get_heredoc(t_mini *mini, int start);
 int			get_heredoc_idx(t_mini *mini, int hd_pos);
 void		unlink_free_hdname(t_mini *mini);
+int			check_heredoc(t_mini *mini);
 
 // to_exec.c
 int			nbr_block(t_mini mini);
@@ -186,10 +189,15 @@ void		exec_abs(t_mini mini, char **envp);
 
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
-void		perror_close_exit(char *err, t_mini mini, int k);
+void		perror_close_exit(char *err, t_mini *mini, int k);
 void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
+
+// export
+int         is_bad_assignment(char **args);
+int         is_no_equal(char *arg);
+char        *dequote(char *str);
 
 /***************temp temp temp *****************/
 
@@ -200,10 +208,5 @@ char		**ft_split(char const *s, char c);
 void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
-
-// export
-int         is_bad_assignment(char **args);
-int         is_no_equal(char *arg);
-char        *dequote(char *str);
 
 #endif

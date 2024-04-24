@@ -50,6 +50,11 @@ Solved:
 Issues:
 1) << eof | <<
 2) << | << eof
+3) << eof << <<<
+4) cat || wc (cat is working until ctrl+c)
+5) wc < Makefile || wc (exec 1er wc, exit 0) --> pour nous syntax error
+6) wc < Makefile wc (wc: wc: No such file or directory)
+7) < >>
 
 Valgrind:
 valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes
@@ -65,9 +70,10 @@ valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kind
 
 
 Syntax error to be checked
-1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc, solved 
+1) at least one CMD by block (and only one ?) --> wrong, may have no command, just heredoc or file, solved 
 2) last word of the prompt is not a pipe
 3) we need to be sure there is a LIMITER just after HEREDOC
+
 
 Ask:
 - open (0666), mais rw/r/r ??? 
@@ -76,3 +82,7 @@ Ask:
 
 NB:
 un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
+
+How to re-produce segfault: << eof '
+![seg fault](image.png)
+![alt text](image-1.png)

@@ -6,13 +6,15 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:27:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 01:22:12 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	open_heredoc(t_mini *mini)
+// << | << eof = stx_err vs << eof | << = open before stx_err
+// nbr_heredoc(*mini)
+void	open_heredoc(t_mini *mini, int nbr_hd)
 {
 	int	i;
 	int	fd;
@@ -20,32 +22,33 @@ void	open_heredoc(t_mini *mini)
 
 	i = 0;
 	j = 0;
-	if (nbr_heredoc(*mini))
+	if (nbr_hd)
 	{
 		mini->hd_name = create_hd_name(mini);
-		while (i < mini->type_len)
+		if (mini->hd_name)
 		{
-			if (mini->type[i] == HEREDOC)
+			while (i < mini->type_len - 1)
 			{
-				if (mini->token[i + 1])
-					mini->lim = mini->token[i + 1];
-				while (mini->hd_name[j])
-					j++;
-				mini->hd_name[j] = heredoc_name();
-				fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
-				if (fd < 0)
-					perror_open_free(mini, mini->hd_name[j]);
-				fill_heredoc(mini, fd);
-				close(fd);
+				if (mini->type[i] == HEREDOC && mini->type[i + 1] == LIMITER
+					&& j < nbr_hd)
+				{
+					if (mini->token[i + 1])
+						mini->lim = mini->token[i + 1];
+					mini->hd_name[j] = heredoc_name();
+					fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
+					if (fd < 0)
+						perror_open_free(mini, mini->hd_name[j]);
+					fill_heredoc(mini, fd);
+					close(fd);
+					while (mini->hd_name[j])
+						j++;
+				}
+				i++;
 			}
-			i++;
 		}
 	}
 }
 
-/*************** how to exit in case of failure *****************************/
-/*************** how to exit in case of failure *****************************/
-/*************** how to exit in case of failure *****************************/
 char	**create_hd_name(t_mini *mini)
 {
 	char	**hd_name;
@@ -56,14 +59,14 @@ char	**create_hd_name(t_mini *mini)
 	if (nb >= 1024)
 	{
 		ft_putstr_fd(ERR_NHD, STD_ERR);
-		mini->exitcode = EXIT_FAILURE;
-		/*****exit****/
-		return (NULL);
+		return (mini->exitcode = EXIT_FAILURE, NULL);
 	}
 	hd_name = malloc(sizeof(char *) * (nb + 1));
 	if (!hd_name)
-		return (NULL);
-	/*****malloc error + exit ******/
+	{
+		ft_putstr_fd(ERR_MAL, STD_ERR);
+		return (mini->exitcode = EXIT_FAILURE, NULL);
+	}
 	i = 0;
 	while (i < nb)
 	{
