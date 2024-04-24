@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:20:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:31:20 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,5 +200,10 @@ char		**ft_split(char const *s, char c);
 void		temp_display_tabs(char **token, t_type *type);
 // size_t		ft_tabint_len(int *tab);
 // size_t		ft_tabtype_len(t_type *tab);
+
+// export
+int         is_bad_assignment(char **args);
+int         is_no_equal(char *arg);
+char        *dequote(char *str);
 
 #endif
