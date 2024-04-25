@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/24 17:31:20 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/25 04:30:52 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define STD_ERR 2
 # define ERR_RDL "minishell: readline: Can't read input\n"
 # define ERR_STX "minishell: Syntax error\n"
-# define ERR_SQX "minishell: Syntax error (quote opened)\n"
+# define ERR_SQX "minishell: Syntax error (squote opened)\n"
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
 # define ERR_HDX "minishell: Syntax error near unexpected token: "
 # define ERR_GNL "minishell: gnl: Can't read input\n"
@@ -50,6 +50,8 @@
 # define EXIT_NOCMD 127
 # define EXIT_DENIED 126
 # define EXIT_NODIR 127
+# define SUCCESS 0
+# define FAILURE 1
 
 typedef enum e_type
 {
@@ -99,13 +101,9 @@ typedef struct s_mini
 }			t_mini;
 
 // check_quote.c
-int			check_quotes(t_mini *mini);
-int			check_quotes_output(int s_open, int d_open, t_mini *mini);
-
-// syntax checks
-char		get_next_char(char *prompt, int i);
-int			check_pipes(char *prompt);
-int			syntax_checker(char *prompt);
+int			check_quotes(char *str);
+int			check_quotes_output(int s_open, int d_open);
+void		check_quoted_type(t_type *type, char **token);
 
 // format_prompt.c
 char		*format_prompt(char *prompt);
@@ -130,8 +128,11 @@ void		other_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j);
 void		quote_in_len_plus(char *prompt, int *i, int *len, int q);
 void		symbol_in_len_plus(char *prompt, int *i, int *len);
 void		squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
-void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void		squote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j);
+
 // format_prompt_utils4.c
+void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+void		dquote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j);
 void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 
@@ -148,6 +149,13 @@ t_type		get_type(char **token, int i);
 t_type		get_type2(char **token, int i);
 void		check_type(t_type *type, char **token);
 int			ft_tabstr_len(char **tab);
+
+// syntax checks
+char		get_next_char(char *prompt, int i);
+int			check_pipes(char *str);
+int			count_less_more(char *prompt, int *i);
+int			check_less_more(char *str);
+int			syntax_checker(t_mini *mini);
 
 // heredoc_setting.c
 void		open_heredoc(t_mini *mini, int nbr_hd);
@@ -195,9 +203,9 @@ void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
 // export
-int         is_bad_assignment(char **args);
-int         is_no_equal(char *arg);
-char        *dequote(char *str);
+int			is_bad_assignment(char **args);
+int			is_no_equal(char *arg);
+char		*dequote(char *str);
 
 /***************temp temp temp *****************/
 

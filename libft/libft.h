@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:05:19 by arguez            #+#    #+#             */
-/*   Updated: 2024/04/22 22:26:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/25 02:08:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include "ft_printf.h"
+# include "get_next_line.h"
 # include <limits.h>
 # include <stdint.h>
 # include <stdlib.h>

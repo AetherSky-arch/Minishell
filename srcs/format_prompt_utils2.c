@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 21:58:52 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 22:29:45 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 22:41:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	quote_in_len_minus(char *prompt, int *i, int *len, int q)
 {
-	(*i)++;
-	(*len)++;
-	while (prompt[*i] != q)
+	if (prompt[*i + 1])
+	{
+		(*i)++;
+		(*len)++;
+	}
+	while (prompt[*i] && prompt[*i] != q)
 	{
 		(*i)++;
 		(*len)++;
@@ -36,7 +39,7 @@ void	squote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 	tmp_prompt[*i] = prompt[*j];
 	(*i)++;
 	(*j)++;
-	while (prompt[*j] != '\'')
+	while (prompt[*j] && prompt[*j] != '\'')
 	{
 		tmp_prompt[*i] = prompt[*j];
 		(*i)++;
@@ -49,7 +52,7 @@ void	dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 	tmp_prompt[*i] = prompt[*j];
 	(*i)++;
 	(*j)++;
-	while (prompt[*j] != '\"')
+	while (prompt[*j] && prompt[*j] != '\"')
 	{
 		tmp_prompt[*i] = prompt[*j];
 		(*i)++;

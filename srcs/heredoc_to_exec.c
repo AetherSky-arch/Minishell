@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/24 01:22:39 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/25 03:56:59 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ int	check_heredoc(t_mini *mini)
 				ft_putstr_fd("\n", STD_ERR);
 				free(tmp);
 				mini->exitcode = EXIT_STX;
-				return (1);
+				return (FAILURE);
 			}
 		}
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }

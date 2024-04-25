@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 23:18:25 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 20:51:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/25 02:05:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*gnl_strjoin(char *s1, char *s2)
 	return (free(s1), join);
 }
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 

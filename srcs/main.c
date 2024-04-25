@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/24 01:31:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/25 04:36:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,21 @@ int	read_prompt(t_mini *mini)
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
+		mini->exitcode = check_quotes(prompt);
+		if (mini->exitcode != 0)
+			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = ft_split(mini->fprompt, ' ');
 		// tokenizer(mini);
 		mini->type = create_type(mini);
 		check_type(mini->type, mini->token);
+		check_quoted_type(mini->type, mini->token);
 		/*** syntax_error of type succesion ? ***/
 		/***  temp: for checking  ***/
 		printf("f_prompt:%s\n", mini->fprompt);
 		temp_display_tabs(mini->token, mini->type);
-		return (0);
+		return (SUCCESS);
 	}
 	else
 	{
@@ -68,14 +72,21 @@ int	read_prompt(t_mini *mini)
 // check_syntax return: 1 on failure (error), 0 on success (no error)
 int	check_syntax(t_mini *mini)
 {
-	// mini->exitcode = check_quotes(mini->fprompt);
-	if (check_quotes(mini) != 0)
-		return (1);
-	if (syntax_checker(mini->fprompt) == 0)
+	char	*tmp;
+
+	if (syntax_checker(mini) == FAILURE)
 	{
-		ft_putstr_fd(ERR_STX, STD_ERR);
+		if (mini->token[mini->stx_err_idx])
+		{
+			tmp = ft_strjoin(ERR_HDX, mini->token[mini->stx_err_idx]);
+			ft_putstr_fd(tmp, STD_ERR);
+			ft_putstr_fd("\n", STD_ERR);
+			free(tmp);
+		}
+		else
+			ft_putstr_fd(ERR_STX, STD_ERR);
 		mini->exitcode = EXIT_STX;
-		return (1);
+		return (FAILURE);
 	}
 	return (check_heredoc(mini));
 }
@@ -97,9 +108,9 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			mini = (t_mini){0};
-			if (read_prompt(&mini) == 0)
+			if (read_prompt(&mini) == SUCCESS)
 			{
-				if (check_syntax(&mini) == 1)
+				if (check_syntax(&mini) == FAILURE)
 					open_heredoc(&mini, nbr_heredoc(mini));
 				else
 				{

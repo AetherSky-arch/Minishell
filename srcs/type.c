@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/20 00:49:47 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/25 01:08:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	check_type(t_type *type, char **token)
 {
 	int	i;
 
-	if (!type)
+	if (!type || !token)
 		return ;
 	i = 0;
 	while (i < ft_tabstr_len(token))

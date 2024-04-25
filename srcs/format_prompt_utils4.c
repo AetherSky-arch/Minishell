@@ -6,11 +6,48 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 23:04:59 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 23:13:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 23:37:07 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
+{
+	if (*j > 0 && prompt[*j - 1] && is_space(prompt[*j - 1]) == 0)
+	{
+		f_prompt[*i] = ' ';
+		(*i)++;
+	}
+	if (prompt[*j])
+	{
+		f_prompt[*i] = prompt[*j];
+		(*i)++;
+		(*j)++;
+	}
+	while (prompt[*j] && prompt[*j] != '\"')
+	{
+		f_prompt[*i] = prompt[*j];
+		(*i)++;
+		(*j)++;
+	}
+	dquote_in_get_plus2(f_prompt, prompt, i, j);
+}
+
+void	dquote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j)
+{
+	if (prompt[*j])
+	{
+		f_prompt[*i] = prompt[*j];
+		(*j)++;
+		(*i)++;
+	}
+	if (prompt[*j] && is_space(prompt[*j]) == 0)
+	{
+		f_prompt[*i] = ' ';
+		(*i)++;
+	}
+}
 
 void	symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
 {

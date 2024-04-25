@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 22:33:29 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/04 23:00:28 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/24 23:36:47 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,21 @@ void	quote_in_len_plus(char *prompt, int *i, int *len, int q)
 {
 	if (*i > 0 && prompt[*i - 1] && is_space(prompt[*i - 1]) == 0)
 		(*len)++;
-	(*i)++;
-	(*len)++;
-	while (prompt[*i] != q)
+	if (prompt[*i + 1])
 	{
 		(*i)++;
 		(*len)++;
 	}
-	(*i)++;
-	(*len)++;
+	while (prompt[*i] && prompt[*i] != q)
+	{
+		(*i)++;
+		(*len)++;
+	}
+	if (prompt[*i])
+	{
+		(*i)++;
+		(*len)++;
+	}
 	if (prompt[*i] && is_space(prompt[*i]) == 0)
 		(*len)++;
 }
@@ -53,44 +59,29 @@ void	squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
 		f_prompt[*i] = ' ';
 		(*i)++;
 	}
-	f_prompt[*i] = prompt[*j];
-	(*i)++;
-	(*j)++;
-	while (prompt[*j] != '\'')
+	if (prompt[*j])
 	{
 		f_prompt[*i] = prompt[*j];
 		(*i)++;
 		(*j)++;
 	}
-	f_prompt[*i] = prompt[*j];
-	(*j)++;
-	(*i)++;
-	if (prompt[*j] && is_space(prompt[*j]) == 0)
+	while (prompt[*j] && prompt[*j] != '\'')
 	{
-		f_prompt[*i] = ' ';
+		f_prompt[*i] = prompt[*j];
 		(*i)++;
+		(*j)++;
 	}
-}
+	squote_in_get_plus2(f_prompt, prompt, i, j);
+}	
 
-void	dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
+void	squote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j)
 {
-	if (*j > 0 && prompt[*j - 1] && is_space(prompt[*j - 1]) == 0)
-	{
-		f_prompt[*i] = ' ';
-		(*i)++;
-	}
-	f_prompt[*i] = prompt[*j];
-	(*i)++;
-	(*j)++;
-	while (prompt[*j] != '\"')
+	if (prompt[*j])
 	{
 		f_prompt[*i] = prompt[*j];
-		(*i)++;
 		(*j)++;
+		(*i)++;
 	}
-	f_prompt[*i] = prompt[*j];
-	(*j)++;
-	(*i)++;
 	if (prompt[*j] && is_space(prompt[*j]) == 0)
 	{
 		f_prompt[*i] = ' ';
