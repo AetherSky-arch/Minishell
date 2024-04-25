@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/25 04:30:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/26 01:21:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,20 @@
 # define EXIT_NODIR 127
 # define SUCCESS 0
 # define FAILURE 1
+
+typedef enum e_built
+{
+	CD,
+	ECHO,
+	ENV,
+	EXIT,
+	EXPORT,
+	PWD,
+	EXIT,
+	EXPORT,
+	PWD,
+	UNSET
+}			t_built;
 
 typedef enum e_type
 {
@@ -178,7 +192,7 @@ int			check_heredoc(t_mini *mini);
 
 // to_exec.c
 int			nbr_block(t_mini mini);
-void		blocks_to_child(t_mini *mini, char **envp, int nbr_block);
+void		blocks_to_exec(t_mini *mini, char **envp, int nbr_block);
 void		child(t_mini *mini, char **envp, int start);
 void		close_prev_pipe(t_mini mini);
 
@@ -202,7 +216,12 @@ void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
-// export
+//--------------------- BUILTINS ------------------------------------//
+
+// echo.c
+int	echo(char **args);
+
+// export.c
 int			is_bad_assignment(char **args);
 int			is_no_equal(char *arg);
 char		*dequote(char *str);

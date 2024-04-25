@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/23 23:17:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/26 01:28:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	nbr_block(t_mini mini)
 // j = index of the next pipe (so len-1 if no pipe)
 // if no pipe (just one cmd or heredoc), same as usual case,
 // the pipe is just not used and closed
-void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
+void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 {
 	int	i;
 	int	start;
@@ -55,6 +55,10 @@ void	blocks_to_child(t_mini *mini, char **envp, int nbr_block)
 			mini->is_pipe = 1;
 		if (pipe(mini->fd) == -1)
 			perror_close_exit("minishell: pipe", mini, EXIT_FAILURE);
+		else if (is_builtin(*mini, start) != -1)
+		{
+			parent(mini, create_block(mini, start), start);
+		}
 		else
 			child(mini, envp, start);
 		if (j < mini->type_len)
