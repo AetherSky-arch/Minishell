@@ -6,11 +6,25 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:22:28 by aether            #+#    #+#             */
-/*   Updated: 2024/04/26 16:45:47 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:48:44 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int is_in_twod(char **tab, char *str)
+{
+    int i;
+
+    i = 0;
+    while (tab[i] != NULL)
+    {
+        if (ft_strcmp(tab[i], str) == 0)
+            return (1);
+        i++;
+    }
+    return (0);
+}
 
 char  *dequote(char *str)
 {

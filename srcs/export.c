@@ -6,7 +6,7 @@
 /*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/04/24 17:12:28 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:47:34 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void  export(t_mini *mini, char **args)
             // replace old with new value
         else
             // append new value to mini->envvars
+        free(unquoted);
         i++;
     }
 }
