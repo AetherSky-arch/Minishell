@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/26 01:21:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:46:05 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ typedef enum e_built
 	CD,
 	ECHO,
 	ENV,
-	EXIT,
-	EXPORT,
-	PWD,
 	EXIT,
 	EXPORT,
 	PWD,
