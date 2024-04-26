@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/26 01:28:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/26 21:36:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,7 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 		if (pipe(mini->fd) == -1)
 			perror_close_exit("minishell: pipe", mini, EXIT_FAILURE);
 		else if (is_builtin(*mini, start) != -1)
-		{
-			parent(mini, create_block(mini, start), start);
-		}
+			builtin(mini, start);
 		else
 			child(mini, envp, start);
 		if (j < mini->type_len)

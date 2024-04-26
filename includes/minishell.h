@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/26 16:49:38 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/27 00:20:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
@@ -206,6 +207,12 @@ void		get_cmd_arg(t_mini *mini, int start);
 void		exec_cmd(t_mini mini, char **envp);
 void		exec_abs(t_mini mini, char **envp);
 
+// buitins.c
+int			is_builtin(t_mini mini, int start);
+void		create_cmd_arg(t_mini *mini, int start);
+int			len_cmd_arg(t_mini mini, int start);
+void		builtin(t_mini *mini, int start);
+
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
 void		perror_close_exit(char *err, t_mini *mini, int k);
@@ -216,13 +223,19 @@ void		putstr_error(char *cmd0, char *err_str);
 //--------------------- BUILTINS ------------------------------------//
 
 // echo.c
-int	echo(char **args);
+int			echo(char **args);
+// chd.c
+int			checkfor_dir(char *path);
+int			chd(char *path);
+void		chd_putstr_error(char *path, char *err_str);
+// pwd.c
+int	pwd(char **args);
 
 // export.c
 int			is_bad_assignment(char **args);
 int			is_no_equal(char *arg);
 char		*dequote(char *str);
-int         is_in_twod(char **tab, char *str);
+int			is_in_twod(char **tab, char *str);
 
 /***************temp temp temp *****************/
 

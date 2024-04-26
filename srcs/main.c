@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/25 04:36:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/27 01:01:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	read_prompt(t_mini *mini)
 		mini->token = ft_split(mini->fprompt, ' ');
 		// tokenizer(mini);
 		mini->type = create_type(mini);
-		check_type(mini->type, mini->token);
+		 // check_type(mini->type, mini->token); --> for which case ???
 		check_quoted_type(mini->type, mini->token);
 		/*** syntax_error of type succesion ? ***/
 		/***  temp: for checking  ***/
@@ -115,7 +115,7 @@ int	main(int argc, char **argv, char **envp)
 				else
 				{
 					open_heredoc(&mini, nbr_heredoc(mini));
-					blocks_to_child(&mini, envp, nbr_block(mini));
+					blocks_to_exec(&mini, envp, nbr_block(mini));
 					close_prev_pipe(mini);
 					wait_exitcode(&mini);
 				}

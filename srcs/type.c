@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/25 01:08:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/27 01:01:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ t_type	get_type2(char **token, int i)
 		return (ARG);
 }
 
+// why this case ? it fails this one for example :
+// echo titi < out >> out toto
+// so no
 void	check_type(t_type *type, char **token)
 {
 	int	i;

@@ -19,6 +19,10 @@ SRCS := srcs/main.c \
 		srcs/to_exec.c \
 		srcs/path.c \
 		srcs/exec.c \
+		srcs/builtins.c \
+		srcs/echo.c \
+		srcs/chd.c \
+		srcs/pwd.c \
 		srcs/free_close_exit.c \
 		srcs/temp.c
 		
