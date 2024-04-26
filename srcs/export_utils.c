@@ -6,7 +6,7 @@
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:22:28 by aether            #+#    #+#             */
-/*   Updated: 2024/04/24 17:16:07 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:45:47 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,29 @@
 char  *dequote(char *str)
 {
     char  *res;
-    int   len;
+    int   j;
     int   i;
 
-    len = 0;
+    j = 0;
     i = 0;
     while (str[i] != '\0')
     {
         if ((str[i] != 34) && (str[i] != 39))
-            len++;
+            j++;
         i++;
     }
-    res = malloc (len + 1);
+    res = malloc (j + 1);
     if (res == NULL)
         return (NULL);
     i = 0;
-    len = 0;
+    j = 0;
     while (str[i] != '\0')
     {
         if ((str[i] != 34) && (str[i] != 39))
-            res[len++] = str[i];
+            res[j++] = str[i];
         i++;
     }
-    res[len] = '\0';
+    res[j] = '\0';
     return (res);
 }
 
