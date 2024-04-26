@@ -6,7 +6,7 @@
 /*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/04/26 16:47:34 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/26 18:09:14 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ static char **append(char **tab, char *str)
     return (new);
 }
 
+static void replace(char **tab, char *str)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (str[i] != '=')
+        i++;
+    j = 0;
+    while (ft_strncmp(tab[j], str, i) != 0)
+        j++;
+    free(tab[j]);
+    tab[j] = str;
+}
+
 void  export(t_mini *mini, char **args)
 {
     int   i;
@@ -48,16 +63,16 @@ void  export(t_mini *mini, char **args)
     while (args[i] != NULL)
     {
         unquoted = dequote(args[i]);
-        if (is_no_equal(args[i]))
+        if (is_no_equal(unquoted))
         {
             i++;
+            free(unquoted);
             continue ;
         }
         if (is_in_twod(mini->envvars, unquoted))
-            // replace old with new value
+            replace(mini->envvars, unquoted);
         else
-            // append new value to mini->envvars
-        free(unquoted);
+            mini->envvars = append(mini->envvars, unquoted);
         i++;
     }
 }
