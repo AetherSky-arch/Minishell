@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/27 00:20:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/27 23:08:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,8 @@ int			is_builtin(t_mini mini, int start);
 void		create_cmd_arg(t_mini *mini, int start);
 int			len_cmd_arg(t_mini mini, int start);
 void		builtin(t_mini *mini, int start);
+int			builtin_files(t_mini *mini, int start);
+int			builtin_infile(t_mini *mini, int start);
 
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
@@ -229,7 +231,7 @@ int			checkfor_dir(char *path);
 int			chd(char *path);
 void		chd_putstr_error(char *path, char *err_str);
 // pwd.c
-int	pwd(char **args);
+int			pwd(char **args);
 
 // export.c
 int			is_bad_assignment(char **args);

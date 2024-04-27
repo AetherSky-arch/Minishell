@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/27 00:56:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/28 00:49:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	is_builtin(t_mini mini, int start)
 void	create_cmd_arg(t_mini *mini, int start)
 {
 	int	i;
-	int j;
+	int	j;
 
 	mini->cmd_arg = malloc(sizeof(char *) * (len_cmd_arg(*mini, start) + 1));
 	if (!mini->cmd_arg)
@@ -102,31 +102,86 @@ void	builtin(t_mini *mini, int start)
 {
 	int	k;
 	int	i;
+	int tmp_out;
 
 	i = 0;
-	create_cmd_arg(mini, start);
-	printf("cmd_arg:");
-	while (mini->cmd_arg[i])
+	tmp_out = dup(STD_OUT);
+	if (builtin_files(mini, start) == 0)
 	{
-		printf("%s / ", mini->cmd_arg[i]);
+		// ft_putstr_fd("la\n", STD_ERR);
+		create_cmd_arg(mini, start);
+		// printf("cmd_arg:");
+		// while (mini->cmd_arg[i])
+		// {
+		// 	printf("%s / ", mini->cmd_arg[i]);
+		// 	i++;
+		// }
+		// printf("\n");
+		k = is_builtin(*mini, start);
+		// ft_putnbr_fd(k, STD_ERR);
+		// printf("k = %d\n", k);
+		if (k == CD)
+			mini->exitcode = chd(mini->cmd_arg[1]);
+		if (k == ECHO)
+			mini->exitcode = echo(mini->cmd_arg);
+		// if (k == ENV)
+		// env(mini->cmd_arg);
+		// if (k == EXIT)
+		// exit(mini->cmd_arg);
+		// if (k == EXPORT)
+		// export(mini->cmd_arg);
+		if (k == PWD)
+			mini->exitcode = pwd(mini->cmd_arg);
+		// if (k == UNSET)
+		// unset(mini->cmd_arg);
+		double_free((void **)(mini->cmd_arg));
+	}
+	dup2(tmp_out, STD_OUT);
+	close(tmp_out);
+}
+
+int	builtin_files(t_mini *mini, int start)
+{
+	if (mini->prev_fd0 > 0)
+		close(mini->prev_fd0);
+	// if outfile (and the good one)
+	if (is_outfile(mini, start) == 1)
+	{
+		dup2(mini->fd_out, STD_OUT);
+		close(mini->fd_out);
+	}
+	else if (mini->is_pipe == 1)
+	{
+		mini->prev_fd0 = dup(mini->fd[0]);
+		close(mini->fd[0]);
+		dup2(mini->fd[1], STD_OUT);
+	}
+	close(mini->fd[0]);
+	close(mini->fd[1]);
+	return (builtin_infile(mini, start));
+}
+
+int	builtin_infile(t_mini *mini, int start)
+{
+	int i;
+	char *tmp;
+
+	i = start;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == INFILE)
+		{
+			mini->fd_in = open(mini->token[i], O_RDONLY);
+			if (mini->fd_in < 0)
+			{
+				tmp = ft_strjoin("minishell: ", mini->token[i]);
+				perror(tmp);
+				free(tmp);
+				return (1);
+			}
+			close(mini->fd_in);
+		}
 		i++;
 	}
-	printf("\n");
-	k = is_builtin(*mini, start);
-	// printf("k = %d\n", k);
-	if (k == CD)
-		mini->exitcode = chd(mini->cmd_arg[1]);
-	if (k == ECHO)
-		mini->exitcode = echo(mini->cmd_arg);
-	// if (k == ENV)
-	// env(mini->cmd_arg);
-	// if (k == EXIT)
-	// exit(mini->cmd_arg);
-	// if (k == EXPORT)
-	// export(mini->cmd_arg);
-	if (k == PWD)
-		mini->exitcode = pwd(mini->cmd_arg);
-	// if (k == UNSET)
-	// unset(mini->cmd_arg);
-	double_free((void **)(mini->cmd_arg));
+	return (0);
 }
