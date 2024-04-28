@@ -86,3 +86,4 @@ un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3
 cd > out --> vide out
 exit > out --> vide out
 
+titi \" \' tot\'o\" tutu \'tata\' --> double free
