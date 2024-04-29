@@ -6,7 +6,7 @@
 /*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/04/29 16:02:11 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/29 17:32:26 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,28 @@ char	*ft_getenv(t_mini *mini, char *varname)
 	return (NULL);
 }
 
+void  export_void(char **env)
+{
+    int i;
+
+    i = 0;
+    while (env[i] != NULL)
+    {
+        ft_printf("%s", "declare -x ");
+        ft_printf("%s\n", env[i]);
+        i++;
+    }
+}
+
 void	export(t_mini *mini, char **args)
 {
 	int		i;
 	char	*unquoted;
 
+    if ((args == NULL) || (args[0] == NULL))
+    {
+        export_void(mini->envvars);
+    }
 	if (is_bad_assignment(args))
 		return ;
 	i = 0;
