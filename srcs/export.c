@@ -6,7 +6,7 @@
 /*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/04/29 17:32:26 by aether           ###   ########.fr       */
+/*   Updated: 2024/04/30 16:14:37 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_getenv(t_mini *mini, char *varname)
 					ft_strlen(mini->envvars[i])));
 		i++;
 	}
-	return (NULL);
+	return (ft_strdup(""));
 }
 
 void  export_void(char **env)
