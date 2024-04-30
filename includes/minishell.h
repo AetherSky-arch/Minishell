@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/27 23:08:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 00:57:31 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 # define EXIT_NODIR 127
 # define SUCCESS 0
 # define FAILURE 1
+# define TRUE 1
+# define FALSE 0
 
 typedef enum e_built
 {
@@ -116,6 +118,7 @@ typedef struct s_mini
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
 void		check_quoted_type(t_type *type, char **token);
+int			inside_quotes(char const *str, int i);
 
 // format_prompt.c
 char		*format_prompt(char *prompt);
@@ -147,6 +150,9 @@ void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		dquote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j);
 void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
+
+// split_fprompt.c
+char		**split_fprompt(char const *s, char c);
 
 // tokenizer
 int			blocks_counter(char *fprompt);

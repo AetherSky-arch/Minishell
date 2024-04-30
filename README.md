@@ -87,3 +87,4 @@ cd > out --> vide out
 exit > out --> vide out
 
 titi \" \' tot\'o\" tutu \'tata\' --> double free
+echo "	" | car -e --> invalid free + leak (cas CMD not found + ARG)

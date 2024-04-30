@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/28 00:49:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/29 22:07:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ int	len_cmd_arg(t_mini mini, int start)
 void	builtin(t_mini *mini, int start)
 {
 	int	k;
-	int	i;
-	int tmp_out;
+	int	tmp_out;
 
-	i = 0;
 	tmp_out = dup(STD_OUT);
 	if (builtin_files(mini, start) == 0)
 	{

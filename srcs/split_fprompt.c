@@ -6,20 +6,19 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:27:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/29 01:01:37 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:59:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int		inside_quotes(char *str, int i);
 static size_t	count_words(char const *s, char c);
 static size_t	len_word(char const *s, char c, size_t k);
 static size_t	next_k(char const *s, char c, size_t k);
-static char		**fill_split(char **split, const char *s, char c);
-char			**ft_split(char const *s, char c);
+static char		**fill_split_fp(char **split, char const *s, char c);
+char			**split_fprompt(char const *s, char c);
 
-char	**ft_split(char const *s, char c)
+char	**split_fprompt(char const *s, char c)
 {
 	char	**split;
 	size_t	n;
@@ -30,14 +29,15 @@ char	**ft_split(char const *s, char c)
 	split = malloc(sizeof(char *) * (n + 1));
 	if (!split)
 		return (NULL);
-	split = fill_split(split, s, c);
+	split = fill_split_fp(split, s, c);
 	if (!split)
 		return (NULL);
 	split[n] = NULL;
 	return (split);
 }
 
-static char	**fill_split(char **split, const char *s, char c)
+// modified
+static char	**fill_split_fp(char **split, char const *s, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -57,7 +57,7 @@ static char	**fill_split(char **split, const char *s, char c)
 			free(split);
 			return (NULL);
 		}
-		while (s[k] && (s[k] != c))
+		while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) == 1)))
 			split[i][j++] = s[k++];
 		split[i][j] = '\0';
 		k++;
@@ -73,6 +73,7 @@ static size_t	next_k(char const *s, char c, size_t k)
 	return (k);
 }
 
+// modified
 static size_t	len_word(char const *s, char c, size_t k)
 {
 	size_t	len;
@@ -80,7 +81,7 @@ static size_t	len_word(char const *s, char c, size_t k)
 	len = 0;
 	while (s[k] && (s[k] == c))
 		k++;
-	while (s[k] && (s[k] != c))
+	while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) == 1)))
 	{
 		len++;
 		k++;
@@ -94,104 +95,54 @@ static size_t	count_words(char const *s, char c)
 	size_t	count;
 	size_t	i;
 	size_t	new;
-	int		open;
 
 	count = 0;
 	i = 0;
 	new = 1;
 	while (s[i])
 	{
-		if (inside_quote(s[i]) == 1)
-			if (s[i] != c || (s[i] == c && inside_quotes(s, i) == 1))
+		if (s[i] != c || (s[i] == c && inside_quotes(s, i) == 1))
+		{
+			if (new == 1)
 			{
-				if (new == 1)
-				{
-					count++;
-					new = 0;
-				}
+				count++;
+				new = 0;
 			}
-			else
-				new = 1;
+		}
+		else
+			new = 1;
 		i++;
 	}
 	return (count);
 }
 
-static int	inside_quotes(char *str, int i)
-{
-	int	j;
-	int	s_open;
-	int	d_open;
-	int	first;
+// static char	*free_split(char **split, size_t i)
+// {
+// 	size_t	j;
 
-	if (!str)
-		return (0);
-	j = 0;
-	s_open = 0;
-	d_open = 0;
-	first = 0;
-	while (j <= i)
-	{
-		if (str[j] == '\'')
-		{
-			if (first == 0)
-				first = 39;
-			s_open++;
-			if (first == 39 && s_open % 2 == 0)
-			{
-				first = 0;
-				d_open = 0;
-			}
-		}
-		if (str[j] == '\"')
-		{
-			if (first == 0)
-				first = 34;
-			d_open++;
-			if (first == 34 && d_open % 2 == 0)
-			{
-				first = 0;
-				s_open = 0;
-			}
-		}
-		j++;
-	}
-	if (first == 0)
-		return (0); // false, not in quote
-	if ((first == 39) && (s_open % 2 == 0))
-		return (0);
-	if ((first == 34) && (d_open % 2 == 0))
-		return (0);
-	return (1); // true, in quote
-}
+// 	j = 0;
+// 	while (j < i)
+// 		free(split[j]);
+// 	free(split);
+// 	return (NULL);
+// }
 
-/*static char	*free_split(char **split, size_t i)
-{
-	size_t	j;
-	size_t	k;
-	char	**tab;
+// int	main(int argc, char **argv)
+// {
+// 	char	**tab;
+// 	size_t	k;
 
-	j = 0;
-	while (j < i)
-		free(split[j]);
-	free(split);
-	return (NULL);
-}*/
-/*
-int	main(int argc, char **argv)
-{
-	tab = NULL;
-	if (argc == 3)
-	{
-		tab = ft_split(argv[1], argv[2][0]);
-		k = 0;
-		while (k < count_words(argv[1], argv[2][0]))
-		{
-			printf("%s\n", tab[k]);
-			free(tab[k]);
-			k++;
-		}
-	}
-	free(tab);
-}
-*/
+// 	tab = NULL;
+// 	if (argc == 3)
+// 	{
+// 		tab = ft_split(argv[1], argv[2][0]);
+// 		k = 0;
+// 		while (k < count_words(argv[1], argv[2][0]))
+// 		{
+// 			printf("%s\n", tab[k]);
+// 			free(tab[k]);
+// 			k++;
+// 		}
+// 	}
+// 	free(tab);
+// }

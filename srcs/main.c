@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/27 01:01:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 02:11:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	quit(char *prompt)
 {
 	free(prompt);
-	rl_clear_history();
+	//rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
 
@@ -35,23 +35,24 @@ int	read_prompt(t_mini *mini)
 {
 	char	*prompt;
 
-	prompt = readline("~$ ");
-	// prompt = get_next_line(STD_IN);
+	//prompt = readline("~$ ");
+	prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
-		// if (ft_strcmp(prompt, "exit\n") == 0)
-		add_history(prompt);
-		if (ft_strcmp(prompt, "exit") == 0)
+		if (ft_strcmp(prompt, "exit\n") == 0)
+		// add_history(prompt);
+		// if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
-		mini->token = ft_split(mini->fprompt, ' ');
+		mini->token = split_fprompt(mini->fprompt, ' ');
+		// mini->token = ft_split(mini->fprompt, ' ');
 		// tokenizer(mini);
 		mini->type = create_type(mini);
-		 // check_type(mini->type, mini->token); --> for which case ???
+		// check_type(mini->type, mini->token); --> for which case ???
 		check_quoted_type(mini->type, mini->token);
 		/*** syntax_error of type succesion ? ***/
 		/***  temp: for checking  ***/
@@ -64,7 +65,7 @@ int	read_prompt(t_mini *mini)
 		ft_putstr_fd(ERR_RDL, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
 		free(prompt);
-		rl_clear_history();
+		//rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -137,7 +138,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			perror("minishell: tty");
 	}
-	rl_clear_history();
+	// rl_clear_history();
 	return (mini.exitcode);
 	/***never returned ? ***/
 }

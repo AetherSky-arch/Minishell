@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 23:04:59 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/24 23:37:07 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 03:01:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
 {
-	if (*j > 0 && prompt[*j - 1] && is_space(prompt[*j - 1]) == 0)
+	if (*j > 0 && prompt[*j - 1] && (is_space(prompt[*j - 1]) == 0))
 	{
 		f_prompt[*i] = ' ';
 		(*i)++;
@@ -25,7 +25,7 @@ void	dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
 		(*i)++;
 		(*j)++;
 	}
-	while (prompt[*j] && prompt[*j] != '\"')
+	while (prompt[*j] && (prompt[*j] != '\"'))
 	{
 		f_prompt[*i] = prompt[*j];
 		(*i)++;
@@ -42,7 +42,7 @@ void	dquote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j)
 		(*j)++;
 		(*i)++;
 	}
-	if (prompt[*j] && is_space(prompt[*j]) == 0)
+	if (prompt[*j] && (is_space(prompt[*j]) == 0))
 	{
 		f_prompt[*i] = ' ';
 		(*i)++;

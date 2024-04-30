@@ -9,6 +9,7 @@ SRCS := srcs/main.c \
 		srcs/format_prompt_utils2.c \
 		srcs/format_prompt_utils3.c \
 		srcs/format_prompt_utils4.c \
+		srcs/split_fprompt.c \
 		srcs/tokenizer.c \
 		srcs/tokenizer_utils.c \
 		srcs/tokenizer_utils2.c \

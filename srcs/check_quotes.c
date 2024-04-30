@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 21:49:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/25 02:19:43 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:55:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,52 @@ void	check_quoted_type(t_type *type, char **token)
 		}
 		i++;
 	}
+}
+
+int	inside_quotes(const char *str, int i)
+{
+	int	j;
+	int	s_open;
+	int	d_open;
+	int	first;
+
+	if (!str)
+		return (0);
+	j = 0;
+	s_open = 0;
+	d_open = 0;
+	first = 0;
+	while (j <= i)
+	{
+		if (str[j] == '\'')
+		{
+			if (first == 0)
+				first = 39;
+			s_open++;
+			if (first == 39 && s_open % 2 == 0)
+			{
+				first = 0;
+				d_open = 0;
+			}
+		}
+		if (str[j] == '\"')
+		{
+			if (first == 0)
+				first = 34;
+			d_open++;
+			if (first == 34 && d_open % 2 == 0)
+			{
+				first = 0;
+				s_open = 0;
+			}
+		}
+		j++;
+	}
+	if (first == 0)
+		return (0); // false, not in quote
+	if ((first == 39) && (s_open % 2 == 0))
+		return (0);
+	if ((first == 34) && (d_open % 2 == 0))
+		return (0);
+	return (1); // true, in quote
 }

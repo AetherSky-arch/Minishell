@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 21:58:52 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/24 22:41:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 03:10:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	quote_in_len_minus(char *prompt, int *i, int *len, int q)
 		(*i)++;
 		(*len)++;
 	}
-	while (prompt[*i] && prompt[*i] != q)
+	while (prompt[*i] && (prompt[*i] != q))
 	{
 		(*i)++;
 		(*len)++;
@@ -28,7 +28,7 @@ void	quote_in_len_minus(char *prompt, int *i, int *len, int q)
 
 void	space_in_len_minus(char *prompt, int *i)
 {
-	while (prompt[*i] && is_space(prompt[*i]) == 1)
+	while (prompt[*i] && (is_space(prompt[*i]) == 1))
 		(*i)++;
 	if (prompt[*i])
 		(*i)--;
@@ -39,7 +39,7 @@ void	squote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 	tmp_prompt[*i] = prompt[*j];
 	(*i)++;
 	(*j)++;
-	while (prompt[*j] && prompt[*j] != '\'')
+	while (prompt[*j] && (prompt[*j] != '\''))
 	{
 		tmp_prompt[*i] = prompt[*j];
 		(*i)++;
@@ -52,7 +52,7 @@ void	dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 	tmp_prompt[*i] = prompt[*j];
 	(*i)++;
 	(*j)++;
-	while (prompt[*j] && prompt[*j] != '\"')
+	while (prompt[*j] && (prompt[*j] != '\"'))
 	{
 		tmp_prompt[*i] = prompt[*j];
 		(*i)++;
@@ -62,7 +62,7 @@ void	dquote_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 
 void	space_in_get_minus(char *prompt, int *j)
 {
-	while (prompt[*j] && is_space(prompt[*j]) == 1)
+	while (prompt[*j] && (is_space(prompt[*j]) == 1))
 		(*j)++;
 	if (prompt[*j])
 		(*j)--;

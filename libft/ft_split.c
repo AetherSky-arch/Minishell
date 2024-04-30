@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:27:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:45:31 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/29 21:54:43 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static size_t	count_words(char const *s, char c);
 static size_t	len_word(char const *s, char c, size_t k);
 static size_t	next_k(char const *s, char c, size_t k);
-static char		**fill_split(char **split, const char *s, char c);
+static char		**fill_split(char **split, char const *s, char c);
 char			**ft_split(char const *s, char c);
 
 char	**ft_split(char const *s, char c)
@@ -36,7 +36,7 @@ char	**ft_split(char const *s, char c)
 	return (split);
 }
 
-static char	**fill_split(char **split, const char *s, char c)
+static char	**fill_split(char **split, char const *s, char c)
 {
 	size_t	i;
 	size_t	j;
