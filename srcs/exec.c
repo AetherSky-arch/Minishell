@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/22 00:14:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 01:27:39 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	exec_arg(t_mini mini, char **envp, int start)
 	}
 }
 
-/********pourquoi pas free tmp1??? ************************/
+// same as create_cmd_arg in buitins.c
 void	get_cmd_arg(t_mini *mini, int start)
 {
 	int		j;
@@ -70,7 +70,7 @@ void	get_cmd_arg(t_mini *mini, int start)
 	{
 		if ((*mini).type[j] == CMD)
 		{
-			tmp1 = (*mini).token[j];
+			tmp1 = ft_strdup((*mini).token[j]);
 			j++;
 			while (j < (*mini).type_len && (*mini).type[j] != PIPE)
 			{
@@ -88,7 +88,7 @@ void	get_cmd_arg(t_mini *mini, int start)
 			j++;
 	}
 	(*mini).cmd_arg = ft_split(tmp1, ' ');
-	//free(tmp1);
+	free(tmp1);
 }
 
 // int execve(const char *pathname, char *const argv[], char *const envp[]);

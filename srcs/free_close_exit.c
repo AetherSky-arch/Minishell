@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/23 23:17:06 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 01:38:00 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 	// ft_putnbr_fd(exit_code, STD_ERR);
 	// ft_putstr_fd("\n", STD_ERR);
 	// //
-	// mini->exitcode = exit_code;
+	mini->exitcode = exit_code;
 	close_exit(*mini, exit_code);
 }
 

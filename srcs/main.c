@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/30 02:11:32 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 01:40:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,17 @@ void	wait_exitcode(t_mini *mini)
 {
 	while (errno != ECHILD)
 	{
+		//printf("ici");
 		if (wait(&((*mini).status)) == (*mini).last_pid)
 		{
 			if (WIFEXITED((*mini).status))
+			{
 				(*mini).exitcode = WEXITSTATUS((*mini).status);
+				//printf("wait exitcode:%d\n", mini->exitcode);
+			}	
 		}
 	}
+	
 }
 
 int	read_prompt(t_mini *mini)
@@ -48,13 +53,11 @@ int	read_prompt(t_mini *mini)
 			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
-		mini->token = split_fprompt(mini->fprompt, ' ');
-		// mini->token = ft_split(mini->fprompt, ' ');
-		// tokenizer(mini);
+		mini->token = split_fprompt(mini->fprompt, ' ');		
 		mini->type = create_type(mini);
 		// check_type(mini->type, mini->token); --> for which case ???
 		check_quoted_type(mini->type, mini->token);
-		/*** syntax_error of type succesion ? ***/
+		//		
 		/***  temp: for checking  ***/
 		printf("f_prompt:%s\n", mini->fprompt);
 		temp_display_tabs(mini->token, mini->type);
@@ -75,6 +78,8 @@ int	check_syntax(t_mini *mini)
 {
 	char	*tmp;
 
+	if (check_type_sequence(mini) == FAILURE)
+		return(FAILURE);
 	if (syntax_checker(mini) == FAILURE)
 	{
 		if (mini->token[mini->stx_err_idx])

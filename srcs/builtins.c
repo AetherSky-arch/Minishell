@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/29 22:07:35 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 00:32:52 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	is_builtin(t_mini mini, int start)
 	return (-1);
 }
 
-/*** malloc to be free'd***/
+// same as get_cmd_arg in exec.c
 void	create_cmd_arg(t_mini *mini, int start)
 {
 	int	i;

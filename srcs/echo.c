@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 18:50:33 by aether            #+#    #+#             */
-/*   Updated: 2024/04/30 01:42:47 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 19:04:56 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int	is_noline_option(char *str)
 			return (FALSE);
 		i++;
 	}
+	if (i == 1)
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -39,10 +41,9 @@ int	echo(char **args)
 		return (FAILURE);
 	if (args[1] == NULL)
 		return (ft_printf("\n"), SUCCESS);
-	if (is_noline_option(args[1]) == FALSE)
-		i = 1;
-	else
-		i = 2;
+	i = 1;
+	while (args[i] && is_noline_option(args[i]) == TRUE)
+		i++;
 	while (args[i] != NULL)
 	{
 		ft_printf(args[i]);

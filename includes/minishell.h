@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/30 00:57:31 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/04/30 23:53:12 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,9 @@ char		get_next_char(char *prompt, int i);
 int			check_pipes(char *str);
 int			count_less_more(char *prompt, int *i);
 int			check_less_more(char *str);
+int			check_less_and_more(char *str);
 int			syntax_checker(t_mini *mini);
+int			check_type_sequence(t_mini *mini);
 
 // heredoc_setting.c
 void		open_heredoc(t_mini *mini, int nbr_hd);
