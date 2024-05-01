@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/30 23:53:12 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 23:04:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,7 @@ char		*dequote(char *str);
 int			is_in_twod(char **tab, char *str);
 
 /***************temp temp temp *****************/
+// void		wait_exitcode(t_mini *mini);
 
 // ft_split.c
 char		**ft_split(char const *s, char c);

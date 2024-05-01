@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/01 01:40:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 23:06:25 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,56 @@
 void	quit(char *prompt)
 {
 	free(prompt);
-	//rl_clear_history();
+	// rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
 
 void	wait_exitcode(t_mini *mini)
 {
-	while (errno != ECHILD)
+	pid_t	tmp;
+
+	// while (errno != ECHILD)
+	while (1)
 	{
-		//printf("ici");
-		if (wait(&((*mini).status)) == (*mini).last_pid)
+		tmp = wait(&((*mini).status));
+		if (tmp == -1)
+			break ;
+		if (tmp == (*mini).last_pid)
 		{
 			if (WIFEXITED((*mini).status))
 			{
 				(*mini).exitcode = WEXITSTATUS((*mini).status);
-				//printf("wait exitcode:%d\n", mini->exitcode);
-			}	
+				// printf("wait exitcode:%d\n", mini->exitcode);
+				break ;
+			}
 		}
 	}
-	
 }
 
-int	read_prompt(t_mini *mini)
+int	read_prompt(t_mini *mini, int prev_exit)
 {
 	char	*prompt;
 
-	//prompt = readline("~$ ");
+	// prompt = readline("~$ ");
 	prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
 		if (ft_strcmp(prompt, "exit\n") == 0)
-		// add_history(prompt);
-		// if (ft_strcmp(prompt, "exit") == 0)
-			quit(prompt);
+			// add_history(prompt);
+			// if (ft_strcmp(prompt, "exit") == 0)
+			quit(prompt);		
+		if (ft_strcmp(prompt, "\n") == 0)
+			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
-		mini->token = split_fprompt(mini->fprompt, ' ');		
+		mini->token = split_fprompt(mini->fprompt, ' ');
 		mini->type = create_type(mini);
 		// check_type(mini->type, mini->token); --> for which case ???
 		check_quoted_type(mini->type, mini->token);
-		//		
+		//
 		/***  temp: for checking  ***/
 		printf("f_prompt:%s\n", mini->fprompt);
 		temp_display_tabs(mini->token, mini->type);
@@ -68,7 +75,7 @@ int	read_prompt(t_mini *mini)
 		ft_putstr_fd(ERR_RDL, STD_ERR);
 		mini->exitcode = EXIT_FAILURE;
 		free(prompt);
-		//rl_clear_history();
+		// rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 }
@@ -79,7 +86,7 @@ int	check_syntax(t_mini *mini)
 	char	*tmp;
 
 	if (check_type_sequence(mini) == FAILURE)
-		return(FAILURE);
+		return (FAILURE);
 	if (syntax_checker(mini) == FAILURE)
 	{
 		if (mini->token[mini->stx_err_idx])
@@ -100,10 +107,12 @@ int	check_syntax(t_mini *mini)
 int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
+	int		prev_exit;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
+	prev_exit = 0;
 	// mini.envvars = double_dup(envp);
 	// if (mini.envvars == NULL)
 	// {
@@ -114,7 +123,7 @@ int	main(int argc, char **argv, char **envp)
 		while (1)
 		{
 			mini = (t_mini){0};
-			if (read_prompt(&mini) == SUCCESS)
+			if (read_prompt(&mini, prev_exit) == SUCCESS)
 			{
 				if (check_syntax(&mini) == FAILURE)
 					open_heredoc(&mini, nbr_heredoc(mini));
@@ -131,6 +140,7 @@ int	main(int argc, char **argv, char **envp)
 				free(mini.fprompt);
 				free(mini.type);
 			}
+			prev_exit = mini.exitcode;
 			printf("exitcode:%d\n", mini.exitcode);
 		}
 	}

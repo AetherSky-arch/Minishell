@@ -46,6 +46,8 @@ Solved:
 9) << eof | << rt --> ok
 10) << eof | << rt wc --> ok
 11) cat << ty  | cat << eof | wc --> ok
+echo "	" | car -e --> invalid free + leak (cas CMD not found + ARG) --> ok
+toto | wc < titi --> Warning: invalid file descriptor -1 in syscall close() --> ok
 
 Issues:
 1) << eof | <<
@@ -87,4 +89,3 @@ cd > out --> vide out
 exit > out --> vide out
 
 titi \" \' tot\'o\" tutu \'tata\' --> double free
-echo "	" | car -e --> invalid free + leak (cas CMD not found + ARG)

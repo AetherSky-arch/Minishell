@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/01 01:27:39 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/01 20:13:55 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	exec_arg(t_mini mini, char **envp, int start)
 		else
 			exec_cmd(mini, envp);
 	}
-	//else if (mini.fprompt)
+	// else if (mini.fprompt)
 	else if (mini.type)
 		free_close_exit(&mini, EXIT_SUCCESS, 0);
 	else
