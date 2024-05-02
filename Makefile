@@ -20,6 +20,7 @@ SRCS := srcs/main.c \
 		srcs/to_exec.c \
 		srcs/path.c \
 		srcs/exec.c \
+		srcs/signal.c \
 		srcs/builtins.c \
 		srcs/echo.c \
 		srcs/chd.c \

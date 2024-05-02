@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/01 23:06:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/03 01:16:58 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	quit(char *prompt)
 {
 	free(prompt);
-	// rl_clear_history();
+	rl_clear_history();
+	ft_putstr_fd("exit\n", STD_OUT);
 	exit(EXIT_SUCCESS);
 }
 
@@ -45,14 +46,14 @@ int	read_prompt(t_mini *mini, int prev_exit)
 {
 	char	*prompt;
 
-	// prompt = readline("~$ ");
-	prompt = get_next_line(STD_IN);
+	prompt = readline("~$ ");
+	// prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
-		if (ft_strcmp(prompt, "exit\n") == 0)
-			// add_history(prompt);
-			// if (ft_strcmp(prompt, "exit") == 0)
-			quit(prompt);		
+		// if (ft_strcmp(prompt, "exit\n") == 0)
+		add_history(prompt);
+		if (ft_strcmp(prompt, "exit") == 0)
+			quit(prompt);
 		if (ft_strcmp(prompt, "\n") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
@@ -62,22 +63,24 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
 		mini->type = create_type(mini);
-		// check_type(mini->type, mini->token); --> for which case ???
+		check_type(mini->type, mini->token); //--> for which case : << eof cat
 		check_quoted_type(mini->type, mini->token);
 		//
 		/***  temp: for checking  ***/
 		printf("f_prompt:%s\n", mini->fprompt);
 		temp_display_tabs(mini->token, mini->type);
-		return (SUCCESS);
 	}
 	else
 	{
-		ft_putstr_fd(ERR_RDL, STD_ERR);
-		mini->exitcode = EXIT_FAILURE;
-		free(prompt);
+		// if (prompt == EOF)
+		quit(prompt);
+		// ft_putstr_fd(ERR_RDL, STD_ERR);
+		// mini->exitcode = EXIT_FAILURE;
+		// free(prompt);
 		// rl_clear_history();
-		exit(EXIT_FAILURE);
+		// exit(EXIT_FAILURE);
 	}
+	return (SUCCESS);
 }
 
 // check_syntax return: 1 on failure (error), 0 on success (no error)
@@ -122,7 +125,9 @@ int	main(int argc, char **argv, char **envp)
 	{
 		while (1)
 		{
+			
 			mini = (t_mini){0};
+			signal_handler();			
 			if (read_prompt(&mini, prev_exit) == SUCCESS)
 			{
 				if (check_syntax(&mini) == FAILURE)
@@ -153,7 +158,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			perror("minishell: tty");
 	}
-	// rl_clear_history();
+	rl_clear_history();
 	return (mini.exitcode);
 	/***never returned ? ***/
 }

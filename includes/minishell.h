@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/01 23:04:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/03 01:17:05 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 # define EXIT_NOCMD 127
 # define EXIT_DENIED 126
 # define EXIT_NODIR 127
+# define EXIT_SIGINT 130
 # define SUCCESS 0
 # define FAILURE 1
 # define TRUE 1
@@ -229,6 +230,10 @@ void		perror_close_exit(char *err, t_mini *mini, int k);
 void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
+
+// signal.c
+void		sigint_handler(int signal);
+void		signal_handler(void);
 
 //--------------------- BUILTINS ------------------------------------//
 
