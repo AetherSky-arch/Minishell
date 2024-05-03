@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 01:16:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:37:02 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	prev_exit = 0;
-	// mini.envvars = double_dup(envp);
-	// if (mini.envvars == NULL)
-	// {
-	//     return (1);
-	// }
+    mini.envvars = double_dup(envp);
+	if (mini.envvars == NULL)
+        return (1);
 	if (isatty(STD_IN))
 	{
 		while (1)

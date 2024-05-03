@@ -26,7 +26,9 @@ SRCS := srcs/main.c \
 		srcs/chd.c \
 		srcs/pwd.c \
 		srcs/free_close_exit.c \
-		srcs/temp.c
+		srcs/temp.c \
+		srcs/export.c \
+		srcs/export_utils.c
 		
 
 OBJS = ${SRCS:.c=.o}

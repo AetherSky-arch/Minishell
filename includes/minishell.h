@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 01:17:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:40:17 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,6 +251,8 @@ int			is_bad_assignment(char **args);
 int			is_no_equal(char *arg);
 char		*dequote(char *str);
 int			is_in_twod(char **tab, char *str);
+char	    *ft_getenv(t_mini *mini, char *varname);
+void	    export_to_envvars(t_mini *mini, char **args);
 
 /***************temp temp temp *****************/
 // void		wait_exitcode(t_mini *mini);

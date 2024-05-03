@@ -6,7 +6,7 @@
 /*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/04/30 16:14:37 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/03 17:40:09 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void  export_void(char **env)
     }
 }
 
-void	export(t_mini *mini, char **args)
+void	export_to_envvars(t_mini *mini, char **args)
 {
 	int		i;
 	char	*unquoted;
