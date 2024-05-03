@@ -1,39 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   double_dup.c                                       :+:      :+:    :+:   */
+/*   envvars_manager.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/16 17:48:00 by aether            #+#    #+#             */
-/*   Updated: 2024/05/03 18:17:00 by aether           ###   ########.fr       */
+/*   Created: 2024/05/03 17:43:09 by aether            #+#    #+#             */
+/*   Updated: 2024/05/03 17:57:44 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-char  **double_dup(char **tab)
+void  envvars_manager(char **tokens, t_mini *mini)
 {
-    char  **copy;
-    int   i;
+    int i;
+    char  *tmp;
 
-    if (tab == NULL)
-        return (NULL);
     i = 0;
-    while (tab[i] != NULL)
-        i++;
-    copy = malloc((i + 1) * sizeof(char *));
-    if (copy == NULL)
+    while (tokens[i] != NULL)
     {
-        ft_putstr_fd("double_dup: malloc error\n", 2);
-        return (NULL);
-    }
-    i = 0;
-    while (tab[i] != NULL)
-    {
-        copy[i] = ft_strdup(tab[i]);
+        if (tokens[i][0] == '$')
+        {
+            tmp = tokens[i];
+            tmp++;
+            tokens[i] = ft_getenv(mini, tmp);
+            tmp--;
+            free(tmp);
+        }
         i++;
     }
-    copy[i] = NULL;
-    return (copy);
 }

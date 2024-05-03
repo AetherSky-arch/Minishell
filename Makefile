@@ -20,7 +20,6 @@ SRCS := srcs/main.c \
 		srcs/to_exec.c \
 		srcs/path.c \
 		srcs/exec.c \
-		srcs/signal.c \
 		srcs/builtins.c \
 		srcs/echo.c \
 		srcs/chd.c \
@@ -28,7 +27,8 @@ SRCS := srcs/main.c \
 		srcs/free_close_exit.c \
 		srcs/temp.c \
 		srcs/export.c \
-		srcs/export_utils.c
+		srcs/export_utils.c \
+		srcs/envvars_manager.c
 		
 
 OBJS = ${SRCS:.c=.o}

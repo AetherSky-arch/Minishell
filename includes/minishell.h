@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:40:17 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/03 17:47:41 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,9 @@ void		putstr_error(char *cmd0, char *err_str);
 // signal.c
 void		sigint_handler(int signal);
 void		signal_handler(void);
+
+// envvars ($)
+void  envvars_manager(char **tokens, t_mini *mini);
 
 //--------------------- BUILTINS ------------------------------------//
 

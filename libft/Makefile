@@ -65,7 +65,7 @@ OBJ_B = ${BONUS:.c=.o}
 CC = cc
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g3
 
 .c.o:
 	${CC} ${CFLAGS} -I . -c $< -o ${<:.c=.o}

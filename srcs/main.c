@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:37:02 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/03 17:56:35 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
+        envvars_manager(mini->token, mini);
 		mini->type = create_type(mini);
 		check_type(mini->type, mini->token); //--> for which case : << eof cat
 		check_quoted_type(mini->type, mini->token);
@@ -116,16 +117,16 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	prev_exit = 0;
-    mini.envvars = double_dup(envp);
-	if (mini.envvars == NULL)
-        return (1);
 	if (isatty(STD_IN))
 	{
 		while (1)
 		{
 			
 			mini = (t_mini){0};
-			signal_handler();			
+            mini.envvars = double_dup(envp);
+	            if (mini.envvars == NULL)
+                    return (1);
+			// signal_handler();			
 			if (read_prompt(&mini, prev_exit) == SUCCESS)
 			{
 				if (check_syntax(&mini) == FAILURE)
