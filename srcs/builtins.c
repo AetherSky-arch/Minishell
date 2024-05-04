@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 01:51:47 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:21:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,26 +138,19 @@ void	builtin(t_mini *mini, int start)
 	close(tmp_out);
 }
 
+// if outfile (and the good one)
 int	builtin_files(t_mini *mini, int start)
 {
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
-	// if outfile (and the good one)
 	if (is_outfile(mini, start) == 1)
 	{
 		dup2(mini->fd_out, STD_OUT);
 		close(mini->fd_out);
-		/********************to be checked here ******/
-		mini->prev_fd0 = dup(mini->fd[0]);
-		close(mini->fd[0]);
-		/*********************************************/
 	}
 	else if (mini->is_pipe == 1)
-	{
-		mini->prev_fd0 = dup(mini->fd[0]);
-		close(mini->fd[0]);
 		dup2(mini->fd[1], STD_OUT);
-	}
+	mini->prev_fd0 = dup(mini->fd[0]);
 	close(mini->fd[0]);
 	close(mini->fd[1]);
 	return (builtin_infile(mini, start));

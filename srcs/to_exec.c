@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 01:43:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:50:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 		if (pipe(mini->fd) == -1)
 			perror_close_exit("minishell: pipe", mini, EXIT_FAILURE);
 		else if (is_builtin(*mini, start) != -1)
-		 	builtin(mini, start);
+			builtin(mini, start);
 		else
 			child(mini, envp, start);
 		if (j < mini->type_len)
@@ -78,6 +78,7 @@ void	child(t_mini *mini, char **envp, int start)
 		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
+		signal_handler_in_child();
 		close(mini->fd[0]);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
 		if (is_infile(mini, start) == 1)

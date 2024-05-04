@@ -6,15 +6,17 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 23:53:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 01:47:35 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:28:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// SIGINT = ctrl+c
-// SIGQUIT = ctrl+\
-// ctrl+d = not a signal
+/**
+ * SIGINT = ctrl+c
+ * SIGQUIT = ctrl+\
+ * ctrl+d = not a signal
+ */
 
 void	sigint_handler(int signal)
 {
@@ -31,5 +33,15 @@ void	signal_handler(void)
 {
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-	//return(EXIT_SIGINT);
+}
+
+// do nothing but not ignore it
+void	sigint_handler_in_child(int signal)
+{
+	(void)signal;
+}
+
+void	signal_handler_in_child(void)
+{
+	signal(SIGINT, &sigint_handler_in_child);
 }

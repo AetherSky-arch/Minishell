@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/21 23:21:46 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:41:44 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,18 @@ int	is_outfile(t_mini *mini, int start)
 	is_outfile = 0;
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
-		if (mini->type[i] == OUTFILE)
+		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
 		{
+			if (mini->fd_out > 0)
+				close(mini->fd_out);
+			is_outfile = 1;
+		}
+		if (mini->type[i] == OUTFILE)
 			mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT,
 					0666);
-			is_outfile = 1;
-		}
 		if (mini->type[i] == OUTFAPP)
-		{
 			mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
 					0666);
-			is_outfile = 1;
-		}
 		if (mini->fd_out < 0)
 			perror_open_free(mini, mini->token[i]);
 		i++;
