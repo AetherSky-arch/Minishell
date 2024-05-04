@@ -6,22 +6,22 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/27 01:01:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/04 00:16:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /****************malloc to be free'd***********/
-t_type *create_type(t_mini *mini)
+t_type	*create_type(t_mini *mini)
 {
 	t_type	*type;
 	int		i;
 
 	if (!(*mini).token)
-		return (NULL);	
+		return (NULL);
 	(*mini).type_len = ft_tabstr_len((*mini).token);
-	//type = malloc(sizeof(t_type) * (*mini).type_len);
+	// type = malloc(sizeof(t_type) * (*mini).type_len);
 	type = malloc(sizeof(int) * (*mini).type_len);
 	if (!type)
 		return (NULL);
@@ -30,8 +30,8 @@ t_type *create_type(t_mini *mini)
 	{
 		type[i] = get_type((*mini).token, i);
 		i++;
-	}	
-	return(type);
+	}
+	return (type);
 }
 
 t_type	get_type(char **token, int i)
@@ -75,26 +75,75 @@ t_type	get_type2(char **token, int i)
 		return (ARG);
 }
 
-// why this case ? it fails this one for example :
-// echo titi < out >> out toto
-// so no
-void	check_type(t_type *type, char **token)
+// why that case ? it fails this one for example :
+// echo titi < out >> out toto --> so no
+// for that case : << eof cat --> so yes after fixed
+void	check_type(t_mini *mini)
 {
 	int	i;
+	int	start;
+	int	j;
 
-	if (!type || !token)
-		return ;
 	i = 0;
-	while (i < ft_tabstr_len(token))
+	start = 0;
+	j = 0;	
+	while (i < nbr_block(*mini))
 	{
-		if (type[i] == ARG)
+		check_type_block(mini, start);
+		while ((j < mini->type_len) && (mini->type[j] != PIPE))
+			j++;
+		if (j < mini->type_len)
+			j++;	
+		start = j;
+		i++;
+	}
+}
+
+// ARG --> CMD and // CMD --> ARG
+void	check_type_block(t_mini *mini, int start)
+{
+	int	i;
+	int	cmd_idx;
+
+	if (!(mini->type) || !(mini->token))
+		return ;
+	cmd_idx = get_cmd_idx(*mini, start);
+	i = start;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == ARG && i < cmd_idx)
 		{
-			if (i > 0 && (type[i - 1] == INFILE || type[i - 1] == OUTFILE
-					|| type[i - 1] == OUTFAPP || type[i - 1] == LIMITER))
-				type[i] = CMD;
+			mini->type[i] = CMD;
+			cmd_idx = i;
 		}
 		i++;
 	}
+	i = start;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == CMD && i > cmd_idx)
+			mini->type[i] = ARG;
+		i++;
+	}
+}
+
+int	get_cmd_idx(t_mini mini, int start)
+{
+	int	i;
+	int	cmd_idx;
+
+	cmd_idx = ft_tabstr_len(mini.token);
+	i = start;
+	while ((i < mini.type_len) && (mini.type[i] != PIPE))
+	{
+		if (mini.type[i] == CMD)
+		{
+			cmd_idx = i;
+			break ;
+		}
+		i++;
+	}
+	return (cmd_idx);
 }
 
 int	ft_tabstr_len(char **tab)
@@ -108,3 +157,24 @@ int	ft_tabstr_len(char **tab)
 		i++;
 	return (i);
 }
+
+// draft
+
+// void	check_type(t_type *type, char **token)
+// {
+// 	int	i;
+
+// 	if (!type || !token)
+// 		return ;
+// 	i = 0;
+// 	while (i < ft_tabstr_len(token))
+// 	{
+// 		if (type[i] == ARG)
+// 		{
+// 			if (i > 0 && (type[i - 1] == INFILE || type[i - 1] == OUTFILE
+// 					|| type[i - 1] == OUTFAPP || type[i - 1] == LIMITER))
+// 				type[i] = CMD;
+// 		}
+// 		i++;
+// 	}
+// }

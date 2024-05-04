@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:56:35 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/04 01:37:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	quit(char *prompt)
 {
 	free(prompt);
-	rl_clear_history();
+	// rl_clear_history();
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(EXIT_SUCCESS);
 }
@@ -42,29 +42,34 @@ void	wait_exitcode(t_mini *mini)
 	}
 }
 
-int	read_prompt(t_mini *mini, int prev_exit)
+int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 {
 	char	*prompt;
 
-	prompt = readline("~$ ");
-	// prompt = get_next_line(STD_IN);
+	// prompt = readline("~$ ");
+	prompt = get_next_line(STD_IN);
 	if (prompt)
 	{
-		// if (ft_strcmp(prompt, "exit\n") == 0)
-		add_history(prompt);
-		if (ft_strcmp(prompt, "exit") == 0)
+		if (ft_strcmp(prompt, "exit\n") == 0)
+			// add_history(prompt);
+			// if (ft_strcmp(prompt, "exit") == 0)
 			quit(prompt);
 		if (ft_strcmp(prompt, "\n") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
+		//	
+		mini->envvars = double_dup(envp);
+		if (mini->envvars == NULL)
+			return (free(prompt), FAILURE);
+		//	
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
-        envvars_manager(mini->token, mini);
+		envvars_manager(mini->token, mini);
 		mini->type = create_type(mini);
-		check_type(mini->type, mini->token); //--> for which case : << eof cat
+		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
 		//
 		/***  temp: for checking  ***/
@@ -121,13 +126,14 @@ int	main(int argc, char **argv, char **envp)
 	{
 		while (1)
 		{
-			
 			mini = (t_mini){0};
-            mini.envvars = double_dup(envp);
-	            if (mini.envvars == NULL)
-                    return (1);
-			// signal_handler();			
-			if (read_prompt(&mini, prev_exit) == SUCCESS)
+			//
+			// mini.envvars = double_dup(envp);
+			// if (mini.envvars == NULL)
+			// 	return (1);
+			//
+			// signal_handler();
+			if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
 			{
 				if (check_syntax(&mini) == FAILURE)
 					open_heredoc(&mini, nbr_heredoc(mini));
@@ -141,6 +147,7 @@ int	main(int argc, char **argv, char **envp)
 				unlink_free_hdname(&mini);
 				/*** free here for now ***/
 				double_free((void **)mini.token);
+				double_free((void **)mini.envvars);
 				free(mini.fprompt);
 				free(mini.type);
 			}
@@ -157,7 +164,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 			perror("minishell: tty");
 	}
-	rl_clear_history();
+	// rl_clear_history();
 	return (mini.exitcode);
 	/***never returned ? ***/
 }

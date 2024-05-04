@@ -90,3 +90,8 @@ cd > out --> vide out
 exit > out --> vide out
 
 titi \" \' tot\'o\" tutu \'tata\' --> double free
+
+STD OUT Builtin issue:
+Makefile | wc --> ok
+echo tutu | wc --> ok
+echo titi >> out | wc --> ok - to be recheck and ckean in the code builtin_files 

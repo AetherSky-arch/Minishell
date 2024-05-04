@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:47:41 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/03 23:38:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,9 @@ void		tokenizer(t_mini *mini);
 t_type		*create_type(t_mini *mini);
 t_type		get_type(char **token, int i);
 t_type		get_type2(char **token, int i);
-void		check_type(t_type *type, char **token);
+void		check_type(t_mini *mini);
+void		check_type_block(t_mini *mini, int start);
+int			get_cmd_idx(t_mini mini, int start);
 int			ft_tabstr_len(char **tab);
 
 // syntax checks
@@ -236,7 +238,7 @@ void		sigint_handler(int signal);
 void		signal_handler(void);
 
 // envvars ($)
-void  envvars_manager(char **tokens, t_mini *mini);
+void		envvars_manager(char **tokens, t_mini *mini);
 
 //--------------------- BUILTINS ------------------------------------//
 
@@ -254,8 +256,8 @@ int			is_bad_assignment(char **args);
 int			is_no_equal(char *arg);
 char		*dequote(char *str);
 int			is_in_twod(char **tab, char *str);
-char	    *ft_getenv(t_mini *mini, char *varname);
-void	    export_to_envvars(t_mini *mini, char **args);
+char		*ft_getenv(t_mini *mini, char *varname);
+void		export_to_envvars(t_mini *mini, char **args);
 
 /***************temp temp temp *****************/
 // void		wait_exitcode(t_mini *mini);
