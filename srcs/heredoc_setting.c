@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/02 21:27:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/05 02:02:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	open_heredoc(t_mini *mini, int nbr_hd)
 	int	fd;
 	int	j;
 
+	// signal_handler_in_child();
 	i = 0;
 	j = 0;
 	if (nbr_hd)
@@ -108,13 +109,14 @@ void	fill_heredoc(t_mini *mini, int fd)
 	char	*line;
 	char	*limiter;
 
+	g_exitcode = 0;
 	limiter = ft_strjoin((*mini).lim, "\n");
 	if (!limiter)
 		limiter_err_mal(*mini);
-	while (1)
+	while (g_exitcode != 130)
 	{
 		// line = readline("> ");
-		ft_putstr_fd("> ", STD_IN);		
+		ft_putstr_fd("> ", STD_IN);
 		line = get_next_line(STD_IN);
 		if (!line)
 		{
@@ -123,12 +125,16 @@ void	fill_heredoc(t_mini *mini, int fd)
 			close_exit(*mini, EXIT_FAILURE);
 		}
 		if (ft_strcmp(line, limiter) == 0)
+		{
+			free(line);
 			break ;
+		}
 		else
 			ft_putstr_fd(line, fd);
 		free(line);
 	}
-	free(line);
+	// if (g_exitcode != 130)
+	// 	free(line);
 	free(limiter);
 }
 

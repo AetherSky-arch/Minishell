@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 21:05:10 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:49:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <linux/limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -28,10 +29,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <signal.h>
 
 // # define _GNU_SOURCE
-
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
@@ -57,6 +56,8 @@
 # define FAILURE 1
 # define TRUE 1
 # define FALSE 0
+
+extern int	g_exitcode;
 
 typedef enum e_built
 {
@@ -235,8 +236,10 @@ void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
 // signal.c
-void		sigint_handler(int signal);
 void		signal_handler(void);
+void		sigint_handler(int signal);
+void		signal_handler_in_child(void);
+void		sigint_handler_in_child(int signal);
 
 // envvars ($)
 void		envvars_manager(char **tokens, t_mini *mini);

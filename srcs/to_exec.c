@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 21:50:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:59:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	child(t_mini *mini, char **envp, int start)
 	pid_t	pid;
 
 	get_heredoc(mini, start);
+	signal_handler_in_child();
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -78,7 +79,6 @@ void	child(t_mini *mini, char **envp, int start)
 		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		signal_handler_in_child();
 		close(mini->fd[0]);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
 		if (is_infile(mini, start) == 1)
