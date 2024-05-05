@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/05 01:43:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/06 00:58:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int		g_exitcode;
 
-void	quit(char *prompt)
+void	quit(char *prompt, int k)
 {
 	free(prompt);
-	//rl_clear_history();
+	rl_clear_history();
 	ft_putstr_fd("exit\n", STD_OUT);
-	exit(EXIT_SUCCESS);
+	exit(k);
 }
 
 void	wait_exitcode(t_mini *mini)
@@ -48,14 +48,16 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 {
 	char	*prompt;
 
-	// prompt = readline("~$ ");
-	prompt = get_next_line(STD_IN);
+	prompt = readline("~$ ");
+	// prompt = get_next_line(STD_IN);
+	if (g_exitcode == 130)
+		prev_exit = 130;
 	if (prompt)
 	{
-		if (ft_strcmp(prompt, "exit\n") == 0)
-		// add_history(prompt);
-		// if (ft_strcmp(prompt, "exit") == 0)
-			quit(prompt);
+		// if (ft_strcmp(prompt, "exit\n") == 0)
+		add_history(prompt);
+		if (ft_strcmp(prompt, "exit") == 0)
+			quit(prompt, prev_exit);
 		if (ft_strcmp(prompt, "\n") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
@@ -79,15 +81,7 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 		temp_display_tabs(mini->token, mini->type);
 	}
 	else
-	{
-		// if (prompt == EOF)
-		quit(prompt);
-		// ft_putstr_fd(ERR_RDL, STD_ERR);
-		// mini->exitcode = EXIT_FAILURE;
-		// free(prompt);
-		// rl_clear_history();
-		// exit(EXIT_FAILURE);
-	}
+		quit(prompt, prev_exit);
 	return (SUCCESS);
 }
 
@@ -124,50 +118,54 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	prev_exit = 0;
-	if (isatty(STD_IN))
+	g_exitcode = 0;
+	while (1)
 	{
-		while (1)
+		mini = (t_mini){0};
+		//
+		// mini.envvars = double_dup(envp);
+		// if (mini.envvars == NULL)
+		// 	return (1);
+		//
+		manage_signal();
+		if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
 		{
-			mini = (t_mini){0};
-			g_exitcode = 0;
-			//
-			// mini.envvars = double_dup(envp);
-			// if (mini.envvars == NULL)
-			// 	return (1);
-			//
-			signal_handler();
-			if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
+			g_exitcode = 0; // initi for open_heredoc
+			if (check_syntax(&mini) == FAILURE)
+				open_heredoc(&mini, nbr_heredoc(mini));
+			else
 			{
-				if (check_syntax(&mini) == FAILURE)
-					open_heredoc(&mini, nbr_heredoc(mini));
-				else
-				{
-					open_heredoc(&mini, nbr_heredoc(mini));
+				open_heredoc(&mini, nbr_heredoc(mini));
+				if (g_exitcode != 130)
 					blocks_to_exec(&mini, envp, nbr_block(mini));
-					close_prev_pipe(mini);
-					wait_exitcode(&mini);
-				}
-				unlink_free_hdname(&mini);
-				/*** free here for now ***/
-				double_free((void **)mini.token);
-				double_free((void **)mini.envvars);
-				free(mini.fprompt);
-				free(mini.type);
+				close_prev_pipe(mini);
+				wait_exitcode(&mini);
 			}
-			prev_exit = mini.exitcode;
-			printf("exitcode:%d\n", mini.exitcode);
+			unlink_free_hdname(&mini);
+			/*** free here for now ***/
+			double_free((void **)mini.token);
+			double_free((void **)mini.envvars);
+			free(mini.fprompt);
+			free(mini.type);
 		}
+		if (g_exitcode == 130)
+			mini.exitcode = 130;
+		prev_exit = mini.exitcode;
+		printf("exitcode:%d\n", mini.exitcode);
 	}
-	else
-	{
-		if (errno != ENOTTY)
-		{
-			/*** to execute a script ? ***/
-		}
-		else
-			perror("minishell: tty");
-	}
-	//rl_clear_history();
+	// if (isatty(STD_IN))
+	// {
+	// }
+	// else
+	// {
+	// 	if (errno != ENOTTY)
+	// 	{
+	// 		/*** to execute a script ? ***/
+	// 	}
+	// 	else
+	// 		perror("minishell: tty");
+	// }
+	rl_clear_history();
 	return (mini.exitcode);
 	/***never returned ? ***/
 }

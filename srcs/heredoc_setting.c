@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/05 02:02:24 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/06 00:54:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	open_heredoc(t_mini *mini, int nbr_hd)
 	int	fd;
 	int	j;
 
-	// signal_handler_in_child();
 	i = 0;
 	j = 0;
 	if (nbr_hd)
@@ -28,7 +27,7 @@ void	open_heredoc(t_mini *mini, int nbr_hd)
 		mini->hd_name = create_hd_name(mini);
 		if (mini->hd_name)
 		{
-			while (i < mini->type_len - 1)
+			while ((i < mini->type_len - 1) && (g_exitcode != 130))
 			{
 				if (mini->type[i] == HEREDOC && mini->type[i + 1] == LIMITER
 					&& j < nbr_hd)
@@ -103,38 +102,47 @@ char	*heredoc_name(void)
 	return (name);
 }
 
-//********** !!! in case of kill, MUST FREE heredoc name ***************//
 void	fill_heredoc(t_mini *mini, int fd)
 {
 	char	*line;
 	char	*limiter;
+	int		save_in;
 
 	g_exitcode = 0;
+	save_in = dup(STD_IN);
+	signal(SIGINT, &handle_sigint_in_hd);
+	//
 	limiter = ft_strjoin((*mini).lim, "\n");
 	if (!limiter)
 		limiter_err_mal(*mini);
+	//
 	while (g_exitcode != 130)
 	{
-		// line = readline("> ");
-		ft_putstr_fd("> ", STD_IN);
-		line = get_next_line(STD_IN);
-		if (!line)
+		line = readline("> ");
+		// ft_putstr_fd("> ", STD_IN);
+		// line = get_next_line(STD_IN);
+		if (!line && g_exitcode == 130)
 		{
-			// ft_putstr_fd(ERR_RDL, STD_ERR);
-			ft_putstr_fd(ERR_GNL, STD_ERR);
-			close_exit(*mini, EXIT_FAILURE);
+			dup2(save_in, STD_IN);
+			close(save_in);
 		}
-		if (ft_strcmp(line, limiter) == 0)
+		else if (!line)
 		{
-			free(line);
+			// ft_putstr_fd(ERR_GNL, STD_ERR);
+			ft_putstr_fd(ERR_RDL, STD_ERR); // Modify text ??? --> ctrl+d
 			break ;
 		}
+		// else if (ft_strcmp(line, limiter) == 0)
+		else if (ft_strcmp(line, (*mini).lim) == 0)
+			break ;
+		else if (ft_strcmp(line, "") == 0)
+			ft_putstr_fd("\n", fd);
 		else
 			ft_putstr_fd(line, fd);
 		free(line);
 	}
-	// if (g_exitcode != 130)
-	// 	free(line);
+	close(save_in);
+	free(line);
 	free(limiter);
 }
 

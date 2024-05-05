@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/05 00:49:41 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:18:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,10 +236,10 @@ void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
 
 // signal.c
-void		signal_handler(void);
-void		sigint_handler(int signal);
-void		signal_handler_in_child(void);
-void		sigint_handler_in_child(int signal);
+void		manage_signal(void);
+void		handle_sigint(int signal);
+void		handle_sigint_in_child(int signal);
+void		handle_sigint_in_hd(int signal);
 
 // envvars ($)
 void		envvars_manager(char **tokens, t_mini *mini);
