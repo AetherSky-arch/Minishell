@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/06 00:58:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:58:30 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int		g_exitcode;
 
-void	quit(char *prompt, int k)
+void	quit(t_mini *mini, char *prompt, int k)
 {
 	free(prompt);
 	rl_clear_history();
+    double_free((void **)mini->envvars);
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(k);
 }
@@ -57,7 +58,7 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 		// if (ft_strcmp(prompt, "exit\n") == 0)
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
-			quit(prompt, prev_exit);
+			quit(mini, prompt, prev_exit);
 		if (ft_strcmp(prompt, "\n") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
@@ -81,7 +82,7 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 		temp_display_tabs(mini->token, mini->type);
 	}
 	else
-		quit(prompt, prev_exit);
+		quit(mini, prompt, prev_exit);
 	return (SUCCESS);
 }
 
@@ -113,20 +114,20 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
 	int		prev_exit;
+    char    **envvars;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	prev_exit = 0;
 	g_exitcode = 0;
+	envvars = double_dup(envp);
+	if (envvars == NULL)
+		return (1);
 	while (1)
 	{
 		mini = (t_mini){0};
-		//
-		// mini.envvars = double_dup(envp);
-		// if (mini.envvars == NULL)
-		// 	return (1);
-		//
+        mini.envvars = envvars;
 		manage_signal();
 		if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
 		{
