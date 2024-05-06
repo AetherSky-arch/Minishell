@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 23:53:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/02 21:54:37 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:32:29 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 typedef struct sigaction	t_sigaction;
 
 // SIGINT = ctrl+c
-// SIGQUIT = ctrl+\
+// SIGQUIT = ctrl+
 
 void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
 		write(1, "ici\n", 4);
+    if (signal == SIGQUIT)
+        exit (0);
 }
 
 void	set_signal_action(void)
