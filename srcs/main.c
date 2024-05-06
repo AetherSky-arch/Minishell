@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/06 14:58:30 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/06 15:04:15 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
 		//
-		mini->envvars = double_dup(envp);
-		if (mini->envvars == NULL)
-			return (free(prompt), FAILURE);
+		// mini->envvars = double_dup(envp);
+		// if (mini->envvars == NULL)
+		// 	return (free(prompt), FAILURE);
 		//
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
@@ -127,7 +127,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini = (t_mini){0};
-        mini.envvars = envvars;
+        mini.envvars = double_dup(envvars);
 		manage_signal();
 		if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
 		{
@@ -145,6 +145,8 @@ int	main(int argc, char **argv, char **envp)
 			unlink_free_hdname(&mini);
 			/*** free here for now ***/
 			double_free((void **)mini.token);
+            double_free((void **)envvars);
+            envvars = double_dup(mini.envvars);
 			double_free((void **)mini.envvars);
 			free(mini.fprompt);
 			free(mini.type);
