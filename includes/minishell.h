@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/05 20:18:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/06 22:40:05 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ typedef struct s_mini
 	// exec
 	char **cmd_arg; // to be free'd
 	char **paths;   // to be free'd
-	char	**envvars;
+	char **envvars; // to be free'd
 	// file descriptor
 	int fd_in;    // to be closed
 	int fd_out;   // to be closed

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/06 15:04:15 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/06 22:41:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	wait_exitcode(t_mini *mini)
 	}
 }
 
-int	read_prompt(t_mini *mini, int prev_exit, char **envp)
+int	read_prompt(t_mini *mini, int prev_exit)
 {
 	char	*prompt;
 
@@ -64,19 +64,13 @@ int	read_prompt(t_mini *mini, int prev_exit, char **envp)
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
-		//
-		// mini->envvars = double_dup(envp);
-		// if (mini->envvars == NULL)
-		// 	return (free(prompt), FAILURE);
-		//
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
 		envvars_manager(mini->token, mini);
 		mini->type = create_type(mini);
 		check_type(mini);
-		check_quoted_type(mini->type, mini->token);
-		//
+		check_quoted_type(mini->type, mini->token);		
 		/***  temp: for checking  ***/
 		printf("f_prompt:%s\n", mini->fprompt);
 		temp_display_tabs(mini->token, mini->type);
@@ -123,13 +117,13 @@ int	main(int argc, char **argv, char **envp)
 	g_exitcode = 0;
 	envvars = double_dup(envp);
 	if (envvars == NULL)
-		return (1);
+		return (EXIT_FAILURE);
 	while (1)
 	{
 		mini = (t_mini){0};
         mini.envvars = double_dup(envvars);
 		manage_signal();
-		if (read_prompt(&mini, prev_exit, envp) == SUCCESS)
+		if (read_prompt(&mini, prev_exit) == SUCCESS)
 		{
 			g_exitcode = 0; // initi for open_heredoc
 			if (check_syntax(&mini) == FAILURE)
