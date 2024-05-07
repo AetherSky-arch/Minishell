@@ -98,3 +98,5 @@ echo titi >> out | wc --> ok - to be recheck and ckean in the code builtin_files
 
 sleep 3 | exit --> do not exit
 exit | echo toto --> toto, and do not exit
+
+16hd ok 17 = bash: maximum here-document count exceeded

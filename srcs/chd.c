@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/04/27 00:12:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 01:00:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	checkfor_dir(char *path)
 	return (S_ISDIR(statbuf.st_mode));
 }
 
-int	chd(char *path)
+int ft_chd(char *path)
 {
 	if (access(path, F_OK) != 0)
 		return (chd_putstr_error(path, ERR_DIR), 1);

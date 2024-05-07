@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/06 22:40:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 01:05:58 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,18 +242,18 @@ void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
 
 // envvars ($)
-void		envvars_manager(char **tokens, t_mini *mini);
+void		envvars_manager(char **tokens, t_mini *mini, int prev_exit);
 
 //--------------------- BUILTINS ------------------------------------//
 
 // echo.c
-int			echo(char **args);
+int			ft_echo(char **args);
 // chd.c
 int			checkfor_dir(char *path);
-int			chd(char *path);
+int			ft_chd(char *path);
 void		chd_putstr_error(char *path, char *err_str);
 // pwd.c
-int			pwd(char **args);
+int			ft_pwd(char **args);
 
 // export.c
 int			is_bad_assignment(char **args);
@@ -261,7 +261,10 @@ int			is_no_equal(char *arg);
 char		*dequote(char *str);
 int			is_in_twod(char **tab, char *str);
 char		*ft_getenv(t_mini *mini, char *varname);
-void		export_to_envvars(t_mini *mini, char **args);
+int			ft_export_to_envvars(t_mini *mini, char **args);
+
+// unset.c
+int			ft_unset(char **args, t_mini *mini);
 
 /***************temp temp temp *****************/
 // void		wait_exitcode(t_mini *mini);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:01:31 by aether            #+#    #+#             */
-/*   Updated: 2024/04/30 18:27:21 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/08 01:08:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int  is_envvar(char *str, char **vars)
     return (0);
 }
 
-static char **envvars_copier(char **envvars, char **args)
+static char **envvars_copy(char **envvars, char **args)
 {
     int i;
     int copy_len;
@@ -47,24 +47,25 @@ static char **envvars_copier(char **envvars, char **args)
     copy = malloc ((copy_len + 1) * sizeof(char *));
     if (copy == NULL)
     {
-        ft_putstr_fd("unset: malloc error\n", 2);
+        ft_putstr_fd("minishell: unset: malloc error\n", 2);
         exit(1);
     }
     return (copy);
 }
 
-int unset(char **args, t_mini *mini)
+// modifie !!! attention
+int ft_unset(char **args, t_mini *mini)
 {
     int   i;
     int   j;
     char  **copy;
 
-    if ((args == NULL) || (args[0] == NULL))
+    if ((args == NULL) || (args[1] == NULL))
     {
-        ft_putstr_fd("unset: not enough arguments\n", 2);
+        ft_putstr_fd("minishell: unset: not enough arguments\n", 2);
         return (1);
     }
-    copy = envvars_copier(mini->envvars, args);
+    copy = envvars_copy(mini->envvars, args);
     i = 0;
     j = 0;
     while (mini->envvars[i] != NULL)

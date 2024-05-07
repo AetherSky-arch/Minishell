@@ -23,14 +23,16 @@ SRCS := srcs/main.c \
 		srcs/exec.c \
 		srcs/builtins.c \
 		srcs/echo.c \
+		srcs/env.c \
 		srcs/chd.c \
 		srcs/pwd.c \
-		srcs/free_close_exit.c \
-		srcs/temp.c \
 		srcs/export.c \
 		srcs/export_utils.c \
-		srcs/envvars_manager.c
-		
+		srcs/envvars_manager.c \
+		srcs/unset.c \
+		srcs/free_close_exit.c \
+		srcs/temp.c
+				
 
 OBJS = ${SRCS:.c=.o}
 

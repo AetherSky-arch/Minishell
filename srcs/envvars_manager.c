@@ -6,13 +6,13 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:43:09 by aether            #+#    #+#             */
-/*   Updated: 2024/05/07 00:33:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/07 19:07:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	envvars_manager(char **tokens, t_mini *mini)
+void	envvars_manager(char **tokens, t_mini *mini, int prev_exit)
 {
 	int		i;
 	char	*tmp;
@@ -23,7 +23,7 @@ void	envvars_manager(char **tokens, t_mini *mini)
 		if (ft_strcmp(tokens[i], "$?") == 0)
 		{
 			free(tokens[i]);
-			tokens[i] = ft_itoa(mini->exitcode);
+			tokens[i] = ft_itoa(prev_exit);
 		}
 		else if (tokens[i][0] == '$')
 		{

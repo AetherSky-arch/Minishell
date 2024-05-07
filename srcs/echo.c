@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 18:50:33 by aether            #+#    #+#             */
-/*   Updated: 2024/04/30 19:04:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 01:00:37 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	is_noline_option(char *str)
 }
 
 // args = cmd_arg = CMD / ARG / ARG ...
-int	echo(char **args)
+int	ft_echo(char **args)
 {
 	int	i;
 

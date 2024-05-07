@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 20:21:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 01:08:27 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,33 +106,33 @@ void	builtin(t_mini *mini, int start)
 	tmp_out = dup(STD_OUT);
 	if (builtin_files(mini, start) == 0)
 	{
-		// ft_putstr_fd("la\n", STD_ERR);
 		create_cmd_arg(mini, start);
-		// printf("cmd_arg:");
-		// while (mini->cmd_arg[i])
-		// {
-		// 	printf("%s / ", mini->cmd_arg[i]);
-		// 	i++;
-		// }
-		// printf("\n");
-		k = is_builtin(*mini, start);
-		// ft_putnbr_fd(k, STD_ERR);
-		// printf("k = %d\n", k);
-		if (k == CD)
-			mini->exitcode = chd(mini->cmd_arg[1]);
-		if (k == ECHO)
-			mini->exitcode = echo(mini->cmd_arg);
-		// if (k == ENV)
-		// env(mini->cmd_arg);
-		// if (k == EXIT)
-		// exit(mini->cmd_arg);
-		// if (k == EXPORT)
-		// export(mini->cmd_arg);
-		if (k == PWD)
-			mini->exitcode = pwd(mini->cmd_arg);
-		// if (k == UNSET)
-		// unset(mini->cmd_arg);
-		double_free((void **)(mini->cmd_arg));
+		if (mini->cmd_arg)
+		{
+			k = is_builtin(*mini, start);
+			// ft_putnbr_fd(k, STD_ERR);
+			// printf("k = %d\n", k);
+			if (k == CD)
+				mini->exitcode = ft_chd(mini->cmd_arg[1]);
+			if (k == ECHO)
+				mini->exitcode = ft_echo(mini->cmd_arg);
+			// if (k == ENV)
+			// env(mini->cmd_arg);
+			// if (k == EXIT)
+			// exit(mini->cmd_arg);
+			if (k == EXPORT)
+				mini->exitcode = ft_export_to_envvars(mini, mini->cmd_arg);
+			if (k == PWD)
+				mini->exitcode = ft_pwd(mini->cmd_arg);
+			if (k == UNSET)
+				mini->exitcode = ft_unset(mini->cmd_arg, mini);
+			double_free((void **)(mini->cmd_arg));
+		}
+		else
+		{
+			ft_putstr_fd(ERR_MAL, STD_ERR);
+			free_close_exit(mini, EXIT_FAILURE, 0);
+		}
 	}
 	dup2(tmp_out, STD_OUT);
 	close(tmp_out);
@@ -158,8 +158,8 @@ int	builtin_files(t_mini *mini, int start)
 
 int	builtin_infile(t_mini *mini, int start)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = start;
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
@@ -180,3 +180,13 @@ int	builtin_infile(t_mini *mini, int start)
 	}
 	return (0);
 }
+
+/*** draft   */
+
+// printf("cmd_arg:");
+// while (mini->cmd_arg[i])
+// {
+// 	printf("%s / ", mini->cmd_arg[i]);
+// 	i++;
+// }
+// printf("\n");

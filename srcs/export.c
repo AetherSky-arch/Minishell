@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aether <aether@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/03 17:40:09 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/08 01:00:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,22 @@ void  export_void(char **env)
     }
 }
 
-void	export_to_envvars(t_mini *mini, char **args)
+// modifie !!! attention
+int	ft_export_to_envvars(t_mini *mini, char **args)
 {
 	int		i;
 	char	*unquoted;
 
-    if ((args == NULL) || (args[0] == NULL))
+    if (args == NULL)
+		return(1);    	
+	if (args[1] == NULL)
     {
         export_void(mini->envvars);
+		return(0);
     }
 	if (is_bad_assignment(args))
-		return ;
-	i = 0;
+		return (1);
+	i = 1;
 	while (args[i] != NULL)
 	{
 		unquoted = dequote(args[i]);
@@ -111,4 +115,5 @@ void	export_to_envvars(t_mini *mini, char **args)
 			mini->envvars = append(mini->envvars, unquoted);
 		i++;
 	}
+	return(0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aether <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:22:28 by aether            #+#    #+#             */
-/*   Updated: 2024/04/26 17:42:53 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/08 00:51:12 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ int  is_bad_assignment(char **args)
 {
     int i;
 
-    i = 0;
+    i = 1; //modif here
     while (args[i] != NULL)
     {
         if (args[i][0] == '=')
-            return (ft_putstr_fd("export: bad assignment\n", 2), 1);
+            return (ft_putstr_fd("minishell: export: bad assignment\n", 2), 1);
         i++;
     }
     return (0);
