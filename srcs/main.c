@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/07 21:47:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 03:44:11 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		g_exitcode;
 void	quit(t_mini *mini, char *prompt, int k)
 {
 	free(prompt);
-	// rl_clear_history();
+	rl_clear_history();
     double_free((void **)mini->envvars);
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(k);
@@ -49,15 +49,15 @@ int	read_prompt(t_mini *mini, int prev_exit)
 {
 	char	*prompt;
 
-	// prompt = readline("~$ ");
-	prompt = get_next_line(STD_IN);
+	prompt = readline("~$ ");
+	//prompt = get_next_line(STD_IN);
 	if (g_exitcode == 130)
 		prev_exit = 130;
 	if (prompt)
 	{
-		if (ft_strcmp(prompt, "exit\n") == 0) //gnl
-		// add_history(prompt);
-		// if (ft_strcmp(prompt, "exit") == 0)
+		//if (ft_strcmp(prompt, "exit\n") == 0) //gnl
+		add_history(prompt);
+		if (ft_strcmp(prompt, "exit") == 0)
 			quit(mini, prompt, prev_exit);
 		if (ft_strcmp(prompt, "\n") == 0)	
 		// if (ft_strcmp(prompt, "") == 0)
@@ -73,8 +73,8 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);		
 		/***  temp: for checking  ***/
-		printf("f_prompt:%s\n", mini->fprompt);
-		temp_display_tabs(mini->token, mini->type);
+		//printf("f_prompt:%s\n", mini->fprompt);
+		//temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, prev_exit);
@@ -149,7 +149,7 @@ int	main(int argc, char **argv, char **envp)
 		if (g_exitcode == 130)
 			mini.exitcode = 130;
 		prev_exit = mini.exitcode;
-		printf("exitcode:%d\n", mini.exitcode);
+		//printf("exitcode:%d\n", mini.exitcode);
 	}
 	// if (isatty(STD_IN))
 	// {
