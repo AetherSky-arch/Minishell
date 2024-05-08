@@ -6,36 +6,58 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/08 01:00:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 22:57:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// return 0 if not a directory
 int	checkfor_dir(char *path)
 {
 	struct stat	statbuf;
 
-	stat(path, &statbuf);
-	return (S_ISDIR(statbuf.st_mode));
+	if (path)
+	{
+		stat(path, &statbuf);
+		return (S_ISDIR(statbuf.st_mode));
+	}
+	return (0);
 }
 
-int ft_chd(char *path)
+/*** Need to close fd's in case of error ? ***/
+int	ft_chd(t_mini *mini, char *path)
 {
-	if (access(path, F_OK) != 0)
-		return (chd_putstr_error(path, ERR_DIR), 1);
-	else if (checkfor_dir(path) == 0)
-		return (chd_putstr_error(path, ": Not a directory\n"), 1);
+	char	*homedir;
+
+	if (path)
+	{
+		if (access(path, F_OK) != 0)
+			return (chd_str_err(path, ERR_DIR), 1);
+		else if (checkfor_dir(path) == 0)
+			return (chd_str_err(path, ": Not a directory\n"), 1);
+		else
+		{
+			if (chdir(path) != 0)
+				return (perror("minishell: chdir"), 1);
+			return (0);
+		}
+	}
 	else
 	{
-		if (chdir(path) != 0)
-			return (ft_putstr_fd("minishell: cd: chdir function failed\n",
-					STD_ERR), 1);
-		return (0);
+		homedir = ft_getenv(mini, "HOME");
+		if (homedir)
+		{
+			if (chdir(homedir) != 0)
+				return (free(homedir), perror("minishell: chdir"), 1);
+			return (free(homedir), 0);
+		}
+		else
+			return (free(homedir), chd_str_err("No HOME variable", "\n"), 1);
 	}
 }
 
-void	chd_putstr_error(char *path, char *err_str)
+void	chd_str_err(char *path, char *err_str)
 {
 	char	*tmp1;
 	char	*tmp2;
@@ -57,4 +79,6 @@ int	main(int argc, char **argv)
 	}
 	return (chd(argv[1]));
 }
+
+//return (ft_putstr_fd("minishell: cd: chdir function failed\n",STD_ERR), 1);
 */

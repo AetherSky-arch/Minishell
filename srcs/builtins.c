@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/08 01:08:27 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 21:11:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ void	builtin(t_mini *mini, int start)
 	if (builtin_files(mini, start) == 0)
 	{
 		create_cmd_arg(mini, start);
-		if (mini->cmd_arg)
+		if (mini->cmd_arg && mini->cmd_arg[0])
 		{
 			k = is_builtin(*mini, start);
 			// ft_putnbr_fd(k, STD_ERR);
 			// printf("k = %d\n", k);
 			if (k == CD)
-				mini->exitcode = ft_chd(mini->cmd_arg[1]);
+				mini->exitcode = ft_chd(mini, mini->cmd_arg[1]);
 			if (k == ECHO)
 				mini->exitcode = ft_echo(mini->cmd_arg);
 			// if (k == ENV)

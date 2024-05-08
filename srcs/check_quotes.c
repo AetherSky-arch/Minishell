@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 21:49:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/29 21:55:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/09 01:33:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ int	check_quotes_output(int s_open, int d_open)
 
 void	check_quoted_type(t_type *type, char **token)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
+	int		j;
 
 	if (!type || !token)
 		return ;
@@ -67,16 +68,67 @@ void	check_quoted_type(t_type *type, char **token)
 		if (type[i] == INFILE || type[i] == OUTFILE || type[i] == OUTFAPP
 			|| type[i] == LIMITER || type[i] == CMD || type[i] == ARG)
 		{
-			if (is_quote(token[i][0]) == 1)
+			j = 0;
+			while (token[i][j])
 			{
-				tmp = ft_strdup(token[i]);
-				free(token[i]);
-				token[i] = gnl_substr(tmp, 1, ft_strlen(tmp) - 2);
-				free(tmp);
+				if (is_quote(token[i][j]) == 1)
+				{
+					tmp = remove_quote(token[i]);
+					free(token[i]);
+					token[i] = ft_strdup(tmp);
+					free(tmp);
+					break ;
+				}
+				j++;
 			}
+			// if (is_quote(token[i][0]) == 1)
+			// {
+			// 	tmp = ft_strdup(token[i]);
+			// 	free(token[i]);
+			// 	token[i] = gnl_substr(tmp, 1, ft_strlen(tmp) - 2);
+			// 	free(tmp);
+			// }
 		}
 		i++;
 	}
+}
+
+char	*remove_quote(char *str)
+{
+	int		i;
+	char	q;
+	char	*new;
+	int		k;
+	int		j;
+
+	if (!str)
+		return (NULL);
+	k = 0;
+	i = 0;
+	while (str[i])
+	{
+		if ((is_quote(str[i]) == 1) && (k == 0))
+			q = str[i];
+		if (str[i] == q)
+			k++;
+		i++;
+	}
+	new = malloc(sizeof(char) * (ft_strlen(str) - k + 1));
+	if (!new)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != q)
+		{
+			new[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	new[i] = '\0';
+	return (new);
 }
 
 int	inside_quotes(const char *str, int i)

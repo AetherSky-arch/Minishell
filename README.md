@@ -50,13 +50,13 @@ echo "	" | car -e --> invalid free + leak (cas CMD not found + ARG) --> ok
 toto | wc < titi --> Warning: invalid file descriptor -1 in syscall close() --> ok
 
 Issues:
-1) << eof | <<
-2) << | << eof
-3) << eof << <<<
-4) cat || wc (cat is working until ctrl+c)
+1) << eof | << --> ok
+2) << | << eof --> ok
+3) << eof << <<< --> ok
+4) cat || wc (cat is working until ctrl+c) --> put in stx err
 5) wc < Makefile || wc (exec 1er wc, exit 0) --> pour nous syntax error
-6) wc < Makefile wc (wc: wc: No such file or directory)
-7) < >>
+6) wc < Makefile wc (wc: wc: No such file or directory) --> ok
+7) < >> --> ok
 
 Valgrind:
 valgrind --track-fds=yes --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes
@@ -86,17 +86,23 @@ NB:
 1) un truc a tester a la fin: 1) lancer minishell 2) faire une modif dans le code 3) faire make dans le minishell en cours 4) lancer le nouveau minshell dans minishell 5) verifier la modif 6) exit 7) verififier qu'il n'y a plus la modif
 2) lancer signal exe de temp_signal.c
 
-cd > out --> vide out
-exit > out --> vide out
-
-titi \" \' tot\'o\" tutu \'tata\' --> double free
-
 STD OUT Builtin issue:
 Makefile | wc --> ok
 echo tutu | wc --> ok
 echo titi >> out | wc --> ok - to be recheck and ckean in the code builtin_files 
 
-sleep 3 | exit --> do not exit
-exit | echo toto --> toto, and do not exit
+sleep 3 | exit --> do not exit --> ok exit the child
+exit | echo toto --> toto, and do not exit --> ok exit the child
 
-16hd ok 17 = bash: maximum here-document count exceeded
+Solved:
+1) 16hd ok 17 = bash: maximum here-document count exceeded --> ok
+
+Issues:
+2) /tmp --> bash: /tmp: Is a directory
+2) / --> bash: /: Is a directory
+3) cd /tmp ls --> pas tout a fait pareil
+4) >test1 < $vvv  >test2 --> bash: $vvv: ambiguous redirect mais test1 cree
+5) cd > out --> vide out
+5) exit > out --> vide out
+6) titi \" \' tot\'o\" tutu \'tata\' --> double free
+

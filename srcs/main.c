@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/08 03:44:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/09 01:42:39 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	quit(t_mini *mini, char *prompt, int k)
 {
 	free(prompt);
 	rl_clear_history();
-    double_free((void **)mini->envvars);
+	double_free((void **)mini->envvars);
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(k);
 }
@@ -50,17 +50,17 @@ int	read_prompt(t_mini *mini, int prev_exit)
 	char	*prompt;
 
 	prompt = readline("~$ ");
-	//prompt = get_next_line(STD_IN);
+	// prompt = get_next_line(STD_IN);
 	if (g_exitcode == 130)
 		prev_exit = 130;
 	if (prompt)
 	{
-		//if (ft_strcmp(prompt, "exit\n") == 0) //gnl
+		// if (ft_strcmp(prompt, "exit\n") == 0) //gnl
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(mini, prompt, prev_exit);
-		if (ft_strcmp(prompt, "\n") == 0)	
-		// if (ft_strcmp(prompt, "") == 0)
+		if (ft_strcmp(prompt, "\n") == 0)
+			// if (ft_strcmp(prompt, "") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
@@ -71,10 +71,10 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		envvars_manager(mini->token, mini, prev_exit);
 		mini->type = create_type(mini);
 		check_type(mini);
-		check_quoted_type(mini->type, mini->token);		
+		check_quoted_type(mini->type, mini->token);
 		/***  temp: for checking  ***/
-		//printf("f_prompt:%s\n", mini->fprompt);
-		//temp_display_tabs(mini->token, mini->type);
+		// printf("f_prompt:%s\n", mini->fprompt);
+		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, prev_exit);
@@ -109,7 +109,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
 	int		prev_exit;
-    char    **envvars;
+	char	**envvars;
 
 	(void)argc;
 	(void)argv;
@@ -122,7 +122,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		mini = (t_mini){0};
-        mini.envvars = double_dup(envvars);
+		mini.envvars = double_dup(envvars);
 		double_free((void **)envvars);
 		manage_signal();
 		if (read_prompt(&mini, prev_exit) == SUCCESS)
@@ -140,8 +140,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			unlink_free_hdname(&mini);
 			/*** free here for now ***/
-			double_free((void **)mini.token);            
-            envvars = double_dup(mini.envvars);
+			double_free((void **)mini.token);
+			envvars = double_dup(mini.envvars);
 			double_free((void **)mini.envvars);
 			free(mini.fprompt);
 			free(mini.type);
@@ -149,7 +149,7 @@ int	main(int argc, char **argv, char **envp)
 		if (g_exitcode == 130)
 			mini.exitcode = 130;
 		prev_exit = mini.exitcode;
-		//printf("exitcode:%d\n", mini.exitcode);
+		// printf("exitcode:%d\n", mini.exitcode);
 	}
 	// if (isatty(STD_IN))
 	// {

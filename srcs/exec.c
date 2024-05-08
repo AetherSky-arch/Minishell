@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/01 20:13:55 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 23:17:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	exec_arg(t_mini mini, char **envp, int start)
 	get_cmd_arg(&mini, start);
 	if (mini.cmd_arg)
 	{
+		// ft_putnbr_fd(checkfor_dir(mini.cmd_arg[0]), STD_ERR);
+		// if (checkfor_dir(mini.cmd_arg[0]) != 0)
 		if (check_slash(mini.cmd_arg[0]) == 1)
 			exec_abs(mini, envp);
 		else

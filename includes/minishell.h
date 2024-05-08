@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/08 01:05:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/09 01:00:07 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define ERR_HDX "minishell: Syntax error near unexpected token: "
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
-# define ERR_NHD "minishell: Too many heredocs\n"
+# define ERR_NHD "minishell: Maximum here-document count exceeded\n"
 # define ERR_CMD ": Command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -122,6 +122,7 @@ int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
 void		check_quoted_type(t_type *type, char **token);
 int			inside_quotes(char const *str, int i);
+char		*remove_quote(char *str);
 
 // format_prompt.c
 char		*format_prompt(char *prompt);
@@ -250,8 +251,8 @@ void		envvars_manager(char **tokens, t_mini *mini, int prev_exit);
 int			ft_echo(char **args);
 // chd.c
 int			checkfor_dir(char *path);
-int			ft_chd(char *path);
-void		chd_putstr_error(char *path, char *err_str);
+int			ft_chd(t_mini *mini, char *path);
+void		chd_str_err(char *path, char *err_str);
 // pwd.c
 int			ft_pwd(char **args);
 

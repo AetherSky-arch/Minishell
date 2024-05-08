@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/06 00:54:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 22:03:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ char	**create_hd_name(t_mini *mini)
 	int		nb;
 
 	nb = nbr_heredoc(*mini);
-	if (nb >= 1024)
+	if (nb > 16)
 	{
 		ft_putstr_fd(ERR_NHD, STD_ERR);
-		return (mini->exitcode = EXIT_FAILURE, NULL);
+		free_close_exit(mini, EXIT_STX, 0);
 	}
 	hd_name = malloc(sizeof(char *) * (nb + 1));
 	if (!hd_name)
