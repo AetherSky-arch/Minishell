@@ -6,20 +6,21 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/08 22:57:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 00:08:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // return 0 if not a directory
-int	checkfor_dir(char *path)
+int	checkfor_dir(t_mini *mini, char *path)
 {
 	struct stat	statbuf;
 
 	if (path)
 	{
-		stat(path, &statbuf);
+		if (stat(path, &statbuf) == -1)
+			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);
 		return (S_ISDIR(statbuf.st_mode));
 	}
 	return (0);
@@ -34,7 +35,7 @@ int	ft_chd(t_mini *mini, char *path)
 	{
 		if (access(path, F_OK) != 0)
 			return (chd_str_err(path, ERR_DIR), 1);
-		else if (checkfor_dir(path) == 0)
+		else if (checkfor_dir(mini, path) == 0)
 			return (chd_str_err(path, ": Not a directory\n"), 1);
 		else
 		{

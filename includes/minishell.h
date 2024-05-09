@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/09 01:00:07 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 00:54:56 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,16 +247,21 @@ void		envvars_manager(char **tokens, t_mini *mini, int prev_exit);
 
 //--------------------- BUILTINS ------------------------------------//
 
-// echo.c
+// echo.c --> to be secured
 int			ft_echo(char **args);
+
 // chd.c
-int			checkfor_dir(char *path);
+int			checkfor_dir(t_mini *mini, char *path);
 int			ft_chd(t_mini *mini, char *path);
 void		chd_str_err(char *path, char *err_str);
-// pwd.c
-int			ft_pwd(char **args);
 
-// export.c
+// pwd.c
+int			ft_pwd(t_mini *mini);
+
+// env.c
+int			ft_env(t_mini *mini, char **args);
+
+// export.c --> to be secured
 int			is_bad_assignment(char **args);
 int			is_no_equal(char *arg);
 char		*dequote(char *str);
@@ -264,7 +269,7 @@ int			is_in_twod(char **tab, char *str);
 char		*ft_getenv(t_mini *mini, char *varname);
 int			ft_export_to_envvars(t_mini *mini, char **args);
 
-// unset.c
+// unset.c --> to be secured
 int			ft_unset(char **args, t_mini *mini);
 
 /***************temp temp temp *****************/

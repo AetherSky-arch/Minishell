@@ -106,3 +106,13 @@ Issues:
 5) exit > out --> vide out
 6) titi \" \' tot\'o\" tutu \'tata\' --> double free
 
+bash: exit: 5000000000000000000000000000000000: numeric argument required
+bash: exit: bla12: numeric argument required
+500000 % 256 -> 32 
+
+Proteger les fonctions des builtins --> exit
+echo "$?yoyo"
+echo "$ ?"
+echo toto"$PWD   a"
+echo toto'$PWD   '
+echo toto'$PWD'

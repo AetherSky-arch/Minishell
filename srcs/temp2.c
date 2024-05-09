@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 21:19:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/03 17:08:03 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/09 21:38:43 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_in_quotes(char *prompt, int i)
 }
 
 // 0 = false, not inside quotes - 1 = true, inside quotes
-// opening quote included (1), closing quote not included (0)
+// opening quote not included (0), closing quote not included (0)
 int	is_in_quotes2(char *str, int i)
 {
 	int	j;
@@ -73,12 +73,18 @@ int	is_in_quotes2(char *str, int i)
 		}
 		j++;
 	}
+	// if (str[i] == '\'' || str[i] == '\"')
+	// 	return (1); // true, in quote --> to include last quote
 	if (first == 0)
 		return (0); // false, not in quote
-	if ((first == 39) && (s_open % 2 == 0))
-		return (0);
-	if ((first == 34) && (d_open % 2 == 0))
-		return (0);
+	// if ((first == 39) && (s_open % 2 == 0))
+	// 	return (0); // ??
+	// if ((first == 34) && (d_open % 2 == 0))
+	// 	return (0); // ??
+	if ((first == 39) && (str[i] == '\''))
+		return (0); //not include the first
+	if ((first == 34) && (str[i] == '\"'))
+		return (0); //not include the first
 	return (1); // true, in quote
 }
 
@@ -91,6 +97,7 @@ int	main(int argc, char **argv)
 	(void)argv;
 	// str = "titi \" \' toto\" tutu";
 	str = "titi \" \' tot\'o\" tutu \'tat\"a\'   \"tst\'s\"";
+	// str = "echo \'t\"o\'t\"\"o";
 	// str = " \' "; // stx err
 	// str = "titi \"  toto\" tutu";
 	// str = "titi \' \" toto\' tutu";

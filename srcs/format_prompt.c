@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/09 01:24:24 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:47:06 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*format_prompt(char *prompt)
 	char	*f_prompt;
 
 	if (!prompt)
-		return (NULL);	
+		return (NULL);
 	tmp_prompt = get_prompt_minus_space(prompt);
 	if (!tmp_prompt)
 		return (NULL);
@@ -95,13 +95,11 @@ int	len_prompt_plus_space(char *prompt)
 		return (0);
 	while (prompt[i])
 	{
-		// if (prompt[i] == '\'' || prompt[i] == '\"')
-			//quote_in_len_plus(prompt, &i, &len, prompt[i]);
-		//else
-		//  if (is_symbol(prompt[i]) == 1)
-		// 	symbol_in_len_plus(prompt, &i, &len);
-		//else
-		
+		if (prompt[i] == '\'' || prompt[i] == '\"')
+			quote_in_len_plus(prompt, &i, &len, prompt[i]);
+		else if (is_symbol(prompt[i]) == 1)
+			symbol_in_len_plus(prompt, &i, &len);
+		else
 		{
 			i++;
 			len++;
@@ -127,14 +125,13 @@ char	*get_prompt_plus_space(char *prompt)
 	j = 0;
 	while (prompt[j])
 	{
-		// if (prompt[j] == '\'')
-		// 	squote_in_get_plus(f_prompt, prompt, &i, &j);
-		// else if (prompt[j] == '\"')
-		// 	dquote_in_get_plus(f_prompt, prompt, &i, &j);
-		// else
-		//  if (is_symbol(prompt[j]) == 1)
-		// 	symbol_in_get_plus(f_prompt, prompt, &i, &j);
-		// else
+		if (prompt[j] == '\'')
+			squote_in_get_plus(f_prompt, prompt, &i, &j);
+		else if (prompt[j] == '\"')
+			dquote_in_get_plus(f_prompt, prompt, &i, &j);
+		else if (is_symbol(prompt[j]) == 1)
+			symbol_in_get_plus(f_prompt, prompt, &i, &j);
+		else
 			other_in_get_plus(f_prompt, prompt, &i, &j);
 	}
 	f_prompt[i] = '\0';
