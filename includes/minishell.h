@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 00:54:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 06:43:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
 # define ERR_NHD "minishell: Maximum here-document count exceeded\n"
-# define ERR_CMD ": Command not found\n"
+# define ERR_CMD ": command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
 # define EXIT_SUCCESS 0
@@ -228,6 +228,7 @@ int			len_cmd_arg(t_mini mini, int start);
 void		builtin(t_mini *mini, int start);
 int			builtin_files(t_mini *mini, int start);
 int			builtin_infile(t_mini *mini, int start);
+int			builtin_outfile(t_mini *mini, int start);
 
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);

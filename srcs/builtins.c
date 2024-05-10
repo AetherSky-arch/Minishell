@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 01:05:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 06:45:59 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	builtin(t_mini *mini, int start)
 			if (k == ECHO)
 				mini->exitcode = ft_echo(mini->cmd_arg);
 			if (k == ENV)
-			 	mini->exitcode = ft_env(mini, mini->cmd_arg);
+				mini->exitcode = ft_env(mini, mini->cmd_arg);
 			// if (k == EXIT)
 			// exit(mini->cmd_arg);
 			if (k == EXPORT)
@@ -134,6 +134,8 @@ void	builtin(t_mini *mini, int start)
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
 	}
+	else
+		mini->exitcode = 1;
 	dup2(tmp_out, STD_OUT);
 	close(tmp_out);
 }
@@ -143,7 +145,7 @@ int	builtin_files(t_mini *mini, int start)
 {
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
-	if (is_outfile(mini, start) == 1)
+	if (builtin_outfile(mini, start) == 1)
 	{
 		dup2(mini->fd_out, STD_OUT);
 		close(mini->fd_out);
@@ -179,6 +181,40 @@ int	builtin_infile(t_mini *mini, int start)
 		i++;
 	}
 	return (0);
+}
+
+int	builtin_outfile(t_mini *mini, int start)
+{
+	int	i;
+	int	is_outfile;
+	char *tmp;
+
+	i = start;
+	is_outfile = 0;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
+		{
+			if (mini->fd_out > 0)
+				close(mini->fd_out);
+			is_outfile = 1;
+		}
+		if (mini->type[i] == OUTFILE)
+			mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT,
+					0666);
+		if (mini->type[i] == OUTFAPP)
+			mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
+					0666);
+		if (mini->fd_out < 0)
+		{ // perror_open_free(mini, mini->token[i]);
+			tmp = ft_strjoin("minishell: ", mini->token[i]);
+			perror(tmp);
+			free(tmp);
+			return (0);
+		}
+		i++;
+	}
+	return (is_outfile);
 }
 
 /*** draft   */

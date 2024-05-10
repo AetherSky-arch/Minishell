@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/04/30 23:54:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 06:08:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,15 @@ int	syntax_checker(t_mini *mini)
 	i = 0;
 	while (mini->token[i])
 	{
-		if (check_less_more(mini->token[i]) == 0
-			|| check_less_and_more(mini->token[i]) == 0
-			|| check_pipes(mini->token[i]) == 0)
+		if (mini->type[i] == CMD)
 		{
-			mini->stx_err_idx = i;
-			return (FAILURE);
+			if (check_less_more(mini->token[i]) == 0
+				|| check_less_and_more(mini->token[i]) == 0
+				|| check_pipes(mini->token[i]) == 0)
+			{
+				mini->stx_err_idx = i;
+				return (FAILURE);
+			}
 		}
 		i++;
 	}
