@@ -26,6 +26,7 @@ SRCS := srcs/main.c \
 		srcs/env.c \
 		srcs/chd.c \
 		srcs/pwd.c \
+		srcs/exit.c \
 		srcs/export.c \
 		srcs/export_utils.c \
 		srcs/envvars_manager.c \

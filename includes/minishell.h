@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 06:43:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/11 01:39:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,8 +227,8 @@ void		create_cmd_arg(t_mini *mini, int start);
 int			len_cmd_arg(t_mini mini, int start);
 void		builtin(t_mini *mini, int start);
 int			builtin_files(t_mini *mini, int start);
-int			builtin_infile(t_mini *mini, int start);
-int			builtin_outfile(t_mini *mini, int start);
+int			builtin_infile(t_mini *mini, int i);
+int			builtin_outfile(t_mini *mini, int i);
 
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
@@ -258,6 +258,9 @@ void		chd_str_err(char *path, char *err_str);
 
 // pwd.c
 int			ft_pwd(t_mini *mini);
+
+// exit.c
+void		ft_exit(t_mini *mini);
 
 // env.c
 int			ft_env(t_mini *mini, char **args);

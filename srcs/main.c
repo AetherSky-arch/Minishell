@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 06:36:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 20:38:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
 			quit(mini, prompt, prev_exit);
-		if (ft_strcmp(prompt, "\n") == 0)
-			// if (ft_strcmp(prompt, "") == 0)
+		// if (ft_strcmp(prompt, "\n") == 0) //gnl
+		if (ft_strcmp(prompt, "") == 0)
 			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
@@ -73,8 +73,8 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
 		/***  temp: for checking  ***/
-		//printf("f_prompt:%s\n", mini->fprompt);
-		//temp_display_tabs(mini->token, mini->type);
+		// printf("f_prompt:%s\n", mini->fprompt);
+		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, prev_exit);

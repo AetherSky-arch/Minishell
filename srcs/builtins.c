@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 06:45:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/11 01:41:50 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	builtin(t_mini *mini, int start)
 	int	tmp_out;
 
 	tmp_out = dup(STD_OUT);
-	if (builtin_files(mini, start) == 0)
+	if (builtin_files(mini, start) == SUCCESS)
 	{
 		create_cmd_arg(mini, start);
 		if (mini->cmd_arg && mini->cmd_arg[0])
@@ -119,7 +119,7 @@ void	builtin(t_mini *mini, int start)
 			if (k == ENV)
 				mini->exitcode = ft_env(mini, mini->cmd_arg);
 			// if (k == EXIT)
-			// exit(mini->cmd_arg);
+			// 	ft_exit(mini);
 			if (k == EXPORT)
 				mini->exitcode = ft_export_to_envvars(mini, mini->cmd_arg);
 			if (k == PWD)
@@ -140,82 +140,162 @@ void	builtin(t_mini *mini, int start)
 	close(tmp_out);
 }
 
-// if outfile (and the good one)
+// res receive 0 from infile, 1 from outfile, -1 on error
 int	builtin_files(t_mini *mini, int start)
 {
+	int	i;
+	int	res;
+
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
-	if (builtin_outfile(mini, start) == 1)
+	mini->prev_fd0 = dup(mini->fd[0]);
+	close(mini->fd[0]);
+	i = start;
+	res = 0;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == INFILE)
+		{
+			if (builtin_infile(mini, i) == -1)
+				return (close(mini->fd[1]), FAILURE);
+		}
+		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
+			res = builtin_outfile(mini, i);
+		if (res == -1)
+			return (close(mini->fd[1]), FAILURE);
+		i++;
+	}
+	if (res == 1)
 	{
 		dup2(mini->fd_out, STD_OUT);
 		close(mini->fd_out);
 	}
 	else if (mini->is_pipe == 1)
 		dup2(mini->fd[1], STD_OUT);
-	mini->prev_fd0 = dup(mini->fd[0]);
-	close(mini->fd[0]);
 	close(mini->fd[1]);
-	return (builtin_infile(mini, start));
+	return (SUCCESS);
 }
 
-int	builtin_infile(t_mini *mini, int start)
+// 0 on success = infile opened (and closed) // -1 on error
+int	builtin_infile(t_mini *mini, int i)
 {
-	int		i;
 	char	*tmp;
 
-	i = start;
-	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	if (mini->type[i] == INFILE)
 	{
-		if (mini->type[i] == INFILE)
+		mini->fd_in = open(mini->token[i], O_RDONLY);
+		if (mini->fd_in < 0)
 		{
-			mini->fd_in = open(mini->token[i], O_RDONLY);
-			if (mini->fd_in < 0)
-			{
-				tmp = ft_strjoin("minishell: ", mini->token[i]);
-				perror(tmp);
-				free(tmp);
-				return (1);
-			}
-			close(mini->fd_in);
+			tmp = ft_strjoin("minishell: ", mini->token[i]);
+			perror(tmp);
+			free(tmp);
+			return (-1);
 		}
-		i++;
+		close(mini->fd_in);
 	}
 	return (0);
 }
 
-int	builtin_outfile(t_mini *mini, int start)
+// 1 on success = outfile opened // -1 on error
+int	builtin_outfile(t_mini *mini, int i)
 {
-	int	i;
-	int	is_outfile;
-	char *tmp;
+	char	*tmp;
 
-	i = start;
-	is_outfile = 0;
-	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	// int		is_outfile;
+	if (mini->fd_out > 0)
+		close(mini->fd_out);
+	if (mini->type[i] == OUTFILE)
+		mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	if (mini->type[i] == OUTFAPP)
+		mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
+				0666);
+	if (mini->fd_out < 0)
 	{
-		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
-		{
-			if (mini->fd_out > 0)
-				close(mini->fd_out);
-			is_outfile = 1;
-		}
-		if (mini->type[i] == OUTFILE)
-			mini->fd_out = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT,
-					0666);
-		if (mini->type[i] == OUTFAPP)
-			mini->fd_out = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT,
-					0666);
-		if (mini->fd_out < 0)
-		{ // perror_open_free(mini, mini->token[i]);
-			tmp = ft_strjoin("minishell: ", mini->token[i]);
-			perror(tmp);
-			free(tmp);
-			return (0);
-		}
-		i++;
+		tmp = ft_strjoin("minishell: ", mini->token[i]);
+		perror(tmp);
+		free(tmp);
+		return (-1);
 	}
-	return (is_outfile);
+	return (1);
 }
+
+// int	builtin_files(t_mini *mini, int start)
+// {
+// 	if (mini->prev_fd0 > 0)
+// 		close(mini->prev_fd0);
+// 	mini->prev_fd0 = dup(mini->fd[0]);
+// 	close(mini->fd[0]);
+// 	if (builtin_outfile(mini, start) == -1)
+// 		return (close(mini->fd[1]), FAILURE);
+// 	if (builtin_outfile(mini, start) == 1)
+// 	{
+// 		dup2(mini->fd_out, STD_OUT);
+// 		close(mini->fd_out);
+// 	}
+// 	else if (mini->is_pipe == 1)
+// 		dup2(mini->fd[1], STD_OUT);
+// 	close(mini->fd[1]);
+// 	return (builtin_infile(mini, start));
+// }
+
+// int	builtin_infile(t_mini *mini, int start)
+// {
+// 	int		i;
+// 	char	*tmp;
+
+// 	i = start;
+// 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+// 	{
+// 		if (mini->type[i] == INFILE)
+// 		{
+// 			mini->fd_in = open(mini->token[i], O_RDONLY);
+// 			if (mini->fd_in < 0)
+// 			{
+// 				tmp = ft_strjoin("minishell: ", mini->token[i]);
+// 				perror(tmp);
+// 				free(tmp);
+// 				return (FAILURE);
+// 			}
+// 			close(mini->fd_in);
+// 		}
+// 		i++;
+// 	}
+// 	return (SUCCESS);
+// }
+
+// int	builtin_outfile(t_mini *mini, int start)
+// {
+// 	int		i;
+// 	int		is_outfile;
+// 	char	*tmp;
+
+// 	i = start;
+// 	is_outfile = 0;
+// 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+// 	{
+// 		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
+// 		{
+// 			if (mini->fd_out > 0)
+// 				close(mini->fd_out);
+// 			is_outfile = 1;
+// 			if (mini->type[i] == OUTFILE)
+// 				mini->fd_out = open(mini->token[i],
+// 						O_WRONLY | O_TRUNC | O_CREAT, 0666);
+// 			if (mini->type[i] == OUTFAPP)
+// 				mini->fd_out = open(mini->token[i],
+// 						O_WRONLY | O_APPEND | O_CREAT, 0666);
+// 			if (mini->fd_out < 0)
+// 			{
+// 				tmp = ft_strjoin("minishell: ", mini->token[i]);
+// 				perror(tmp);
+// 				free(tmp);
+// 				return (-1);
+// 			}
+// 		}
+// 		i++;
+// 	}
+// 	return (is_outfile);
+// }
 
 /*** draft   */
 
@@ -226,3 +306,14 @@ int	builtin_outfile(t_mini *mini, int start)
 // 	i++;
 // }
 // printf("\n");
+
+// //
+// int i = 0;
+// printf("cmd_arg:");
+// while (mini->cmd_arg[i])
+// {
+// 	printf("%s / ", mini->cmd_arg[i]);
+// 	i++;
+// }
+// printf("\n");
+// //

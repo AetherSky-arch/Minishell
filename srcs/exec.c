@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/08 23:17:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/10 20:36:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,18 @@ void	get_cmd_arg(t_mini *mini, int start)
 	}
 	(*mini).cmd_arg = ft_split(tmp1, ' ');
 	free(tmp1);
+	// //
+	// j = 0;
+	// ft_putstr_fd("cmd_arg:", 2);
+	// ft_putstr_fd("\n", 2);
+	// while (mini->cmd_arg[j])
+	// {
+	// 	ft_putstr_fd(mini->cmd_arg[j], 2);
+	// 	ft_putstr_fd("\n", 2);
+	// 	j++;
+	// }
+	// ft_putstr_fd("\n", 2);
+	// //
 }
 
 // int execve(const char *pathname, char *const argv[], char *const envp[]);
