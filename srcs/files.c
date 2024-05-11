@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 20:34:28 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:28:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,30 @@ int	is_outfile(t_mini *mini, int start)
 		i++;
 	}
 	return (is_outfile);
+}
+
+void	check_files(t_mini *mini, int start)
+{
+	int	i;
+	int	tmp_fd;
+
+	i = start;
+	tmp_fd = 0;
+	while ((i < mini->type_len) && (mini->type[i] != PIPE))
+	{
+		if (mini->type[i] == INFILE)
+			tmp_fd = open(mini->token[i], O_RDONLY);
+		if (mini->type[i] == OUTFILE)
+			tmp_fd = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0666);
+		if (mini->type[i] == OUTFAPP)
+			tmp_fd = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT, 0666);
+		if (mini->type[i] == INFILE || mini->type[i] == OUTFILE
+			|| mini->type[i] == OUTFAPP)
+		{
+			if (tmp_fd < 0)
+				perror_open_free(mini, mini->token[i]);
+			close(tmp_fd);
+		}
+		i++;
+	}
 }

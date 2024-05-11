@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 01:39:32 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:29:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ void		limiter_err_mal(t_mini mini);
 int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);
 int			is_outfile(t_mini *mini, int start);
+void		check_files(t_mini *mini, int start);
 
 // heredoc_to_exec.c
 int			nbr_heredoc(t_mini mini);

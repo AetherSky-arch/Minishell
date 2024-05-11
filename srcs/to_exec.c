@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 01:26:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:05:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	child(t_mini *mini, char **envp, int start)
 	if (pid == 0)
 	{
 		close(mini->fd[0]);
+		check_files(mini, start);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
 		if (is_infile(mini, start) == 1)
 		{
