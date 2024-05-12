@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 04:35:39 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 21:10:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int		g_exitcode;
 void	quit(t_mini *mini, char *prompt, int k)
 {
 	free(prompt);
-	rl_clear_history();
 	double_free((void **)mini->envvars);
+	rl_clear_history();
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(k);
 }
@@ -45,30 +45,30 @@ void	wait_exitcode(t_mini *mini)
 	}
 }
 
-int	read_prompt(t_mini *mini, int prev_exit)
+int	read_prompt(t_mini *mini)
 {
 	char	*prompt;
 
 	prompt = readline("~$ ");
 	// prompt = get_next_line(STD_IN);
 	if (g_exitcode == 130)
-		prev_exit = 130;
+		mini->lastcode = 130;
 	if (prompt)
 	{
 		// if (ft_strcmp(prompt, "exit\n") == 0) //gnl
 		add_history(prompt);
 		if (ft_strcmp(prompt, "exit") == 0)
-			quit(mini, prompt, prev_exit);
+			quit(mini, prompt, mini->lastcode);
 		// if (ft_strcmp(prompt, "\n") == 0) //gnl
 		if (ft_strcmp(prompt, "") == 0)
-			return (mini->exitcode = prev_exit, free(prompt), FAILURE);
+			return (mini->exitcode = mini->lastcode, free(prompt), FAILURE);
 		mini->exitcode = check_quotes(prompt);
 		if (mini->exitcode != 0)
 			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
-		envvars_manager(mini->token, mini, prev_exit);
+		envvars_manager(mini->token, mini, mini->lastcode);
 		mini->type = create_type(mini);
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
@@ -77,7 +77,7 @@ int	read_prompt(t_mini *mini, int prev_exit)
 		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
-		quit(mini, prompt, prev_exit);
+		quit(mini, prompt, mini->lastcode);
 	return (SUCCESS);
 }
 
@@ -123,9 +123,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		mini = (t_mini){0};
 		mini.envvars = double_dup(envvars);
+		mini.lastcode = prev_exit;
 		double_free((void **)envvars);
 		manage_signal();
-		if (read_prompt(&mini, prev_exit) == SUCCESS)
+		if (read_prompt(&mini) == SUCCESS)
 		{
 			g_exitcode = 0; // initi for open_heredoc
 			if (check_syntax(&mini) == FAILURE)
@@ -149,7 +150,7 @@ int	main(int argc, char **argv, char **envp)
 		if (g_exitcode == 130)
 			mini.exitcode = 130;
 		prev_exit = mini.exitcode;
-		//printf("exitcode:%d\n", mini.exitcode);
+		// printf("exitcode:%d\n", mini.exitcode);
 	}
 	// if (isatty(STD_IN))
 	// {

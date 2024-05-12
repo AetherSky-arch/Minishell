@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 04:35:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 23:01:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_mini
 	int		status;
 	int		is_last_pid;
 	int		exitcode;
+	int		lastcode;
 	// heredoc
 	int		is_heredoc;
 	int		hd_pos;
@@ -261,11 +262,13 @@ void		chd_str_err(char *path, char *err_str);
 int			ft_pwd(t_mini *mini);
 
 // exit.c
-void		ft_exit(t_mini *mini, int tmp_fd);
+int			ft_exit(t_mini *mini, int tmp_fd);
 int			check_numeric(char *str, long long *exit_code);
 int			is_longlong(char *str, long long *nbr);
 void		exit_str_err(char *path, char *err_str);
 int			ft_isspace(char c);
+int			is_exit_pipe(t_mini mini);
+
 // env.c
 int			ft_env(t_mini *mini, char **args);
 

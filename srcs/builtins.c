@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 00:07:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 22:43:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,7 @@ void	builtin(t_mini *mini, int start)
 		create_cmd_arg(mini, start);
 		if (mini->cmd_arg && mini->cmd_arg[0])
 		{
-			k = is_builtin(*mini, start);
-			// ft_putnbr_fd(k, STD_ERR);
-			// printf("k = %d\n", k);
+			k = is_builtin(*mini, start);			
 			if (k == CD)
 				mini->exitcode = ft_chd(mini, mini->cmd_arg[1]);
 			if (k == ECHO)
@@ -119,7 +117,7 @@ void	builtin(t_mini *mini, int start)
 			if (k == ENV)
 				mini->exitcode = ft_env(mini, mini->cmd_arg);
 			if (k == EXIT)
-			 	ft_exit(mini, tmp_out);
+			 	mini->exitcode = ft_exit(mini, tmp_out);
 			if (k == EXPORT)
 				mini->exitcode = ft_export_to_envvars(mini, mini->cmd_arg);
 			if (k == PWD)
@@ -267,7 +265,8 @@ int	builtin_outfile(t_mini *mini, int i)
 // {
 // 	int		i;
 // 	int		is_outfile;
-// 	char	*tmp;
+// 	char	*tmp;// ft_putnbr_fd(k, STD_ERR);
+			// printf("k = %d\n", k);
 
 // 	i = start;
 // 	is_outfile = 0;
@@ -280,7 +279,8 @@ int	builtin_outfile(t_mini *mini, int i)
 // 			is_outfile = 1;
 // 			if (mini->type[i] == OUTFILE)
 // 				mini->fd_out = open(mini->token[i],
-// 						O_WRONLY | O_TRUNC | O_CREAT, 0666);
+// 						O_// ft_putnbr_fd(k, STD_ERR);
+			// printf("k = %d\n", k);WRONLY | O_TRUNC | O_CREAT, 0666);
 // 			if (mini->type[i] == OUTFAPP)
 // 				mini->fd_out = open(mini->token[i],
 // 						O_WRONLY | O_APPEND | O_CREAT, 0666);
