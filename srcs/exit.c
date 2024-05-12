@@ -6,16 +6,131 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 21:56:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 04:29:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_exit(t_mini *mini)
+void	ft_exit(t_mini *mini, int tmp_fd)
 {
-    int exit_code;
-       
-    exit_code = ft_atoi(mini->cmd_arg[1]);
-    free_close_exit(mini, exit_code, 0);    
+	long long	exit_code;
+
+	close(tmp_fd);
+	rl_clear_history();
+	ft_putstr_fd("exit\n", STD_OUT);
+	if (mini->cmd_arg[1])
+	{
+		if (check_numeric(mini->cmd_arg[1], &exit_code) == 0)
+		{
+			exit_str_err(mini->cmd_arg[1], ": numeric argument required\n");
+			exit_code = 2;
+		}
+		else if (mini->cmd_arg[2])
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", STD_ERR);
+			if (check_numeric(mini->cmd_arg[2], &exit_code) == 0)
+				exit_code = 1;
+			else
+				exit_code = 2;
+		}
+		// else
+		// 	exit_code = ft_atoi(mini->cmd_arg[1]) % 256;
+	}
+	free_close_exit(mini, exit_code % 256, 0);
+}
+
+int	check_numeric(char *str, long long *exit_code)
+{
+	int	i;
+	int	k;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] && ft_isspace(str[i]) == 1)
+		i++;
+	if (str[i] && ft_isdigit(str[i]) == 0 && str[i] != '+' && str[i] != '-')
+		return (0);
+	if ((str[i] == '+' || str[i] == '-') && !str[i + 1])
+		return (0);
+	k = i;
+	i++;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+	//printf("%s\n", str + k);
+	return (is_longlong(str + k, exit_code));
+}
+
+
+
+int	is_longlong(char *str, long long *nbr)
+{
+	int	i;
+
+	i = 0;
+	*nbr = 0;
+	if (str[i] == '+')
+	{
+		i++;
+		while (str[i])
+		{
+			if (*nbr > (LLONG_MAX - (str[i] - 48)) / 10)
+				return (0);
+			else
+				*nbr = *nbr * 10 + (str[i] - 48);
+			i++;
+		}
+	}
+	else if (str[i] == '-')
+	{
+		i++;
+		while (str[i])
+		{
+			if (-*nbr < (LLONG_MIN + (str[i] - 48) )/ 10)
+				return (0);
+			else
+				*nbr = *nbr * 10 + (str[i] - 48);
+			i++;
+		}
+		*nbr = -*nbr;
+	}
+	else
+	{
+		while (str[i])
+		{
+			if (*nbr > (LLONG_MAX - (str[i] - 48)) / 10)
+				return (0);
+			else
+				*nbr = *nbr * 10 + (str[i] - 48);
+			i++;
+		}
+	}
+	return (1);
+}
+
+
+void	exit_str_err(char *path, char *err_str)
+{
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_strjoin("minishell: exit: ", path);
+	tmp2 = ft_strjoin(tmp1, err_str);
+	ft_putstr_fd(tmp2, STD_ERR);
+	free(tmp1);
+	free(tmp2);
+}
+
+int	ft_isspace(char c)
+{
+	if (c == ' ')
+		return (1);
+	if (9 <= c && c <= 13)
+		return (1);
+	return (0);
 }

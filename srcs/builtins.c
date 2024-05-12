@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 01:41:50 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 00:07:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ void	builtin(t_mini *mini, int start)
 				mini->exitcode = ft_echo(mini->cmd_arg);
 			if (k == ENV)
 				mini->exitcode = ft_env(mini, mini->cmd_arg);
-			// if (k == EXIT)
-			// 	ft_exit(mini);
+			if (k == EXIT)
+			 	ft_exit(mini, tmp_out);
 			if (k == EXPORT)
 				mini->exitcode = ft_export_to_envvars(mini, mini->cmd_arg);
 			if (k == PWD)

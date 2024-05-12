@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 20:38:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 04:35:39 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int	main(int argc, char **argv, char **envp)
 		if (g_exitcode == 130)
 			mini.exitcode = 130;
 		prev_exit = mini.exitcode;
-		// printf("exitcode:%d\n", mini.exitcode);
+		//printf("exitcode:%d\n", mini.exitcode);
 	}
 	// if (isatty(STD_IN))
 	// {

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 22:29:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/12 04:35:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define ERR_STX "minishell: Syntax error\n"
 # define ERR_SQX "minishell: Syntax error (squote opened)\n"
 # define ERR_DQX "minishell: Syntax error (dquote opened)\n"
-# define ERR_HDX "minishell: Syntax error near unexpected token: "
+# define ERR_HDX "minishell: Syntax error near unexpected token "
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: Malloc failed\n"
 # define ERR_NHD "minishell: Maximum here-document count exceeded\n"
@@ -261,8 +261,11 @@ void		chd_str_err(char *path, char *err_str);
 int			ft_pwd(t_mini *mini);
 
 // exit.c
-void		ft_exit(t_mini *mini);
-
+void		ft_exit(t_mini *mini, int tmp_fd);
+int			check_numeric(char *str, long long *exit_code);
+int			is_longlong(char *str, long long *nbr);
+void		exit_str_err(char *path, char *err_str);
+int			ft_isspace(char c);
 // env.c
 int			ft_env(t_mini *mini, char **args);
 
