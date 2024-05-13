@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/13 00:47:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:44:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,11 @@ typedef struct s_mini
 	char **hd_name; // to be free'd
 }			t_mini;
 
+// main.c
+int			read_prompt(t_mini *mini, char *c_cmd);
+void		wait_exitcode(t_mini *mini);
+void		quit(t_mini *mini, char *prompt, int k);
+
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
@@ -131,6 +136,7 @@ int			len_prompt_minus_space(char *prompt);
 char		*get_prompt_minus_space(char *prompt);
 int			len_prompt_plus_space(char *prompt);
 char		*get_prompt_plus_space(char *prompt);
+
 // format_prompt_utils.c
 int			is_space(char c);
 int			is_symbol(char c);
@@ -175,13 +181,9 @@ void		check_type_block(t_mini *mini, int start);
 int			get_cmd_idx(t_mini mini, int start);
 int			ft_tabstr_len(char **tab);
 
-// syntax checks
-char		get_next_char(char *prompt, int i);
+// syntax_checker.c
+int			check_syntax(t_mini *mini);
 int			check_pipe(t_mini *mini);
-int			count_less_more(char *prompt, int *i);
-int			check_less_more(char *str);
-int			check_less_and_more(char *str);
-int			syntax_checker(t_mini *mini);
 int			check_type_sequence(t_mini *mini);
 
 // heredoc_setting.c

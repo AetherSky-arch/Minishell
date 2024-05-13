@@ -110,11 +110,20 @@ bash: exit: 5000000000000000000000000000000000: numeric argument required
 bash: exit: bla12: numeric argument required
 500000 % 256 -> 32 
 
+Verifier les printf
+Verifier les fonctions autorisees
+Potection type dup2 
 Proteger les fonctions des builtins --> exit
 echo "$?yoyo"
 echo "$ ?"
 echo toto"$PWD   a"
 echo toto'$PWD   '
 echo toto'$PWD'
+
+<< eof | --> attend une cmd (on peut mettre meme un heredoc) --> nous heredoc et c'est tout
+cat << eof | (fais la 1ere partie, et attend une commade apres le EOF) --> nous heredoc et c'est tout
+$PWD (bash: /home/caguillo/HubMini: Is a directory) directory vs cmd ??? -->
+
+
 
 ![alt text](image.png)
