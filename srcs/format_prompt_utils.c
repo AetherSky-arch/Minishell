@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 21:04:21 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/30 03:00:01 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 02:38:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,13 @@ int	is_quote(char c)
 int	check_after_symbol(char *prompt, int i)
 {
 	if (prompt[i + 1] && (is_symbol(prompt[i + 1]) == 1))
-		return (1);
+	{
+		if (i > 0 && prompt[i - 1] && (is_symbol(prompt[i - 1]) == 1))
+			return (0);
+		if (prompt[i] == prompt[i + 1])
+			return (1);
+		return (0);
+	}
 	else if (prompt[i + 1] && (is_space(prompt[i + 1]) == 1))
 		return (1);
 	else if (prompt[i + 1])

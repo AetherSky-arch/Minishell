@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 23:01:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 00:47:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 # define STD_OUT 1
 # define STD_ERR 2
 # define ERR_RDL "minishell: readline: Can't read input\n"
-# define ERR_STX "minishell: Syntax error\n"
-# define ERR_SQX "minishell: Syntax error (squote opened)\n"
-# define ERR_DQX "minishell: Syntax error (dquote opened)\n"
-# define ERR_HDX "minishell: Syntax error near unexpected token "
+# define ERR_STX "minishell: syntax error\n"
+# define ERR_SQX "minishell: syntax error (squote opened)\n"
+# define ERR_DQX "minishell: syntax error (dquote opened)\n"
+# define ERR_HDX "minishell: syntax error near unexpected token `"
 # define ERR_GNL "minishell: gnl: Can't read input\n"
-# define ERR_MAL "minishell: Malloc failed\n"
-# define ERR_NHD "minishell: Maximum here-document count exceeded\n"
+# define ERR_MAL "minishell: malloc failed\n"
+# define ERR_NHD "minishell: maximum here-document count exceeded\n"
 # define ERR_CMD ": command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -114,7 +114,7 @@ typedef struct s_mini
 	int		hd_pos;
 	int		hd_idx;
 	char	*lim;
-	int hd_fd;      // to be closed
+	int hd_fd;      // to be closedecho hi | > >>
 	char **hd_name; // to be free'd
 }			t_mini;
 
@@ -177,7 +177,7 @@ int			ft_tabstr_len(char **tab);
 
 // syntax checks
 char		get_next_char(char *prompt, int i);
-int			check_pipes(char *str);
+int			check_pipe(t_mini *mini);
 int			count_less_more(char *prompt, int *i);
 int			check_less_more(char *str);
 int			check_less_and_more(char *str);

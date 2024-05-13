@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 21:10:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 02:53:58 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,24 +84,27 @@ int	read_prompt(t_mini *mini)
 // check_syntax return: 1 on failure (error), 0 on success (no error)
 int	check_syntax(t_mini *mini)
 {
-	char	*tmp;
+	char	*tmp1;
+	char	*tmp2;
 
-	if (check_type_sequence(mini) == FAILURE)
-		return (FAILURE);
 	if (syntax_checker(mini) == FAILURE)
 	{
 		if (mini->token[mini->stx_err_idx])
 		{
-			tmp = ft_strjoin(ERR_HDX, mini->token[mini->stx_err_idx]);
-			ft_putstr_fd(tmp, STD_ERR);
-			ft_putstr_fd("\n", STD_ERR);
-			free(tmp);
+			tmp1 = ft_strjoin(ERR_HDX, mini->token[mini->stx_err_idx]);
+			tmp2 = ft_strjoin(tmp1, "'\n");
+			ft_putstr_fd(tmp2, STD_ERR);
+			// ft_putstr_fd("\n", STD_ERR);
+			free(tmp1);
+			free(tmp2);
 		}
 		else
 			ft_putstr_fd(ERR_STX, STD_ERR);
 		mini->exitcode = EXIT_STX;
 		return (FAILURE);
 	}
+	if (check_type_sequence(mini) == FAILURE)
+		return (FAILURE);
 	return (check_heredoc(mini));
 }
 
@@ -113,7 +116,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	prev_exit = 0;
 	g_exitcode = 0;
 	envvars = double_dup(envp);
