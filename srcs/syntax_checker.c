@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/05/13 02:36:51 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 06:15:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ int	check_pipe(t_mini *mini)
 // others return boolean, 0 faux, 1 vrai
 int	syntax_checker(t_mini *mini)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	if (check_pipe(mini) == 0)
 		return (FAILURE);
 	// while (mini->token[i])

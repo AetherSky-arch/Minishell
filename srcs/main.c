@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/13 02:53:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/13 06:17:59 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,14 @@ void	wait_exitcode(t_mini *mini)
 	}
 }
 
-int	read_prompt(t_mini *mini)
+int	read_prompt(t_mini *mini, char *c_cmd)
 {
 	char	*prompt;
 
-	prompt = readline("~$ ");
+	if (c_cmd)
+		prompt = ft_strdup(c_cmd);
+	else
+		prompt = readline("~$ ");
 	// prompt = get_next_line(STD_IN);
 	if (g_exitcode == 130)
 		mini->lastcode = 130;
@@ -113,9 +116,12 @@ int	main(int argc, char **argv, char **envp)
 	t_mini	mini;
 	int		prev_exit;
 	char	**envvars;
+	char	*c_cmd;
 
-	(void)argc;
-	(void)argv;
+	if (argc == 3 && ft_strcmp("-c", argv[1]) == 0)
+		c_cmd = argv[2];
+	else
+		c_cmd = NULL;
 	prev_exit = 0;
 	g_exitcode = 0;
 	envvars = double_dup(envp);
@@ -128,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 		mini.lastcode = prev_exit;
 		double_free((void **)envvars);
 		manage_signal();
-		if (read_prompt(&mini) == SUCCESS)
+		if (read_prompt(&mini, c_cmd) == SUCCESS)
 		{
 			g_exitcode = 0; // initi for open_heredoc
 			if (check_syntax(&mini) == FAILURE)
@@ -153,6 +159,8 @@ int	main(int argc, char **argv, char **envp)
 			mini.exitcode = 130;
 		prev_exit = mini.exitcode;
 		// printf("exitcode:%d\n", mini.exitcode);
+		if (c_cmd)
+			break ;
 	}
 	// if (isatty(STD_IN))
 	// {
