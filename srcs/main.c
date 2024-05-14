@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/13 23:34:31 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/15 00:27:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 	char	**envvars;
 	char	*c_cmd;
 
-	if (argc == 3 && ft_strcmp("-c", argv[1]) == 0)
+	if (argc == 3 && ft_strcmp("-c", argv[1]) == 0 && argv[2])
 		c_cmd = argv[2];
 	else
 		c_cmd = NULL;
@@ -105,14 +105,14 @@ int	read_prompt(t_mini *mini, char *c_cmd)
 			return (free(prompt), FAILURE);
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
-		mini->token = split_fprompt(mini->fprompt, ' ');		
+		mini->token = split_fprompt(mini->fprompt, ' ');
 		envvars_manager(mini->token, mini, mini->lastcode);
 		mini->type = create_type(mini);
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
 		/***  temp: for checking  ***/
-		printf("f_prompt:%s\n", mini->fprompt);
-		temp_display_tabs(mini->token, mini->type);
+		// printf("f_prompt:%s\n", mini->fprompt);
+		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, mini->lastcode);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/12 22:58:40 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:40:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	ft_exit(t_mini *mini, int tmp_fd)
 			if (check_numeric(mini->cmd_arg[2], &exit_code) == 0)
 				exit_code = 1;
 			else
-				exit_code = 2;
+				exit_code = 1;
+			// exit_code = 2;
 		}
 	}
 	else
@@ -141,7 +142,7 @@ int	ft_isspace(char c)
 
 int	is_exit_pipe(t_mini mini)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < mini.type_len)

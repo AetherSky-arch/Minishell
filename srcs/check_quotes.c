@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 21:49:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/09 22:17:24 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 23:17:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,6 @@ void	check_quoted_type(t_type *type, char **token)
 		if (type[i] == INFILE || type[i] == OUTFILE || type[i] == OUTFAPP
 			|| type[i] == LIMITER || type[i] == CMD || type[i] == ARG)
 		{
-			// if (is_quote(token[i][0]) == 1)
-			// {
-			// 	tmp = ft_strdup(token[i]);
-			// 	free(token[i]);
-			// 	token[i] = gnl_substr(tmp, 1, ft_strlen(tmp) - 2);
-			// 	free(tmp);
-			// }
-			// else if ()
-			// {
-			// j = 0;
-			// while (token[i][j])
-			// {
-			// 	if (is_quote(token[i][j]) == 1 && inside_quotes(token[i],
-			// 			j) == 0)
-			// 	{
-			// 		tmp = remove_quote(token[i], j);
-			// 		free(token[i]);
-			// 		token[i] = ft_strdup(tmp);
-			// 		free(tmp);
-			// 	}
-			// 	j++;
-			// }
-			// }
 			tmp = remove_quote(token[i]);
 			free(token[i]);
 			token[i] = ft_strdup(tmp);
@@ -150,7 +127,8 @@ char	*remove_quote(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if ((is_quote(str[i]) == 0) || ((is_quote(str[i]) == 1) && (inside_quotes(str, i) == 1)))
+		if ((is_quote(str[i]) == 0) || ((is_quote(str[i]) == 1)
+				&& (inside_quotes(str, i) == 1)))
 		{
 			new[j] = str[i];
 			j++;
@@ -204,12 +182,12 @@ int	inside_quotes(const char *str, int i)
 			}
 		}
 		j++;
-	}	
+	}
 	if (first == 0)
 		return (0); // false, not in quote
 	if ((first == 39) && (str[i] == '\''))
-		return (0); //not include the first
+		return (0); // not include the first
 	if ((first == 34) && (str[i] == '\"'))
-		return (0); //not include the first
-	return (1); // true, in quote
+		return (0); // not include the first
+	return (1);     // true, in quote
 }

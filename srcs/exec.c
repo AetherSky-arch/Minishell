@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/10 20:36:02 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 22:00:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ int	check_slash(char *str)
 
 void	exec_arg(t_mini mini, char **envp, int start)
 {
-	get_cmd_arg(&mini, start);
+	get_cmd_arg(&mini, start);	
 	if (mini.cmd_arg)
 	{
-		// ft_putnbr_fd(checkfor_dir(mini.cmd_arg[0]), STD_ERR);
 		// if (checkfor_dir(mini.cmd_arg[0]) != 0)
 		if (check_slash(mini.cmd_arg[0]) == 1)
+		{
+			is_a_directory(&mini, mini.cmd_arg[0]);
 			exec_abs(mini, envp);
+		}
 		else
 			exec_cmd(mini, envp);
 	}
@@ -141,5 +143,23 @@ void	exec_abs(t_mini mini, char **envp)
 	{
 		perror("minishell: execve");
 		free_close_exit(&mini, EXIT_FAILURE, 0);
+	}
+}
+
+// != 0 => is a directory
+void	is_a_directory(t_mini *mini, char *is_cmd_or_dir)
+{
+	struct stat	statbuf;
+
+	if (is_cmd_or_dir)
+	{
+		if (stat(is_cmd_or_dir, &statbuf) != -1)
+		{
+			if (S_ISDIR(statbuf.st_mode) != 0)
+			{
+				putstr_error(is_cmd_or_dir, ERR_ISD);
+				free_close_exit(mini, EXIT_DENIED, 0);
+			}
+		}
 	}
 }

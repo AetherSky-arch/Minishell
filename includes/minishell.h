@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/13 19:44:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:27:25 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define ERR_CMD ": command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
+# define ERR_ISD ": Is a directory\n"
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define EXIT_STX 2
@@ -224,6 +225,7 @@ void		exec_arg(t_mini mini, char **envp, int start);
 void		get_cmd_arg(t_mini *mini, int start);
 void		exec_cmd(t_mini mini, char **envp);
 void		exec_abs(t_mini mini, char **envp);
+void		is_a_directory(t_mini *mini, char *is_cmd_or_dir);
 
 // buitins.c
 int			is_builtin(t_mini mini, int start);
