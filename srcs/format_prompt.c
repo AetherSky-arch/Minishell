@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 04:10:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 05:03:22 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ char	*format_prompt(char *prompt)
 		return (NULL);
 	f_prompt = get_prompt_plus_space(tmp_prompt);
 	free(tmp_prompt);
-	tmp_prompt = check_doll(f_prompt);
-	free(f_prompt);
-	if (!tmp_prompt)
-		return (NULL);
-	f_prompt = check_dolldoll(tmp_prompt);
-	free(tmp_prompt);	
+	// tmp_prompt = check_doll(f_prompt);
+	// free(f_prompt);
+	// if (!tmp_prompt)
+	// 	return (NULL);
+	// f_prompt = check_dolldoll(tmp_prompt);
+	// free(tmp_prompt);	
 	if (!f_prompt)
 		return (NULL);
 	return (f_prompt);
