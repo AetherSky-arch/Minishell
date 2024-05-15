@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/08 01:00:02 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:05:27 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ char	*ft_getenv(t_mini *mini, char *varname)
 	int	j;
 
 	i = 0;
+    if (ft_strcmp(varname, "?") == 0)
+    {
+        return (ft_itoa(mini->exitcode));
+    }
 	while (mini->envvars[i] != NULL)
 	{
 		j = 0;

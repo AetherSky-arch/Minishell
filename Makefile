@@ -30,6 +30,7 @@ SRCS := srcs/main.c \
 		srcs/export.c \
 		srcs/export_utils.c \
 		srcs/envvars_manager.c \
+		srcs/envvars_utils.c \
 		srcs/unset.c \
 		srcs/free_close_exit.c \
 		srcs/temp.c
