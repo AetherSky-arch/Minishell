@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envvars_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ae7th <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/15 21:15:42 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/15 21:22:05 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char *count_formats(char *str, char *formats)
             formats = add_to_formats(formats, 'v');
         }
     }
-    ft_printf("formats: %s\n", formats);
+    // ft_printf("formats: %s\n", formats);
     return (formats);
 }
 

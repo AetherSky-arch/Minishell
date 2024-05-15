@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 21:27:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:11:06 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct s_mini
 	int		hd_pos;
 	int		hd_idx;
 	char	*lim;
-	int hd_fd;      // to be closedecho hi | > >>
+	int hd_fd;      // to be closed
 	char **hd_name; // to be free'd
 }			t_mini;
 

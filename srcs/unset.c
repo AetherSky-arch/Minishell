@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:01:31 by aether            #+#    #+#             */
-/*   Updated: 2024/05/15 01:35:36 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:29:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,21 @@ static char	**envvars_copy(char **envvars, char **args)
 			i++;
 		}
 		if (to_copy == 1)
+		{
+			//printf("ici\n");
 			copy_len++;
+		}
+			
 		j++;
 	}
+	//printf("%d\n", copy_len);
 	copy = malloc((copy_len + 1) * sizeof(char *));
 	if (copy == NULL)
 	{
 		ft_putstr_fd("minishell: unset: malloc error\n", 2);
 		return (NULL); /// exit(1); !!!
 	}
+	//printf("%d\n", ft_tabstr_len(copy));
 	return (copy);
 }
 
@@ -70,6 +76,7 @@ int	ft_unset(char **args, t_mini *mini)
 {
 	int		i;
 	int		j;
+	int		k;
 	char	**copy;
 	int		to_copy;
 
@@ -79,24 +86,48 @@ int	ft_unset(char **args, t_mini *mini)
 	// 	ft_putstr_fd("minishell: unset: not enough arguments\n", 2);
 	// 	return (1);
 	// }
+	// printf("avant\n");
+	// i = 0;
+	// while (mini->envvars[i])
+	// {
+	// 	printf("%s\n", mini->envvars[i]);
+	// 	i++;
+	// }
+	// printf("\n");
 	copy = envvars_copy(mini->envvars, args);
 	i = 1;
 	j = 0;
+	k = 0;
 	while (mini->envvars[j] != NULL)
 	{
 		to_copy = 1;
 		while (args[i] != NULL)
 		{
 			if (is_envvar(args[i], mini->envvars) == 1)
+			{
 				to_copy = 0;
+				
+			}
 			i++;
 		}
 		if (to_copy == 1)
-			copy[j] = ft_strdup(mini->envvars[j]);
+		{
+			copy[k] = ft_strdup(mini->envvars[j]);
+			k++;
+		}
 		j++;
 	}
-	copy[j] = NULL;
-	double_free((void **)mini->envvars);
-	mini->envvars = copy;
+	copy[k] = NULL;
+	double_free((void **)mini->envvars);		
+	mini->envvars = double_dup(copy);
+	double_free((void **)copy);		
+	//
+	// printf("apres\n");
+	// i = 0;
+	// while (mini->envvars[i])
+	// {
+	// 	printf("%s\n", mini->envvars[i]);
+	// 	i++;
+	// }
 	return (0);
 }
