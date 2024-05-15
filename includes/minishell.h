@@ -119,6 +119,13 @@ typedef struct s_mini
 	char **hd_name; // to be free'd
 }			t_mini;
 
+typedef struct s_trash
+{
+    char  *formats;
+    char  **splitted;
+    int   i;
+}           t_trash;
+
 // main.c
 int			read_prompt(t_mini *mini, char *c_cmd);
 void		wait_exitcode(t_mini *mini);
@@ -250,7 +257,11 @@ void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
 
 // envvars ($)
-void		envvars_manager(char **tokens, t_mini *mini, int prev_exit);
+void		envvars_manager(char **tokens, t_mini *mini);
+char        *add_to_formats(char *formats, char f);
+char        *check_start(char *str, char *formats, int *i);
+char        *count_formats(char *str, char *formats);
+char        *find_next_element(char *str, t_trash *trash, t_mini *mini);
 
 //--------------------- BUILTINS ------------------------------------//
 
