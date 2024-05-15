@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/08 16:05:27 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/15 21:57:05 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,6 @@ static void	replace(char **tab, char *str)
 		j++;
 	free(tab[j]);
 	tab[j] = str;
-}
-
-char	*ft_getenv(t_mini *mini, char *varname)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-    if (ft_strcmp(varname, "?") == 0)
-    {
-        return (ft_itoa(mini->exitcode));
-    }
-	while (mini->envvars[i] != NULL)
-	{
-		j = 0;
-		while (mini->envvars[i][j] != '=')
-			j++;
-		if (ft_strncmp(varname, mini->envvars[i], j) == 0)
-			return (ft_substr(mini->envvars[i], j + 1,
-					ft_strlen(mini->envvars[i])));
-		i++;
-	}
-	return (ft_strdup(""));
 }
 
 void  export_void(char **env)

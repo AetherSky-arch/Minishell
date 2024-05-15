@@ -33,7 +33,8 @@ SRCS := srcs/main.c \
 		srcs/envvars_utils.c \
 		srcs/unset.c \
 		srcs/free_close_exit.c \
-		srcs/temp.c
+		srcs/temp.c \
+		srcs/ft_getenv.c
 				
 
 OBJS = ${SRCS:.c=.o}
