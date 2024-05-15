@@ -6,7 +6,7 @@
 /*   By: ae7th <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/15 21:11:17 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/15 21:15:42 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,11 @@ char  *add_to_formats(char *formats, char f)
     }
 }
 
-char  *check_start(char *str, char *formats, int *i)
-{
-    int j;
-
-    j = 0;
-    if (str[j] != '$')
-    {
-        formats = add_to_formats(formats, 's');
-        while ((str[*i] != '$') && (str[*i] != '\0'))
-            (*i)++;
-    }
-    return (formats);
-}
-
 char *count_formats(char *str, char *formats)
 {
     int i;
 
     i = 0;
-    formats = check_start(str, formats, &i);
     while (str[i] != '\0')
     {
         if (str[i] != '$')
