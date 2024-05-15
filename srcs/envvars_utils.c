@@ -6,7 +6,7 @@
 /*   By: ae7th <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/15 16:06:20 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/15 21:11:17 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,28 @@ char *count_formats(char *str, char *formats)
     formats = check_start(str, formats, &i);
     while (str[i] != '\0')
     {
-        if ((str[i + 1] == '$') || (str[i + 1] == '\0'))
+        if (str[i] != '$')
         {
-            while (str[i] == '$')
+            while ((str[i] != '$') && (str[i] != '\0'))
+                i++;
+            formats = add_to_formats(formats, 's');
+        }
+        else if ((str[i + 1] == '$') || (str[i + 1] == '\0'))
+        {
+            i++;
+            while (str[i + 1] == '$')
                 i++;
             formats = add_to_formats(formats, 's');
         }
         else
         {
             i++;
-            while ((str[i] != '$') && (str[i] != '\0'))
+            while ((str[i] != '$') && (str[i] != '\0') && (str[i] != ' '))
                 i++;
             formats = add_to_formats(formats, 'v');
         }
     }
+    ft_printf("formats: %s\n", formats);
     return (formats);
 }
 
@@ -89,7 +97,7 @@ char  *find_next_element(char *token, t_trash *trash, t_mini *mini)
     int  j = 0;
     static int  splitted_index = 0;
 
-    if (trash->splitted[splitted_index] == NULL)
+    if (trash->i == 0)
         reset_fne_vars(&splitted_index, &i);
     if (trash->formats[trash->i] == 's')
     {
@@ -102,6 +110,7 @@ char  *find_next_element(char *token, t_trash *trash, t_mini *mini)
             i++;
         return (ft_substr(token, j, i));
     }
+    i++;
     while ((token[i] != ' ') && (token[i] != '$') && (token[i] != '\0'))
         i++;
     splitted_index++;
