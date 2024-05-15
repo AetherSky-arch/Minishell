@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/15 21:30:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/15 21:42:39 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,8 @@ int	read_prompt(t_mini *mini, char *c_cmd)
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
 		/***  temp: for checking  ***/
-		printf("f_prompt:%s\n", mini->fprompt);
-		temp_display_tabs(mini->token, mini->type);
+		// printf("f_prompt:%s\n", mini->fprompt);
+		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, mini->lastcode);
