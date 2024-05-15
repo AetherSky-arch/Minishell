@@ -6,7 +6,11 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/15 21:22:05 by caguillo         ###   ########.fr       */
+=======
+/*   Updated: 2024/05/15 21:28:37 by ae7th            ###   ########.fr       */
+>>>>>>> 965071c4b60e3cc7e7ae9489ad3e428394e78943
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +70,10 @@ char *count_formats(char *str, char *formats)
             formats = add_to_formats(formats, 'v');
         }
     }
+<<<<<<< HEAD
     // ft_printf("formats: %s\n", formats);
+=======
+>>>>>>> 965071c4b60e3cc7e7ae9489ad3e428394e78943
     return (formats);
 }
 
