@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:43:09 by aether            #+#    #+#             */
-/*   Updated: 2024/05/15 22:33:12 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/15 20:29:26 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char    *envvars_unquoter(char *str)
         res[i - 1] = str[i];
         i++;
     }
-    res[i - 1] = '\0';
+    res[i] = '\0';
     return (res);
 }
 
@@ -82,11 +82,8 @@ void    envvars_manager(char **tokens, t_mini *mini)
         tmp = envvars_unquoter(tokens[i]);
         if (tmp != NULL)
         {
-            if (ft_strcmp(tmp, "$") != 0)
-            {
-                if (is_in(tmp, '$'))
-                    tokens[i] = add_envvars(mini, tmp);
-            }
+            if (is_in(tmp, '$'))
+                tokens[i] = add_envvars(mini, tmp);
             free(tmp);
         }
         i++;
