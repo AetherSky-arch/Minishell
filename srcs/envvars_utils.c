@@ -6,7 +6,7 @@
 /*   By: ae7th <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/15 21:15:42 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/15 21:28:37 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char *count_formats(char *str, char *formats)
             formats = add_to_formats(formats, 'v');
         }
     }
-    ft_printf("formats: %s\n", formats);
     return (formats);
 }
 
