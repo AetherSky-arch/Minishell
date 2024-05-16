@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/15 21:42:17 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/16 15:28:18 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,37 +68,4 @@ char *count_formats(char *str, char *formats)
     }
     // ft_printf("formats: %s\n", formats);
     return (formats);
-}
-
-static void reset_fne_vars(int *sp_i, int *i)
-{
-    *sp_i = 0;
-    *i = 0;
-}
-
-char  *find_next_element(char *token, t_trash *trash, t_mini *mini)
-{
-    static int  i = 0;
-    int  j = 0;
-    static int  splitted_index = 0;
-
-    if (trash->i == 0)
-        reset_fne_vars(&splitted_index, &i);
-    if (trash->formats[trash->i] == 's')
-    {
-        splitted_index++;
-        trash->i++;
-        j = i;
-        while ((token[i] != '$') && (token[i] != '\0'))
-            i++;
-        while ((token[i] == '$') && (token[i + 1] == '$'))
-            i++;
-        return (ft_substr(token, j, i));
-    }
-    i++;
-    while ((token[i] != ' ') && (token[i] != '$') && (token[i] != '\0'))
-        i++;
-    splitted_index++;
-    trash->i++;
-    return (ft_getenv(mini, trash->splitted[splitted_index - 1]));
 }
