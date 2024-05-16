@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/16 01:50:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 02:18:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	builtin(t_mini *mini, int start)
 		{
 			k = is_builtin(*mini, start);
 			if (k == CD)
-				mini->exitcode = ft_chd(mini, mini->cmd_arg);
+				mini->exitcode = ft_chd(mini);
 			if (k == ECHO)
 				mini->exitcode = ft_echo(mini->cmd_arg);
 			if (k == ENV)
