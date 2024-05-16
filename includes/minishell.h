@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/15 20:11:06 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 01:54:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,10 @@ typedef struct s_mini
 
 typedef struct s_trash
 {
-    char  *formats;
-    char  **splitted;
-    int   i;
-}           t_trash;
+	char	*formats;
+	char	**splitted;
+	int		i;
+}			t_trash;
 
 // main.c
 int			read_prompt(t_mini *mini, char *c_cmd);
@@ -258,10 +258,10 @@ void		handle_sigint_in_hd(int signal);
 
 // envvars ($)
 void		envvars_manager(char **tokens, t_mini *mini);
-char        *add_to_formats(char *formats, char f);
-char        *check_start(char *str, char *formats, int *i);
-char        *count_formats(char *str, char *formats);
-char        *find_next_element(char *str, t_trash *trash, t_mini *mini);
+char		*add_to_formats(char *formats, char f);
+char		*check_start(char *str, char *formats, int *i);
+char		*count_formats(char *str, char *formats);
+char		*find_next_element(char *str, t_trash *trash, t_mini *mini);
 
 //--------------------- BUILTINS ------------------------------------//
 
@@ -270,7 +270,7 @@ int			ft_echo(char **args);
 
 // chd.c
 int			checkfor_dir(t_mini *mini, char *path);
-int			ft_chd(t_mini *mini, char *path);
+int			ft_chd(t_mini *mini);
 void		chd_str_err(char *path, char *err_str);
 
 // pwd.c

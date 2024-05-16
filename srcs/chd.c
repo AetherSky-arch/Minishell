@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/10 00:08:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 01:57:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,29 @@ int	checkfor_dir(t_mini *mini, char *path)
 
 	if (path)
 	{
-		if (stat(path, &statbuf) == -1)
-			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);
+		if (stat(path, &statbuf) == -1)		
+			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);			
 		return (S_ISDIR(statbuf.st_mode));
 	}
 	return (0);
 }
 
 /*** Need to close fd's in case of error ? ***/
-int	ft_chd(t_mini *mini, char *path)
+int	ft_chd(t_mini *mini)
 {
 	char	*homedir;
 
-	if (path)
+	if (mini->cmd_arg[1] && mini->cmd_arg[2])
+		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
+	if (mini->cmd_arg[1])
 	{
-		if (access(path, F_OK) != 0)
-			return (chd_str_err(path, ERR_DIR), 1);
-		else if (checkfor_dir(mini, path) == 0)
-			return (chd_str_err(path, ": Not a directory\n"), 1);
+		if (access(mini->cmd_arg[1], F_OK) != 0)
+			return (chd_str_err(mini->cmd_arg[1], ERR_DIR), 1);
+		else if (checkfor_dir(mini, mini->cmd_arg[1]) == 0)
+			return (chd_str_err(mini->cmd_arg[1], ": Not a directory\n"), 1);
 		else
 		{
-			if (chdir(path) != 0)
+			if (chdir(mini->cmd_arg[1]) != 0)
 				return (perror("minishell: chdir"), 1);
 			return (0);
 		}
