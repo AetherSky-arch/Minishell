@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/16 22:41:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/17 23:40:15 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_slash(char *str)
 
 void	exec_arg(t_mini mini, char **envp, int start)
 {
-	//get_cmd_arg(&mini, start);
+	// get_cmd_arg(&mini, start);
 	create_cmd_arg(&mini, start);
 	if (mini.cmd_arg)
 	{
@@ -113,15 +113,17 @@ void	exec_cmd(t_mini mini, char **envp)
 {
 	char	*path_cmd;
 
-	get_paths(&mini, envp);	
+	if (!mini.cmd_arg || !mini.cmd_arg[0])
+		free_close_exit(&mini, EXIT_SUCCESS, 0);
+	get_paths(&mini, envp);
 	path_cmd = check_path(mini.paths, mini.cmd_arg);
 	if (!path_cmd || ft_strlen(mini.cmd_arg[0]) == 0)
-	{		
+	{
 		putstr_error(mini.cmd_arg[0], ERR_CMD);
 		free_close_exit(&mini, EXIT_NOCMD, 1);
 	}
 	if (execve(path_cmd, mini.cmd_arg, envp) == -1)
-	{		
+	{
 		perror("minishell: execve");
 		free(path_cmd);
 		free_close_exit(&mini, EXIT_FAILURE, 1);

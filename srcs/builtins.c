@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/16 02:18:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:33:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ void	create_cmd_arg(t_mini *mini, int start)
 				}
 				i++;
 			}
-			mini->cmd_arg[j] = NULL;
+			//mini->cmd_arg[j] = NULL;
 			break ;
 		}
 		i++;
 	}
+	mini->cmd_arg[j] = NULL;
 }
 
 int	len_cmd_arg(t_mini mini, int start)

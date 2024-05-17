@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/17 04:10:28 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:14:08 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ void	export_void(char **env)
 	}
 }
 
+int	is_as_child(t_mini mini)
+{
+	int	i;
+
+	i = 0;
+	while (i < mini.type_len)
+	{
+		if (mini.type[i] == PIPE)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	ft_export_to_envvars(t_mini *mini, char **args)
 {
 	int	i;
@@ -74,13 +88,14 @@ int	ft_export_to_envvars(t_mini *mini, char **args)
 	if (args == NULL || args[0] == NULL)
 		return (1);
 	if (args[1] == NULL)
-		return (export_void(mini->envvars), 0);	
+		return (export_void(mini->envvars), 0);
 	i = 1;
 	while (args[i] != NULL)
 	{
-		
 		if (is_valid(args[i]) == 0)
 			exitcode = 1;
+		else if (is_as_child(*mini) == 1)
+			exitcode = 0;
 		else if (is_equal(args[i]) == 1)
 		{
 			if (is_in_twod(mini->envvars, args[i]))

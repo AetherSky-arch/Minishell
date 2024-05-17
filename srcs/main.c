@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/17 00:48:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/18 01:02:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				open_heredoc(&mini, nbr_heredoc(mini));
 				if (g_exitcode != 130)
-					blocks_to_exec(&mini, envp, nbr_block(mini));
+					blocks_to_exec(&mini, mini.envvars, nbr_block(mini));
 				close_prev_pipe(mini);
 				wait_exitcode(&mini);
 			}
@@ -149,3 +149,9 @@ void	quit(t_mini *mini, char *prompt, int k)
 	ft_putstr_fd("exit\n", STD_OUT);
 	exit(k);
 }
+
+/***draft */
+// ft_putstr_fd("stdin\n", STD_IN);
+// ft_putstr_fd("stdout\n", STD_OUT);
+// ft_putstr_fd("stderr\n", STD_ERR);
+// ft_putstr_fd("0stdin\n", STD_IN);

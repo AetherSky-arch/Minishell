@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 01:10:37 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/17 21:35:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 {
 	double_free((void **)mini->cmd_arg);
 	if (is_paths == 1)
-		double_free((void **)mini->paths);
+	 	double_free((void **)mini->paths);
 	double_free((void **)mini->hd_name);
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:42:29 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/08 00:15:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/18 00:44:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,25 @@ void	get_paths(t_mini *mini, char **envp)
 		path = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
 		if (!path)
 		{
-			ft_putstr_fd(ERR_CMD, 2);
-			close_exit(*mini, EXIT_NOCMD);
+			putstr_error((*mini).cmd_arg[0], ERR_CMD);
+			free_close_exit(mini, EXIT_NOCMD, 0);
 		}
 		(*mini).paths = ft_split(path, ':');
 		free(path);
 		if (!(*mini).paths)
 		{
-			double_free((void **)(*mini).paths);
-			close_exit(*mini, EXIT_FAILURE);
+			//double_free((void **)(*mini).paths);
+			ft_putstr_fd(ERR_MAL, STD_ERR);
+			free_close_exit(mini, EXIT_FAILURE, 1);
 		}
 		slash_paths(mini);
 	}
 	else
-		close_exit(*mini, EXIT_FAILURE);
+		free_close_exit(mini, EXIT_FAILURE, 0);		
 }
+		
+		
+
 
 // Only the last paths[i] is NULL
 void	slash_paths(t_mini *mini)
@@ -56,8 +60,9 @@ void	slash_paths(t_mini *mini)
 		free(tmp);
 		if (!(*mini).paths[i])
 		{
-			double_free((void **)(*mini).paths);
-			close_exit(*mini, EXIT_FAILURE);
+			//double_free((void **)(*mini).paths);			
+			ft_putstr_fd(ERR_MAL, STD_ERR);
+			free_close_exit(mini, EXIT_FAILURE, 1);
 		}
 		i++;
 	}

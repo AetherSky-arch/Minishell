@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/16 21:24:02 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/18 01:09:59 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
+	int tmp_in;
 
+	tmp_in = dup(STD_IN); //////////**************
 	get_heredoc(mini, start);
 	// signal_handler_in_child();
 	signal(SIGINT, &handle_sigint_in_child);
@@ -80,6 +82,7 @@ void	child(t_mini *mini, char **envp, int start)
 		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
+		close(tmp_in); /////////***********
 		close(mini->fd[0]);
 		check_files(mini, start);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
@@ -113,7 +116,9 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
 	mini->prev_fd0 = dup(mini->fd[0]);
-	close(mini->fd[0]);
+	close(mini->fd[0]);	
+	dup2(tmp_in, STD_IN);
+	close(tmp_in);
 }
 
 void	close_prev_pipe(t_mini mini)
