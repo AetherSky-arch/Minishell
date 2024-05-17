@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 21:19:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/09 21:38:43 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/14 14:01:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	is_in_quotes2(char *str, int i)
 		return (0); //not include the first
 	if ((first == 34) && (str[i] == '\"'))
 		return (0); //not include the first
-	return (1); // true, in quote
+	return (first); // true, in quote
 }
 
 int	main(int argc, char **argv)

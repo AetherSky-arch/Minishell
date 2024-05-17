@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/15 21:57:05 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/17 04:10:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static char	**append(char **tab, char *str)
 	i = 0;
 	while (tab[i] != NULL)
 		i++;
-	if (i == 0)
-		i = 1;
-	new = malloc((i + 1) * sizeof(char *));
+	// if (i == 0)
+	// 	i = 1;
+	new = malloc((i + 2) * sizeof(char *));
 	if (new == NULL)
 		return (NULL);
 	i = 0;
@@ -31,7 +31,7 @@ static char	**append(char **tab, char *str)
 		new[i] = ft_strdup(tab[i]);
 		i++;
 	}
-	new[i++] = str;
+	new[i++] = ft_strdup(str);
 	new[i] = NULL;
 	double_free((void **)tab);
 	return (new);
@@ -49,52 +49,46 @@ static void	replace(char **tab, char *str)
 	while (ft_strncmp(tab[j], str, i) != 0)
 		j++;
 	free(tab[j]);
-	tab[j] = str;
+	tab[j] = ft_strdup(str);
 }
 
-void  export_void(char **env)
+void	export_void(char **env)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (env[i] != NULL)
-    {
-        ft_printf("%s", "declare -x ");
-        ft_printf("%s\n", env[i]);
-        i++;
-    }
+	i = 0;
+	while (env[i] != NULL)
+	{
+		ft_printf("%s", "declare -x ");
+		ft_printf("%s\n", env[i]);
+		i++;
+	}
 }
 
-// modifie !!! attention
 int	ft_export_to_envvars(t_mini *mini, char **args)
 {
-	int		i;
-	char	*unquoted;
+	int	i;
+	int	exitcode;
 
-    if (args == NULL)
-		return(1);    	
-	if (args[1] == NULL)
-    {
-        export_void(mini->envvars);
-		return(0);
-    }
-	if (is_bad_assignment(args))
+	exitcode = 0;
+	if (args == NULL || args[0] == NULL)
 		return (1);
+	if (args[1] == NULL)
+		return (export_void(mini->envvars), 0);	
 	i = 1;
 	while (args[i] != NULL)
 	{
-		unquoted = dequote(args[i]);
-		if (is_no_equal(unquoted))
+		
+		if (is_valid(args[i]) == 0)
+			exitcode = 1;
+		else if (is_equal(args[i]) == 1)
 		{
-			i++;
-			free(unquoted);
-			continue ;
+			if (is_in_twod(mini->envvars, args[i]))
+				replace(mini->envvars, args[i]);
+			else
+				mini->envvars = append(mini->envvars, args[i]);
 		}
-		if (is_in_twod(mini->envvars, unquoted))
-			replace(mini->envvars, unquoted);
-		else
-			mini->envvars = append(mini->envvars, unquoted);
 		i++;
 	}
-	return(0);
+	return (exitcode);
 }

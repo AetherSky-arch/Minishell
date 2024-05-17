@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/16 01:54:54 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/17 03:52:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,14 +288,17 @@ int			is_exit_pipe(t_mini mini);
 int			ft_env(t_mini *mini, char **args);
 
 // export.c --> to be secured
-int			is_bad_assignment(char **args);
-int			is_no_equal(char *arg);
-char		*dequote(char *str);
+int			is_valid(char *str);
+int			is_equal(char *arg);
+// char		*dequote(char *str);
 int			is_in_twod(char **tab, char *str);
 char		*ft_getenv(t_mini *mini, char *varname);
 int			ft_export_to_envvars(t_mini *mini, char **args);
+void		exp_str_err(char *arg, char *err_str);
+int			is_valid_start(char *str);
+int			is_valid_name(char *str);
 
-// unset.c --> to be secured
+// unset.c
 int			ft_unset(char **args, t_mini *mini);
 
 /***************temp temp temp *****************/

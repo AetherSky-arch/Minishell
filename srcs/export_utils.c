@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:22:28 by aether            #+#    #+#             */
-/*   Updated: 2024/05/10 20:58:51 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/17 03:45:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,57 +30,19 @@ int	is_in_twod(char **tab, char *str)
 	return (0);
 }
 
-char	*dequote(char *str)
+int	is_valid(char *str)
 {
-	char	*res;
-	int		j;
-	int		i;
-
-	j = 0;
-	i = 0;
-	while (str[i] != '\0')
+	if (str)
 	{
-		if ((str[i] != 34) && (str[i] != 39))
-			j++;
-		i++;
+		if (is_valid_start(str) == 0)
+			return (exp_str_err(str, "': not a valid identifier\n"), 0);
+		if (is_valid_name(str) == 0)
+			return (exp_str_err(str, "': not a valid identifier\n"), 0);
 	}
-	res = malloc(j + 1);
-	if (res == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i] != '\0')
-	{
-		if ((str[i] != 34) && (str[i] != 39))
-			res[j++] = str[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
+	return (1);
 }
 
-int	is_bad_assignment(char **args)
-{
-	int	i;
-
-	
-	if (args && args[0]) // modif here
-	{
-		i = 1; // modif here
-        while (args[i] != NULL)
-		{
-			if (args[i][0] == '=')
-				// return (ft_putstr_fd("minishell: export: not a valid identifier\n",
-				// 		2), 1); // modif here
-                return (ft_putstr_fd("minishell: export: bad assignment\n",
-				 		2), 1); 
-			i++;
-		}
-	}
-	return (0);
-}
-
-int	is_no_equal(char *arg)
+int	is_equal(char *arg)
 {
 	int	i;
 
@@ -88,8 +50,97 @@ int	is_no_equal(char *arg)
 	while (arg[i] != '\0')
 	{
 		if (arg[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	exp_str_err(char *arg, char *err_str)
+{
+	char	*tmp1;
+	char	*tmp2;
+
+	tmp1 = ft_strjoin("minishell: export: `", arg);
+	tmp2 = ft_strjoin(tmp1, err_str);
+	ft_putstr_fd(tmp2, STD_ERR);
+	free(tmp1);
+	free(tmp2);
+}
+
+int	is_valid_start(char *str)
+{
+	if (!str)
+		return (0);
+	if (str[0] == '_')
+		return (1);
+	return (ft_isalpha(str[0]));
+}
+
+int	is_valid_name(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] != '\0' && str[i] != '=')
+	{
+		if ((ft_isalnum(str[i]) != 1) && (str[i] != '_'))
 			return (0);
 		i++;
 	}
 	return (1);
 }
+
+/*****draft  *************/
+
+// if (args[i][0] == '=' || ft_isdigit(args[i][0]) == 1)
+
+// int	is_valid(char **args)
+// {
+// 	int	i;
+
+// 	if (args && args[0])
+// 	{
+// 		i = 1;
+// 		while (args[i] != NULL)
+// 		{
+// 			if (is_valid_start(args[i]) == 0)
+// 				return (exp_str_err(args[i], "': not a valid identifier\n"), 0);
+// 			if (is_valid_name(args[i]) == 0)
+// 				return (exp_str_err(args[i], "': not a valid identifier\n"), 0);
+// 			i++;
+// 		}
+// 	}
+// 	return (1);
+// }
+
+// char	*dequote(char *str)
+// {
+// 	char	*res;
+// 	int		j;
+// 	int		i;
+
+// 	j = 0;
+// 	i = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if ((str[i] != 34) && (str[i] != 39))
+// 			j++;
+// 		i++;
+// 	}
+// 	res = malloc(j + 1);
+// 	if (res == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i] != '\0')
+// 	{
+// 		if ((str[i] != 34) && (str[i] != 39))
+// 			res[j++] = str[i];
+// 		i++;
+// 	}
+// 	res[j] = '\0';
+// 	return (res);
+// }

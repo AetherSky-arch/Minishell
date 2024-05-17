@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ae7th <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 21:56:39 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/16 13:22:19 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/17 02:13:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char *get_exitcode(t_mini *mini, char *varname)
+static char	*get_exitcode(t_mini *mini, char *varname)
 {
-    char  *res;
-    char  *tmp;
-    char  *tmp2;
+	char	*res;
+	char	*tmp;
+	char	*tmp2;
 
-    tmp = ft_itoa(mini->lastcode);
-    if (ft_strlen(varname) == 1)
-        return (tmp);
-    tmp2 = ft_strdup(varname + 1);
-    res = ft_strjoin(tmp, tmp2);
-    free(tmp);
-    free(tmp2);
-    return (res);
+	tmp = ft_itoa(mini->lastcode);
+	if (ft_strlen(varname) == 1)
+		return (tmp);
+	tmp2 = ft_strdup(varname + 1);
+	res = ft_strjoin(tmp, tmp2);
+	free(tmp);
+	free(tmp2);
+	return (res);
 }
 
 char	*ft_getenv(t_mini *mini, char *varname)
@@ -34,10 +34,10 @@ char	*ft_getenv(t_mini *mini, char *varname)
 	int	j;
 
 	i = 0;
-    if (varname[0] == '?')
-    {
-        return (get_exitcode(mini, varname));
-    }
+	if (varname[0] == '?')
+	{
+		return (get_exitcode(mini, varname));
+	}
 	while (mini->envvars[i] != NULL)
 	{
 		j = 0;

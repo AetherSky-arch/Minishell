@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 22:00:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 22:41:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_slash(char *str)
 	size_t	i;
 
 	i = 0;
-	if (!str)
+	if (!str || !str[0])
 		return (0);
 	if (str[ft_strlen(str) - 1] == '/')
 		return (0);
@@ -39,7 +39,8 @@ int	check_slash(char *str)
 
 void	exec_arg(t_mini mini, char **envp, int start)
 {
-	get_cmd_arg(&mini, start);	
+	//get_cmd_arg(&mini, start);
+	create_cmd_arg(&mini, start);
 	if (mini.cmd_arg)
 	{
 		// if (checkfor_dir(mini.cmd_arg[0]) != 0)
@@ -112,15 +113,15 @@ void	exec_cmd(t_mini mini, char **envp)
 {
 	char	*path_cmd;
 
-	get_paths(&mini, envp);
+	get_paths(&mini, envp);	
 	path_cmd = check_path(mini.paths, mini.cmd_arg);
-	if (!path_cmd)
-	{
+	if (!path_cmd || ft_strlen(mini.cmd_arg[0]) == 0)
+	{		
 		putstr_error(mini.cmd_arg[0], ERR_CMD);
 		free_close_exit(&mini, EXIT_NOCMD, 1);
 	}
 	if (execve(path_cmd, mini.cmd_arg, envp) == -1)
-	{
+	{		
 		perror("minishell: execve");
 		free(path_cmd);
 		free_close_exit(&mini, EXIT_FAILURE, 1);

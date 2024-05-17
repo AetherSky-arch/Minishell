@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:15:35 by aether            #+#    #+#             */
-/*   Updated: 2024/05/10 01:06:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 23:40:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	ft_env(t_mini *mini, char **args)
 {
 	int	i;
 
-    args++;
-	if ((args != NULL))
+	if (args == NULL || args[1] != NULL)
 	{
 		ft_putstr_fd("minishell: env: invalid argument\n", 2);
 		return (1);

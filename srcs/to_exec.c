@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 22:05:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/16 21:24:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	child(t_mini *mini, char **envp, int start)
 		else if (mini->is_pipe == 1)
 			dup2(mini->fd[1], STD_OUT);
 		//
-		close(mini->fd[1]);
+		close(mini->fd[1]);		
 		exec_arg(*mini, envp, start);
 	}
 	close(mini->fd[1]);
