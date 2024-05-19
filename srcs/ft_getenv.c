@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 21:56:39 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/17 02:13:53 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/19 23:46:16 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,24 @@ char	*ft_getenv(t_mini *mini, char *varname)
 {
 	int	i;
 	int	j;
+	int	n;
 
 	i = 0;
 	if (varname[0] == '?')
-	{
 		return (get_exitcode(mini, varname));
-	}
 	while (mini->envvars[i] != NULL)
 	{
-		j = 0;
-		while (mini->envvars[i][j] != '=')
-			j++;
-		if (ft_strncmp(varname, mini->envvars[i], j) == 0)
-			return (ft_substr(mini->envvars[i], j + 1,
+		if (is_equal(mini->envvars[i]) == 1)
+		{
+			j = 0;
+			while (mini->envvars[i][j] != '=')
+				j++;
+			n = j;
+		}
+		else
+			n = ft_strlen(mini->envvars[i]);
+		if (ft_strncmp(varname, mini->envvars[i], n) == 0)
+			return (ft_substr(mini->envvars[i], n + 1,
 					ft_strlen(mini->envvars[i])));
 		i++;
 	}

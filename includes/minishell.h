@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/17 03:52:54 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 00:42:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define EXIT_DENIED 126
 # define EXIT_NODIR 127
 # define EXIT_SIGINT 130
+# define EXIT_OPT 125
 # define SUCCESS 0
 # define FAILURE 1
 # define TRUE 1

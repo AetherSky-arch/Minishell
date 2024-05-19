@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 23:29:26 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/16 15:28:18 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/20 01:17:32 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ char *count_formats(char *str, char *formats)
             formats = add_to_formats(formats, 'v');
         }
     }
-    // ft_printf("formats: %s\n", formats);
+    // printf("formats: %s\n", formats);
     return (formats);
 }

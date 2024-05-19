@@ -6,21 +6,31 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:01:31 by aether            #+#    #+#             */
-/*   Updated: 2024/05/16 01:15:04 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/19 23:34:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_envvar(char *vars, char *str)
+static int	is_envvar(char *var, char *str)
 {
-	int	i;
+	size_t	i;
+	size_t	n;
 
-	i = 0;
-	while (vars[i] != '=')
-		i++;
-	if (ft_strncmp(vars, str, i) == 0)
-		return (1);
+	if (is_equal(var) == 1)
+	{
+		i = 0;
+		while (var[i] != '=')
+			i++;
+		n = i;
+	}
+	else
+		n = ft_strlen(var);
+	if (ft_strlen(str) == n)
+	{
+		if (ft_strncmp(str, var, ft_strlen(str)) == 0)
+			return (1);
+	}
 	return (0);
 }
 
@@ -113,3 +123,22 @@ int	ft_unset(char **args, t_mini *mini)
 // 	printf("\n");
 // printf("%d\n", ft_tabstr_len(copy));
 // printf("%d\n", copy_len);
+
+// static int	is_envvar(char *var, char *str)
+// {
+// 	int	i;
+// 	int n;
+
+// 	if (is_equal(var) == 1)
+// 	{
+// 		i = 0;
+// 		while (var[i] != '=')
+// 			i++;
+// 		n = i;
+// 	}
+// 	else
+// 		n = ft_strlen(var);
+// 	if (ft_strncmp(var, str, n) == 0)
+// 		return (1);
+// 	return (0);
+// }
