@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:15:35 by aether            #+#    #+#             */
-/*   Updated: 2024/05/20 01:14:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 00:18:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,34 @@ int	ft_env(t_mini *mini, char **args)
 	i = 0;
 	while (mini->envvars[i] != NULL)
 	{
-		if (is_equal(mini->envvars[i]) == 1)
-			printf("%s\n", mini->envvars[i]);
+		if (is_equal(mini->envvars[i]) == 1)			
+			ft_printf("%s\n", mini->envvars[i]);
 		i++;
 	}
 	return (0);
 }
+
+// // !mini->envvars is managed by twod and append
+// void	update_env(t_mini *mini)
+// {
+// 	int		i;
+// 	char	*last;
+// 	char	*tmp;
+
+// 	if (mini->cmd_arg)
+// 	{
+// 		i = 0;
+// 		tmp = NULL;
+// 		while (mini->cmd_arg[i])
+// 			i++;
+// 		if (mini->cmd_arg[i])
+// 			tmp = ft_strdup(mini->cmd_arg[i]);
+// 		last = ft_strjoin("_=", tmp);
+// 		free(tmp);
+// 		if (is_in_twod(mini->envvars, last))
+// 			replace(mini->envvars, last);
+// 		else
+// 			mini->envvars = append(mini->envvars, last);
+// 		free(last);
+// 	}
+// }

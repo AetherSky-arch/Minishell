@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/17 21:35:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 23:27:27 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	close_exit(t_mini mini, int k)
 	exit(k);
 }
 
-/***** exit minishell ou retour au prompt ? *************/
 void	perror_close_exit(char *err, t_mini *mini, int k)
 {
 	perror(err);
@@ -65,12 +64,7 @@ void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);
 	free(mini->fprompt);
-	free(mini->type);
-	// //
-	// ft_putstr_fd("exit=", STD_ERR);
-	// ft_putnbr_fd(exit_code, STD_ERR);
-	// ft_putstr_fd("\n", STD_ERR);
-	// //
+	free(mini->type);	
 	mini->exitcode = exit_code;
 	close_exit(*mini, exit_code);
 }

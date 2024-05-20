@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/17 21:33:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 00:14:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	create_cmd_arg(t_mini *mini, int start)
 				}
 				i++;
 			}
-			//mini->cmd_arg[j] = NULL;
+			// mini->cmd_arg[j] = NULL;
 			break ;
 		}
 		i++;
@@ -182,6 +182,8 @@ int	builtin_infile(t_mini *mini, int i)
 
 	if (mini->type[i] == INFILE)
 	{
+		if (is_ambigous(mini->token[i]))
+			return (ft_putstr_fd(ERR_AMB, STD_ERR), -1);
 		mini->fd_in = open(mini->token[i], O_RDONLY);
 		if (mini->fd_in < 0)
 		{
@@ -200,7 +202,8 @@ int	builtin_outfile(t_mini *mini, int i)
 {
 	char	*tmp;
 
-	// int		is_outfile;
+	if (is_ambigous(mini->token[i]))
+		return (ft_putstr_fd(ERR_AMB, STD_ERR), -1);
 	if (mini->fd_out > 0)
 		close(mini->fd_out);
 	if (mini->type[i] == OUTFILE)

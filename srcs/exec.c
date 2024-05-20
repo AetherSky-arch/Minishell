@@ -6,23 +6,18 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/17 23:40:15 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:54:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/**************************************************************/
-/****************to be reviewed with the stat functions********/
-/**************************************************************/
 int	check_slash(char *str)
 {
 	size_t	i;
 
 	i = 0;
 	if (!str || !str[0])
-		return (0);
-	if (str[ft_strlen(str) - 1] == '/')
 		return (0);
 	while (str[i])
 	{
@@ -39,7 +34,6 @@ int	check_slash(char *str)
 
 void	exec_arg(t_mini mini, char **envp, int start)
 {
-	// get_cmd_arg(&mini, start);
 	create_cmd_arg(&mini, start);
 	if (mini.cmd_arg)
 	{
@@ -156,13 +150,20 @@ void	is_a_directory(t_mini *mini, char *is_cmd_or_dir)
 
 	if (is_cmd_or_dir)
 	{
+		// ft_putstr_fd("ici", 2);
 		if (stat(is_cmd_or_dir, &statbuf) != -1)
 		{
+			// ft_putstr_fd("la", 2);
 			if (S_ISDIR(statbuf.st_mode) != 0)
 			{
 				putstr_error(is_cmd_or_dir, ERR_ISD);
 				free_close_exit(mini, EXIT_DENIED, 0);
 			}
+		}
+		else if (errno == EACCES)
+		{
+			putstr_error(is_cmd_or_dir, ERR_ACX);
+			free_close_exit(mini, EXIT_DENIED, 0);
 		}
 	}
 }

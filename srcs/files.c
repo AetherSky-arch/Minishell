@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/11 22:28:35 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 00:07:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ void	check_files(t_mini *mini, int start)
 	tmp_fd = 0;
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
-		if (mini->type[i] == INFILE)
+		if (mini->type[i] == INFILE && is_ambigous(mini->token[i]) == 0)
 			tmp_fd = open(mini->token[i], O_RDONLY);
-		if (mini->type[i] == OUTFILE)
+		if (mini->type[i] == OUTFILE && is_ambigous(mini->token[i]) == 0)
 			tmp_fd = open(mini->token[i], O_WRONLY | O_TRUNC | O_CREAT, 0666);
-		if (mini->type[i] == OUTFAPP)
+		if (mini->type[i] == OUTFAPP && is_ambigous(mini->token[i]) == 0)
 			tmp_fd = open(mini->token[i], O_WRONLY | O_APPEND | O_CREAT, 0666);
 		if (mini->type[i] == INFILE || mini->type[i] == OUTFILE
 			|| mini->type[i] == OUTFAPP)
@@ -99,7 +99,34 @@ void	check_files(t_mini *mini, int start)
 			if (tmp_fd < 0)
 				perror_open_free(mini, mini->token[i]);
 			close(tmp_fd);
+			free_ambigous(mini, mini->token[i]);
 		}
 		i++;
+	}
+}
+
+int	is_ambigous(char *str)
+{
+	if (!str)
+		return (0);
+	if (ft_strlen(str) == 1 && str[0] == '*')
+		return (1);
+	return (0);
+}
+
+void	free_ambigous(t_mini *mini, char *str)
+{
+	if (!str)
+		return ;
+	if (ft_strlen(str) == 1 && str[0] == '*')
+	{
+		ft_putstr_fd(ERR_AMB, STD_ERR);
+		double_free((void **)mini->hd_name);
+		double_free((void **)mini->token);
+		double_free((void **)mini->envvars);
+		free(mini->fprompt);
+		free(mini->type);
+		mini->exitcode = EXIT_FAILURE;
+		close_exit(*mini, EXIT_FAILURE);
 	}
 }

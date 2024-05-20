@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/20 00:42:32 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 00:08:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define ERR_GNL "minishell: gnl: Can't read input\n"
 # define ERR_MAL "minishell: malloc failed\n"
 # define ERR_NHD "minishell: maximum here-document count exceeded\n"
+# define ERR_AMB "minishell: *: ambiguous redirect\n"
 # define ERR_CMD ": command not found\n"
 # define ERR_ACX ": Permission denied\n"
 # define ERR_DIR ": No such file or directory\n"
@@ -207,6 +208,8 @@ int			is_infile(t_mini *mini, int start);
 void		open_infile(t_mini *mini, char *infile);
 int			is_outfile(t_mini *mini, int start);
 void		check_files(t_mini *mini, int start);
+int			is_ambigous(char *str);
+void		free_ambigous(t_mini *mini, char *str);
 
 // heredoc_to_exec.c
 int			nbr_heredoc(t_mini mini);
@@ -287,17 +290,25 @@ int			is_exit_pipe(t_mini mini);
 
 // env.c
 int			ft_env(t_mini *mini, char **args);
+void		update_env(t_mini *mini);
 
-// export.c --> to be secured
+// export.c
+char		**append(char **tab, char *str);
+void		replace(char **tab, char *str);
+void		sort_exp(char **env);
+void		export_void(char **env);
+int			is_as_child(t_mini mini);
+int			ft_export_to_envvars(t_mini *mini, char **args);
+
+// export_utils.c
+int			is_in_twod(char **tab, char *str);
 int			is_valid(char *str);
 int			is_equal(char *arg);
-// char		*dequote(char *str);
-int			is_in_twod(char **tab, char *str);
-char		*ft_getenv(t_mini *mini, char *varname);
-int			ft_export_to_envvars(t_mini *mini, char **args);
 void		exp_str_err(char *arg, char *err_str);
 int			is_valid_start(char *str);
 int			is_valid_name(char *str);
+
+char		*ft_getenv(t_mini *mini, char *varname);
 
 // unset.c
 int			ft_unset(char **args, t_mini *mini);

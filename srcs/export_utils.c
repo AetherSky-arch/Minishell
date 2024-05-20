@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 16:22:28 by aether            #+#    #+#             */
-/*   Updated: 2024/05/19 22:37:04 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:42:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int	is_in_twod(char **tab, char *str)
 	}
 	else
 		n = ft_strlen(str);
-	i = 0;
-	while (tab[i] != NULL)
+	if (tab)
 	{
-		if (ft_strncmp(tab[i], str, n) == 0)
-			return (1);
-		i++;
+		i = 0;
+		while (tab[i] != NULL)
+		{
+			if (ft_strncmp(tab[i], str, n) == 0)
+				return (1);
+			i++;
+		}
 	}
 	return (0);
 }
@@ -53,12 +56,15 @@ int	is_equal(char *arg)
 {
 	int	i;
 
-	i = 0;
-	while (arg[i] != '\0')
+	if (arg)
 	{
-		if (arg[i] == '=')
-			return (1);
-		i++;
+		i = 0;
+		while (arg[i] != '\0')
+		{
+			if (arg[i] == '=')
+				return (1);
+			i++;
+		}
 	}
 	return (0);
 }

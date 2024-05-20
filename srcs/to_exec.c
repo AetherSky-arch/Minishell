@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/18 01:09:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:30:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 
 	i = 0;
 	start = 0;
-	j = 0;
+	j = 0;	
 	while (i < nbr_block)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
@@ -62,19 +62,18 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 		if (j < mini->type_len)
 			j++;
 		start = j;
-		i++;
+		i++;		
 	}
 }
 
 void	child(t_mini *mini, char **envp, int start)
 {
 	pid_t	pid;
-	int tmp_in;
+	// int tmp_in;
 
-	tmp_in = dup(STD_IN); //////////**************
-	get_heredoc(mini, start);
-	// signal_handler_in_child();
-	signal(SIGINT, &handle_sigint_in_child);
+	// tmp_in = dup(STD_IN); //////////**************
+	get_heredoc(mini, start);	
+	signal(SIGINT, &handle_sigint_in_child);	
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;
@@ -82,7 +81,7 @@ void	child(t_mini *mini, char **envp, int start)
 		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		close(tmp_in); /////////***********
+		// close(tmp_in); /////////***********
 		close(mini->fd[0]);
 		check_files(mini, start);
 		// if infile (and the good one) or heredoc or the pipe of the previous cmd
@@ -116,9 +115,9 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->prev_fd0 > 0)
 		close(mini->prev_fd0);
 	mini->prev_fd0 = dup(mini->fd[0]);
-	close(mini->fd[0]);	
-	dup2(tmp_in, STD_IN);
-	close(tmp_in);
+	close(mini->fd[0]);		
+	// dup2(tmp_in, STD_IN);
+	// close(tmp_in);
 }
 
 void	close_prev_pipe(t_mini mini)

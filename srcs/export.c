@@ -6,28 +6,34 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/20 01:48:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/20 22:57:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static char	**append(char **tab, char *str)
+char	**append(char **tab, char *str)
 {
 	char	**new;
 	int		i;
 
 	i = 0;
-	while (tab[i] != NULL)
-		i++;
+	if (tab)
+	{
+		while (tab[i] != NULL)
+			i++;
+	}
 	new = malloc((i + 2) * sizeof(char *));
 	if (new == NULL)
 		return (NULL);
 	i = 0;
-	while (tab[i] != NULL)
+	if (tab)
 	{
-		new[i] = ft_strdup(tab[i]);
-		i++;
+		while (tab[i] != NULL)
+		{
+			new[i] = ft_strdup(tab[i]);
+			i++;
+		}
 	}
 	new[i++] = ft_strdup(str);
 	new[i] = NULL;
@@ -35,7 +41,7 @@ static char	**append(char **tab, char *str)
 	return (new);
 }
 
-static void	replace(char **tab, char *str)
+void	replace(char **tab, char *str)
 {
 	int	i;
 	int	j;
@@ -57,7 +63,7 @@ static void	replace(char **tab, char *str)
 	tab[i] = ft_strdup(str);
 }
 
-static void	sort_exp(char **env)
+void	sort_exp(char **env)
 {
 	int		i;
 	int		j;
@@ -96,9 +102,9 @@ void	export_void(char **env)
 	{
 		if (env[i][0] != '_')
 		{
-			printf("%s", "declare -x ");
-			// printf("%s", "export ");
-			printf("%s\n", env[i]);
+			ft_printf("%s", "declare -x ");
+			// ft_printf("%s", "export ");
+			ft_printf("%s\n", env[i]);
 		}
 		i++;
 	}
