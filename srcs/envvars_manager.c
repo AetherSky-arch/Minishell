@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 17:43:09 by aether            #+#    #+#             */
-/*   Updated: 2024/05/21 13:01:06 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/21 16:09:39 by ae7th            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char  *add_envvars(t_mini *mini, char *str)
         free(tmp2);
         free(tmp);
     }
+    double_free((void **)trash.splitted);
     free(trash.formats);
     return (res);
 }
