@@ -35,6 +35,7 @@ SRCS := srcs/main.c \
 		srcs/unset.c \
 		srcs/free_close_exit.c \
 		srcs/temp.c \
+		srcs/dollar.c \
 		srcs/ft_getenv.c
 				
 

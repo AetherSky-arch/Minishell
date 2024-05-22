@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:17:56 by aether            #+#    #+#             */
-/*   Updated: 2024/04/06 22:05:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 00:08:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	temp_display_tabs(char **token, t_type *type)
 {
 	int		i;
 	char	*t_type_names[] = {"INFILE", "OUTFILE", "OUTFAPP", "GREAT",
-			"DGREAT", "LESS", "HEREDOC", "LIMITER", "PIPE", "CMD", "ARG"};
+			"DGREAT", "LESS", "HEREDOC", "LIMITER", "PIPE", "CMD", "ARG", "EMPTY"};
 
 	i = 0;
 	printf("token:");

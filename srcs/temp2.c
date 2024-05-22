@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 21:19:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 14:01:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 00:56:01 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ int	main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	// str = "titi \" \' toto\" tutu";
-	str = "titi \" \' tot\'o\" tutu \'tat\"a\'   \"tst\'s\"";
+	//str = "titi \" \' tot\'o\" tutu \'tat\"a\'   \"tst\'s\"";
+
+	str = "'\"$USER'$USER'\"q'";
 	// str = "echo \'t\"o\'t\"\"o";
 	// str = " \' "; // stx err
 	// str = "titi \"  toto\" tutu";

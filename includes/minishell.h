@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/21 00:08:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 00:11:55 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ typedef enum e_type
 	LIMITER,
 	PIPE,
 	CMD,
-	ARG
+	ARG,
+	EMPTY
 }			t_type;
 
 typedef struct s_mini
@@ -260,6 +261,7 @@ void		handle_sigint(int signal);
 void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
 
+void	check_dollar(t_mini *mini);
 // envvars ($)
 void		envvars_manager(char **tokens, t_mini *mini);
 char		*add_to_formats(char *formats, char f);

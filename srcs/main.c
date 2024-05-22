@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/18 01:02:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 02:49:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int	read_prompt(t_mini *mini, char *c_cmd)
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
-		envvars_manager(mini->token, mini);
+		check_dollar(mini);
+		// envvars_manager(mini->token, mini);
 		mini->type = create_type(mini);
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:27:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/04/29 21:59:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:33:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,20 @@ static char	**fill_split_fp(char **split, char const *s, char c)
 		if (!split[i])
 		{
 			while (j < i)
-				free(split[j++]);
+			{
+				free(split[j]);
+				j++;
+			}	
 			free(split);
 			return (NULL);
 		}
-		while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) == 1)))
-			split[i][j++] = s[k++];
+		while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) != 0)))
+		{
+			split[i][j] = s[k];
+			j++;
+			k++;
+		}
+			
 		split[i][j] = '\0';
 		k++;
 		i++;
@@ -81,7 +89,7 @@ static size_t	len_word(char const *s, char c, size_t k)
 	len = 0;
 	while (s[k] && (s[k] == c))
 		k++;
-	while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) == 1)))
+	while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) != 0)))
 	{
 		len++;
 		k++;
@@ -101,7 +109,7 @@ static size_t	count_words(char const *s, char c)
 	new = 1;
 	while (s[i])
 	{
-		if (s[i] != c || (s[i] == c && inside_quotes(s, i) == 1))
+		if (s[i] != c || (s[i] == c && inside_quotes(s, i) != 0))
 		{
 			if (new == 1)
 			{

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/04 00:16:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 00:07:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ t_type	*create_type(t_mini *mini)
 
 t_type	get_type(char **token, int i)
 {
-	if (ft_strcmp(token[i], "<") == 0)
+	if (ft_strlen(token[i]) == 0)
+		return (EMPTY);
+	else if (ft_strcmp(token[i], "<") == 0)
 		return (LESS);
 	else if (ft_strcmp(token[i], "<<") == 0)
 		return (HEREDOC);

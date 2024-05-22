@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 21:49:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 23:17:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:33:21 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ char	*remove_quote(char *str)
 	while (str[i])
 	{
 		if ((is_quote(str[i]) == 0) || ((is_quote(str[i]) == 1)
-				&& (inside_quotes(str, i) == 1)))
+				&& (inside_quotes(str, i) != 0)))
 		{
 			new[j] = str[i];
 			j++;
@@ -189,5 +189,5 @@ int	inside_quotes(const char *str, int i)
 		return (0); // not include the first
 	if ((first == 34) && (str[i] == '\"'))
 		return (0); // not include the first
-	return (1);     // true, in quote
+	return (first);     // true, in quote
 }
