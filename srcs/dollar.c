@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/22 03:02:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 21:05:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	idx_dollar(char *str, int start)
 
 	if (!str)
 		return (-1);
-	i = start;	
+	i = start;
 	if (i >= ft_strlen(str))
 		return (-1);
 	while (str[i])
@@ -49,15 +49,16 @@ static int	end_dollar(char *str, int start)
 	if (!str)
 		return (0);
 	idx = idx_dollar(str, start);
-	k = idx+1;
+	k = idx + 1;
 	while (str[k])
 	{
 		if (str[k] == '?' && k == idx + 1)
 		{
 			k++;
 			break ;
-		}		
-		if (str[k] == '$' || str[k] == '=' || is_space(str[k]) == 1 || is_quote(str[k]) == 1)
+		}
+		if (str[k] == '$' || str[k] == '=' || is_space(str[k]) == 1
+			|| is_quote(str[k]) == 1)
 			break ;
 		k++;
 	}
@@ -74,7 +75,17 @@ static char	*get_varvalue(char **tab, char *str)
 	return (gnl_substr(tab[i], ft_strlen(str) + 1, ft_strlen(tab[i])));
 }
 
-static char	*get_vardoll(t_mini *mini, char *tok, int start)
+static int	is_loop(char *varname, char *varvalue)
+{
+	char	*tmp;
+
+	tmp = ft_strjoin("$", varname);
+	if (ft_strcmp(tmp, varvalue) == 0)
+		return (free(tmp), 1);
+	return (free(tmp), 0);
+}
+
+static char	*get_vardoll(t_mini *mini, char *tok, int start, int *stop)
 {
 	int		i;
 	int		k;
@@ -85,11 +96,9 @@ static char	*get_vardoll(t_mini *mini, char *tok, int start)
 		return (NULL);
 	i = idx_dollar(tok, start);
 	k = end_dollar(tok, start);
-	// printf("k=%d\n", k);
 	if (i < k)
 	{
 		varname = gnl_substr(tok, i + 1, k - i);
-		// printf("varname :%s\n", varname);
 	}
 	else
 		return (NULL);
@@ -102,6 +111,7 @@ static char	*get_vardoll(t_mini *mini, char *tok, int start)
 		else
 			varvalue = ft_strdup("");
 	}
+	*stop = is_loop(varname, varvalue);
 	free(varname);
 	return (varvalue);
 }
@@ -136,7 +146,7 @@ static char	*get_after(char *tok, int start)
 	return (after);
 }
 
-static char	*expand_doll(t_mini *mini, char *tok, int start)
+static char	*exp_do(t_mini *mini, char *tok, int start, int *stop)
 {
 	char	*before;
 	char	*after;
@@ -147,7 +157,7 @@ static char	*expand_doll(t_mini *mini, char *tok, int start)
 	// printf("before :%s\n", before);
 	after = get_after(tok, start);
 	// printf("after :%s\n", after);
-	varvalue = get_vardoll(mini, tok, start);
+	varvalue = get_vardoll(mini, tok, start, stop);
 	// printf("varvalue :%s\n", varvalue);
 	free(tok);
 	tmp = ft_strjoin(before, varvalue);
@@ -165,72 +175,74 @@ static int	another_dollar(char *str, int start)
 	size_t	i;
 
 	if (!str)
-		return (0);
+		return (-1);
 	if (start == -1)
-		return (0);
+		return (-1);
 	i = start;
 	if (i >= ft_strlen(str))
-		return (0);
+		return (-1);
 	while (str[i])
 	{
 		if (str[i] == '$')
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 void	check_dollar(t_mini *mini)
 {
 	int	i;
 	int	idx;
-	int start;
+	int	start;
+	int	stop;
 
-	//****securite + cas particulier*/
+	if (!(*mini).token)
+		return ;
 	i = 0;
 	start = 0;
+	stop = 0;
 	while ((*mini).token[i])
 	{
-		// int j = 0;
-		// while((*mini).token[i][j])
-		// {
-		// 	printf("%c = %d\n", (*mini).token[i][j],
-		//	inside_quotes((*mini).token[i],j));
-		// 	j++;
-		// }
 		idx = idx_dollar((*mini).token[i], start);
-		// printf("idx %d\n", idx);
 		if (idx != -1)
 		{
-			// printf("idx$ :%d\n", idx_dollar((*mini).token[i]));
 			if (inside_quotes((*mini).token[i], idx) != 39)
-			{
-				(*mini).token[i] = expand_doll(mini, (*mini).token[i], start);
-				// printf("empty :[%s]\n", (*mini).token[i]);
-				// manage_empty(mini, (*mini).token[i]);
-				// if (ft_strlen((*mini).token[i] == 0))
-				// {
-				// 	if (!(*mini).token[i+1])
-				// 		(*mini).token[i] = NULL;
-				// 	else
-				// }
-			}
+				(*mini).token[i] = exp_do(mini, (*mini).token[i], start, &stop);
 		}
-		if (inside_quotes((*mini).token[i], idx) == 39)
-			idx = idx +1;
-		// printf("%d\n", another_dollar(mini->token[i], idx));
+		if (inside_quotes((*mini).token[i], idx) == 39 || stop == 1)
+			idx = idx + 1;
 		start = another_dollar(mini->token[i], idx);
-		if (start == 0)
+		if (start == -1)
+		{
 			i++;
-		
-			
-		// if (idx_dollar((*mini).token[i]) == -1)
-		// 	i++;
-		// else
-		// {
-		// 	if ((inside_quotes((*mini).token[i],
-		// 				idx_dollar((*mini).token[i])) == 39))
-		// 		i++;
-		// }
+			start = 0;
+		}
 	}
 }
+
+/****draft */
+
+// 0 il est en 0
+
+// printf("idx$ :%d\n", idx);
+
+// if (idx_dollar((*mini).token[i]) == -1)
+// 	i++;
+// else
+// {
+// 	if ((inside_quotes((*mini).token[i],
+// 				idx_dollar((*mini).token[i])) == 39))
+// 		i++;
+// }
+// printf("empty :[%s]\n", (*mini).token[i]);
+// manage_empty(mini, (*mini).token[i]);
+// if (ft_strlen((*mini).token[i] == 0))
+// {
+// 	if (!(*mini).token[i+1])
+// 		(*mini).token[i] = NULL;
+// 	else
+// }
+// printf("%d\n", another_dollar(mini->token[i], idx));
+
+//&& idx_dollar((*mini).token[i], idx) == -1)
