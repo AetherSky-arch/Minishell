@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:50:26 by aether            #+#    #+#             */
-/*   Updated: 2024/05/20 22:58:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:16:05 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_pwd(t_mini *mini)
 {
 	char	cwd[PATH_MAX];
-	
+
 	if (getcwd(cwd, PATH_MAX) != NULL)
 		ft_printf("%s\n", cwd);
 	else
@@ -23,6 +23,48 @@ int	ft_pwd(t_mini *mini)
 	return (0);
 }
 
-// if (args != NULL)
-// 		return (ft_putstr_fd("minishell: pwd: too many arguments\n", STD_ERR),
-// 			1);
+char	*get_pwd(t_mini *mini)
+{
+	char	cwd[PATH_MAX];
+	char	*pwd;
+	int		i;
+
+	pwd = NULL;
+	if (getcwd(cwd, PATH_MAX) != NULL)
+	{
+		pwd = malloc(sizeof(char) * (ft_strlen(cwd) + 1));
+		if (!pwd)
+			return (NULL);
+		i = 0;
+		while (cwd[i])
+		{
+			pwd[i] = cwd[i];
+			i++;
+		}
+		pwd[i] = '\0';
+	}
+	else
+		perror_close_exit("minishell: getcwd", mini, EXIT_FAILURE);
+	return (pwd);
+}
+
+void	update_pwd(t_mini *mini, char *varequal, char *pwd)
+{
+	char	*var;
+
+	// char *pwd; // to free'd
+	if (mini->token && is_as_child(*mini) == 0)
+	{
+		// pwd = get_pwd(mini);
+		if (pwd && varequal)
+		{
+			var = ft_strjoin(varequal, pwd);
+			// free(pwd);
+			if (is_in_twod(mini->envvars, var))
+				replace(mini->envvars, var);
+			else
+				mini->envvars = append(mini->envvars, var);
+			free(var);
+		}
+	}
+}

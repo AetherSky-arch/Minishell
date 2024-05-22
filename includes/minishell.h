@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/22 00:11:55 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:14:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,7 @@ void		handle_sigint(int signal);
 void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
 
-void	check_dollar(t_mini *mini);
+void		check_dollar(t_mini *mini);
 // envvars ($)
 void		envvars_manager(char **tokens, t_mini *mini);
 char		*add_to_formats(char *formats, char f);
@@ -281,6 +281,8 @@ void		chd_str_err(char *path, char *err_str);
 
 // pwd.c
 int			ft_pwd(t_mini *mini);
+char		*get_pwd(t_mini *mini);
+void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 
 // exit.c
 int			ft_exit(t_mini *mini, int tmp_fd);

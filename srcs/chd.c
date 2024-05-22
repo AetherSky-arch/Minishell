@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/16 01:57:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 01:05:35 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	checkfor_dir(t_mini *mini, char *path)
 
 	if (path)
 	{
-		if (stat(path, &statbuf) == -1)		
-			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);			
+		if (stat(path, &statbuf) == -1)
+			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);
 		return (S_ISDIR(statbuf.st_mode));
 	}
 	return (0);
@@ -29,7 +29,8 @@ int	checkfor_dir(t_mini *mini, char *path)
 /*** Need to close fd's in case of error ? ***/
 int	ft_chd(t_mini *mini)
 {
-	char	*homedir;
+	char	*homedr;
+	char	*pwd;
 
 	if (mini->cmd_arg[1] && mini->cmd_arg[2])
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
@@ -41,22 +42,40 @@ int	ft_chd(t_mini *mini)
 			return (chd_str_err(mini->cmd_arg[1], ": Not a directory\n"), 1);
 		else
 		{
+			pwd = get_pwd(mini);
 			if (chdir(mini->cmd_arg[1]) != 0)
-				return (perror("minishell: chdir"), 1);
-			return (0);
+				return (free(pwd), perror("minishell: chdir"), 1);
+			else
+			{
+				update_pwd(mini, "OLDPWD=", pwd);
+				free(pwd);
+				pwd = get_pwd(mini);
+				update_pwd(mini, "PWD=", pwd);
+				free(pwd);
+				return (0);
+			}
 		}
 	}
 	else
 	{
-		homedir = ft_getenv(mini, "HOME");
-		if (homedir)
+		homedr = ft_getenv(mini, "HOME");
+		if (homedr)
 		{
-			if (chdir(homedir) != 0)
-				return (free(homedir), perror("minishell: chdir"), 1);
-			return (free(homedir), 0);
+			pwd = get_pwd(mini);
+			if (chdir(homedr) != 0)
+				return (free(pwd), free(homedr), perror("minishell: chdir"), 1);
+			else
+			{
+				update_pwd(mini, "OLDPWD=", pwd);
+				free(pwd);
+				pwd = get_pwd(mini);
+				update_pwd(mini, "PWD=", pwd);
+				free(pwd);
+				return (free(homedr), 0);
+			}
 		}
 		else
-			return (free(homedir), chd_str_err("No HOME variable", "\n"), 1);
+			return (free(homedr), chd_str_err("No HOME variable", "\n"), 1);
 	}
 }
 
@@ -71,17 +90,3 @@ void	chd_str_err(char *path, char *err_str)
 	free(tmp1);
 	free(tmp2);
 }
-
-/*
-int	main(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		ft_putstr_fd("cd: expected 1 argument\n", 2);
-		return (1);
-	}
-	return (chd(argv[1]));
-}
-
-//return (ft_putstr_fd("minishell: cd: chdir function failed\n",STD_ERR), 1);
-*/

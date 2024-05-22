@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/22 21:05:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 00:39:00 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static int	end_dollar(char *str, int start)
 	k = idx + 1;
 	while (str[k])
 	{
-		if (str[k] == '?' && k == idx + 1)
+		if ((str[k] == '?' || ft_isdigit(str[k]) == 1) && k == idx + 1)
 		{
 			k++;
 			break ;
 		}
 		if (str[k] == '$' || str[k] == '=' || is_space(str[k]) == 1
-			|| is_quote(str[k]) == 1)
+			|| is_quote(str[k]) == 1 || str[k] == '/')
 			break ;
 		k++;
 	}

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/20 23:27:27 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 23:32:43 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ void	close_exit(t_mini mini, int k)
 void	perror_close_exit(char *err, t_mini *mini, int k)
 {
 	perror(err);
+	if (mini->cmd_arg)
+		double_free((void **)mini->cmd_arg);
 	double_free((void **)mini->hd_name);
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);
 	free(mini->fprompt);
 	free(mini->type);
+	mini->exitcode = k;
 	close_exit(*mini, k);
 }
 
@@ -59,12 +62,12 @@ void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 {
 	double_free((void **)mini->cmd_arg);
 	if (is_paths == 1)
-	 	double_free((void **)mini->paths);
+		double_free((void **)mini->paths);
 	double_free((void **)mini->hd_name);
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);
 	free(mini->fprompt);
-	free(mini->type);	
+	free(mini->type);
 	mini->exitcode = exit_code;
 	close_exit(*mini, exit_code);
 }

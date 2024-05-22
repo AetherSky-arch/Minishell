@@ -124,6 +124,22 @@ echo toto'$PWD'
 cat << eof | (fais la 1ere partie, et attend une commade apres le EOF) --> nous heredoc et c'est tout
 $PWD (bash: /home/caguillo/HubMini: Is a directory) directory vs cmd ??? -->
 
+Testeur 146
+https://github.com/LucasKuhn/minishell_tester
 
+Testeur 423
+https://github.com/eyJvcy/minishell_tester
+
+Testeur:
+https://github.com/kichkiro/minishell_tester/tree/main
+ls / | grep c | cat > file1 --> 163 mais en fait ok en refaisant test
+
+Fichier touch ignore
+Puis dans Makefile
+valgrind: all
+		valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
+		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
+    	./minishell
 
 ![alt text](image.png)
+

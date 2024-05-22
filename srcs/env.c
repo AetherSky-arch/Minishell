@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:15:35 by aether            #+#    #+#             */
-/*   Updated: 2024/05/22 20:50:07 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/22 23:06:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	get_last_arg(t_mini *mini)
 	while (mini->token[i])
 	{
 		if (mini->type[i] == PIPE)
-			return(-1);
+			return (-1);
 		if ((mini->type[i] == ARG) || (mini->type[i] == CMD))
 			k = i;
 		i++;
@@ -77,14 +77,14 @@ static int	get_last_arg(t_mini *mini)
 // !mini->envvars is managed by twod and append
 void	update_env(t_mini *mini)
 {
-	int k;
+	int		k;
 	char	*last;
 	char	*tmp;
 
 	if (mini->token)
 	{
 		k = get_last_arg(mini);
-		if ( k >= 0)
+		if (k >= 0)
 		{
 			tmp = ft_strdup(mini->token[k]);
 			last = ft_strjoin("_=", tmp);
