@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/20 01:05:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:54:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	ft_exit(t_mini *mini, int tmp_fd)
 		exit_code = mini->lastcode;
 	if (is_exit_pipe(*mini) == 0)
 	{
-		//ft_putstr_fd("exit\n", STD_OUT);
+		// ft_putstr_fd("exit\n", STD_OUT);
 		ft_putstr_fd("exit\n", tmp_fd);
 		close(tmp_fd);
-		rl_clear_history();		
+		rl_clear_history();
 		free_close_exit(mini, exit_code % 256, 0);
 	}
 	return (exit_code % 256);
@@ -64,7 +64,7 @@ int	check_numeric(char *str, long long *exit_code)
 	i++;
 	while (str[i])
 	{
-		if (ft_isdigit(str[i]) == 0)
+		if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0)
 			return (0);
 		i++;
 	}
@@ -108,7 +108,7 @@ int	is_longlong(char *str, long long *nbr)
 	}
 	else
 	{
-		while (str[i])
+		while (str[i] && ft_isspace(str[i]) == 0)
 		{
 			if (*nbr > (LLONG_MAX - (str[i] - 48)) / 10)
 				return (0);
