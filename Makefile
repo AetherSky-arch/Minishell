@@ -19,6 +19,8 @@ SRCS := srcs/main.c \
 		srcs/path.c \
 		srcs/exec.c \
 		srcs/builtins.c \
+		srcs/builtins_utils.c \
+		srcs/builtins_utils2.c \
 		srcs/echo.c \
 		srcs/env.c \
 		srcs/chd.c \

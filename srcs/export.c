@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/23 21:26:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:16:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,26 @@ void	sort_exp(char **env)
 // ft_printf("%s", "export ");
 void	export_void(char **env)
 {
-	int	i;
+	int		i;
+	char	**tab;
 
-	sort_exp(env);
-	i = 0;
-	while (env[i] != NULL)
+	if (!env)
+		return ;
+	tab = double_dup(env);
+	if (tab)
 	{
-		if (env[i][0] != '_')
+		sort_exp(tab);
+		i = 0;
+		while (tab[i] != NULL)
 		{
-			ft_printf("%s", "declare -x ");
-			ft_printf("%s\n", env[i]);
+			if (tab[i][0] != '_')
+			{
+				ft_printf("%s", "declare -x ");
+				ft_printf("%s\n", tab[i]);
+			}
+			i++;
 		}
-		i++;
+		double_free((void **)tab);
 	}
 }
 

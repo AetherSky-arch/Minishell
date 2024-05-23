@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 22:44:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:11:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,26 +231,25 @@ void		is_a_directory(t_mini *mini, char *is_cmd_or_dir);
 
 // buitins.c
 int			is_builtin(t_mini mini, int start);
-void		create_cmd_arg(t_mini *mini, int start);
-int			len_cmd_arg(t_mini mini, int start);
 void		builtin(t_mini *mini, int start);
-int			builtin_files(t_mini *mini, int start);
 int			builtin_infile(t_mini *mini, int i);
 int			builtin_outfile(t_mini *mini, int i);
-
+// buitins_utils.c
+int			builtin_files(t_mini *mini, int start);
+// buitins_utils2.c
+void		create_cmd_arg(t_mini *mini, int start);
+int			len_cmd_arg(t_mini mini, int start);
 // free_close_exit.c
 void		close_exit(t_mini mini, int k);
 void		perror_close_exit(char *err, t_mini *mini, int k);
 void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
-
 // signal.c
 void		manage_signal(void);
 void		handle_sigint(int signal);
 void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
-
 // dollar.c
 void		check_dollar(t_mini *mini);
 // dollar_utils.c

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 22:40:21 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:47:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,3 @@ void	check_dollar(t_mini *mini)
 		}
 	}
 }
-
-/****draft ****/
-// if (!(*mini).token)
-// 		return ;
