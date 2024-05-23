@@ -1,46 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   exit_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 21:23:32 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 21:26:46 by caguillo         ###   ########.fr       */
+/*   Created: 2024/05/23 20:21:39 by caguillo          #+#    #+#             */
+/*   Updated: 2024/05/23 20:22:07 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_in_twod(char **tab, char *str)
+void	exit_str_err(char *path, char *err_str)
 {
-	int	j;
-	int	i;
-	int	n;
+	char	*tmp1;
+	char	*tmp2;
 
-	if (is_equal(str) == 1)
-	{
-		j = 0;
-		while (str[j] != '=')
-			j++;
-		n = j;
-	}
-	else
-		n = ft_strlen(str);
-	if (tab)
-	{
-		i = 0;
-		while (tab[i] != NULL)
-		{
-			if (ft_strncmp(tab[i], str, n) == 0)
-				return (1);
-			i++;
-		}
-	}
+	tmp1 = ft_strjoin("minishell: exit: ", path);
+	tmp2 = ft_strjoin(tmp1, err_str);
+	ft_putstr_fd(tmp2, STD_ERR);
+	free(tmp1);
+	free(tmp2);
+}
+
+int	ft_isspace(char c)
+{
+	if (c == ' ')
+		return (1);
+	if (9 <= c && c <= 13)
+		return (1);
 	return (0);
 }
 
-int	is_as_child(t_mini mini)
+int	is_exit_pipe(t_mini mini)
 {
 	int	i;
 

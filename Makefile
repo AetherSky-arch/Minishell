@@ -11,9 +11,6 @@ SRCS := srcs/main.c \
 		srcs/format_prompt_utils3.c \
 		srcs/format_prompt_utils4.c \
 		srcs/split_fprompt.c \
-		srcs/tokenizer.c \
-		srcs/tokenizer_utils.c \
-		srcs/tokenizer_utils2.c \
 		srcs/type.c \
 		srcs/heredoc_setting.c \
 		srcs/files.c \
@@ -27,15 +24,17 @@ SRCS := srcs/main.c \
 		srcs/chd.c \
 		srcs/pwd.c \
 		srcs/exit.c \
+		srcs/exit_utils.c \
 		srcs/export.c \
 		srcs/export_utils.c \
+		srcs/export_utils2.c \
 		srcs/envvars_manager.c \
 		srcs/envvars_utils.c \
 		srcs/envvars_utils2.c \
 		srcs/unset.c \
 		srcs/free_close_exit.c \
-		srcs/temp.c \
 		srcs/dollar.c \
+		srcs/dollar_utils.c \
 		srcs/ft_getenv.c
 				
 

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:50:26 by aether            #+#    #+#             */
-/*   Updated: 2024/05/23 00:16:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 21:17:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,11 @@ void	update_pwd(t_mini *mini, char *varequal, char *pwd)
 {
 	char	*var;
 
-	// char *pwd; // to free'd
 	if (mini->token && is_as_child(*mini) == 0)
 	{
-		// pwd = get_pwd(mini);
 		if (pwd && varequal)
 		{
 			var = ft_strjoin(varequal, pwd);
-			// free(pwd);
 			if (is_in_twod(mini->envvars, var))
 				replace(mini->envvars, var);
 			else

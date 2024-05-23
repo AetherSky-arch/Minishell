@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/21 23:56:01 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 21:10:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ void	builtin(t_mini *mini, int start)
 		else
 		{
 			ft_putstr_fd(ERR_MAL, STD_ERR);
+			dup2(tmp_out, STD_OUT);
+			close(tmp_out);
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
 	}

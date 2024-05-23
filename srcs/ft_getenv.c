@@ -6,12 +6,11 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 21:56:39 by ae7th             #+#    #+#             */
-/*   Updated: 2024/05/21 16:22:21 by ae7th            ###   ########.fr       */
+/*   Updated: 2024/05/23 21:30:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 static char	*get_exitcode(t_mini *mini, char *varname)
 {
@@ -29,11 +28,11 @@ static char	*get_exitcode(t_mini *mini, char *varname)
 	return (res);
 }
 
-static char *special_cases_getenv_subroutine(t_mini *mini, char *varname)
+static char	*special_cases_getenv_subroutine(t_mini *mini, char *varname)
 {
-    if (varname[0] == '?')
-        return (get_exitcode(mini, varname));
-    return (ft_strdup("$"));
+	if (varname[0] == '?')
+		return (get_exitcode(mini, varname));
+	return (ft_strdup("$"));
 }
 
 char	*ft_getenv(t_mini *mini, char *varname)

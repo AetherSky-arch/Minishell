@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:01:31 by aether            #+#    #+#             */
-/*   Updated: 2024/05/19 23:34:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 20:54:56 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ static int	is_envvar(char *var, char *str)
 	return (0);
 }
 
+static void	copy_len_check(int to_copy, int *copy_len)
+{
+	if (to_copy == 1)
+		*copy_len = *copy_len + 1;
+}
+
 static char	**envvars_copy(char **envvars, char **args)
 {
 	int		i;
@@ -54,22 +60,30 @@ static char	**envvars_copy(char **envvars, char **args)
 				to_copy = 0;
 			i++;
 		}
-		if (to_copy == 1)
-			copy_len++;
+		copy_len_check(to_copy, &copy_len);
 		j++;
 	}
 	copy = malloc((copy_len + 1) * sizeof(char *));
 	if (copy == NULL)
-	{
-		ft_putstr_fd("minishell: unset: malloc error\n", 2);
-		return (NULL);
-	}
+		return (ft_putstr_fd("minishell: unset: malloc error\n", 2), NULL);
 	return (copy);
+}
+
+static void	check_to_copy(char **args, t_mini *mini, int *to_copy, int j)
+{
+	int	i;
+
+	i = 1;
+	while (args[i] != NULL)
+	{
+		if (is_envvar(mini->envvars[j], args[i]) == 1)
+			*to_copy = 0;
+		i++;
+	}
 }
 
 int	ft_unset(char **args, t_mini *mini)
 {
-	int		i;
 	int		j;
 	int		k;
 	char	**copy;
@@ -83,13 +97,7 @@ int	ft_unset(char **args, t_mini *mini)
 	while (mini->envvars[j] != NULL)
 	{
 		to_copy = 1;
-		i = 1;
-		while (args[i] != NULL)
-		{
-			if (is_envvar(mini->envvars[j], args[i]) == 1)
-				to_copy = 0;
-			i++;
-		}
+		check_to_copy(args, mini, &to_copy, j);
 		if (to_copy == 1)
 		{
 			copy[k] = ft_strdup(mini->envvars[j]);
@@ -102,43 +110,3 @@ int	ft_unset(char **args, t_mini *mini)
 	mini->envvars = copy;
 	return (0);
 }
-
-/*****draft**** */
-//
-// printf("apres\n");
-// i = 0;
-// while (mini->envvars[i])
-// {
-// 	printf("%s\n", mini->envvars[i]);
-// 	i++;
-// }
-//
-// printf("avant\n");
-// 	i = 0;
-// 	while (mini->envvars[i])
-// 	{
-// 		printf("%s\n", mini->envvars[i]);
-// 		i++;
-// 	}
-// 	printf("\n");
-// printf("%d\n", ft_tabstr_len(copy));
-// printf("%d\n", copy_len);
-
-// static int	is_envvar(char *var, char *str)
-// {
-// 	int	i;
-// 	int n;
-
-// 	if (is_equal(var) == 1)
-// 	{
-// 		i = 0;
-// 		while (var[i] != '=')
-// 			i++;
-// 		n = i;
-// 	}
-// 	else
-// 		n = ft_strlen(var);
-// 	if (ft_strncmp(var, str, n) == 0)
-// 		return (1);
-// 	return (0);
-// }

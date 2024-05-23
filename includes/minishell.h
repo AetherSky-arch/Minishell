@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 00:14:54 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:44:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
-// # include <asm-generic/fcntl.h>
-// # include <bits/fcntl-linux.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <linux/limits.h>
@@ -30,7 +28,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-// # define _GNU_SOURCE
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
@@ -176,13 +173,6 @@ void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 // split_fprompt.c
 char		**split_fprompt(char const *s, char c);
 
-// tokenizer
-int			blocks_counter(char *fprompt);
-char		**token_init(char **token, char *fprompt);
-int			is_sep(char c);
-int			is_in_quotes(char *prompt, int i);
-void		tokenizer(t_mini *mini);
-
 // type.c
 t_type		*create_type(t_mini *mini);
 t_type		get_type(char **token, int i);
@@ -261,71 +251,86 @@ void		handle_sigint(int signal);
 void		handle_sigint_in_child(int signal);
 void		handle_sigint_in_hd(int signal);
 
+// dollar.c
 void		check_dollar(t_mini *mini);
-// envvars ($)
+// dollar_utils.c
+int			idx_dollar(char *str, int start);
+int			end_dollar(char *str, int start);
+int			is_loop(char *varname, char *varvalue);
+char		*get_before(char *tok, int start);
+char		*get_after(char *tok, int start);
+// envvars_manager.c
+char		*add_envvars(t_mini *mini, char *str);
+char		*envvars_unquoter(char *str);
+char		**rm_from_tokens(char **tokens, int i);
 void		envvars_manager(char **tokens, t_mini *mini);
+// envvars_utils.c
 char		*add_to_formats(char *formats, char f);
-char		*check_start(char *str, char *formats, int *i);
 char		*count_formats(char *str, char *formats);
+// envvars_utils2.c
 char		*find_next_element(char *str, t_trash *trash, t_mini *mini);
+// ft_getenv.c
+char		*ft_getenv(t_mini *mini, char *varname);
 
 //--------------------- BUILTINS ------------------------------------//
-
-// echo.c --> to be secured
-int			ft_echo(char **args);
-
 // chd.c
 int			checkfor_dir(t_mini *mini, char *path);
 int			ft_chd(t_mini *mini);
 void		chd_str_err(char *path, char *err_str);
-
-// pwd.c
-int			ft_pwd(t_mini *mini);
-char		*get_pwd(t_mini *mini);
-void		update_pwd(t_mini *mini, char *varequal, char *pwd);
-
+// echo.c
+int			ft_echo(char **args);
+// env.c
+int			ft_env(t_mini *mini, char **args);
+void		update_env(t_mini *mini);
 // exit.c
 int			ft_exit(t_mini *mini, int tmp_fd);
 int			check_numeric(char *str, long long *exit_code);
 int			is_longlong(char *str, long long *nbr);
+int			is_longlong_plus(char *str, long long *nbr, int i);
+int			is_longlong_minus(char *str, long long *nbr, int i);
+// exit_utils.c
 void		exit_str_err(char *path, char *err_str);
 int			ft_isspace(char c);
 int			is_exit_pipe(t_mini mini);
-
-// env.c
-int			ft_env(t_mini *mini, char **args);
-void		update_env(t_mini *mini);
-
 // export.c
 char		**append(char **tab, char *str);
 void		replace(char **tab, char *str);
 void		sort_exp(char **env);
 void		export_void(char **env);
-int			is_as_child(t_mini mini);
 int			ft_export_to_envvars(t_mini *mini, char **args);
-
 // export_utils.c
 int			is_in_twod(char **tab, char *str);
+int			is_as_child(t_mini mini);
+// export_utils2.c
 int			is_valid(char *str);
 int			is_equal(char *arg);
 void		exp_str_err(char *arg, char *err_str);
 int			is_valid_start(char *str);
 int			is_valid_name(char *str);
-
-char		*ft_getenv(t_mini *mini, char *varname);
-
+// pwd.c
+int			ft_pwd(t_mini *mini);
+char		*get_pwd(t_mini *mini);
+void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c
 int			ft_unset(char **args, t_mini *mini);
 
-/***************temp temp temp *****************/
-// void		wait_exitcode(t_mini *mini);
+// /***************temp temp temp *****************/
+// // void		wait_exitcode(t_mini *mini);
 
-// ft_split.c
-char		**ft_split(char const *s, char c);
+// // ft_split.c
+// char		**ft_split(char const *s, char c);
 
-// temp.c
-void		temp_display_tabs(char **token, t_type *type);
-// size_t		ft_tabint_len(int *tab);
-// size_t		ft_tabtype_len(t_type *tab);
+// // temp.c
+// void		temp_display_tabs(char **token, t_type *type);
+// // size_t		ft_tabint_len(int *tab);
+// // size_t		ft_tabtype_len(t_type *tab);
+
+// tokenizer(t_mini *mini);
+// tokenizer
+// int			blocks_counter(char *fprompt);
+// char		**token_init(char **token, char *fprompt);
+// int			is_sep(char c);
+// int			is_in_quotes(char *prompt, int i);
+// void
 
 #endif

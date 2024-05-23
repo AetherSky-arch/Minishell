@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 18:50:33 by aether            #+#    #+#             */
-/*   Updated: 2024/05/20 21:27:47 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 20:58:00 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,32 +55,3 @@ int	ft_echo(char **args)
 		ft_printf("\n");
 	return (SUCCESS);
 }
-
-// static int	with_newline(char **args)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (args[i] != NULL)
-// 	{
-// 		if (ft_strcmp(args[i], "-n") == 0)
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
-// static char	*get_next_arg(char **args, int i)
-// {
-// 	char	*next;
-
-// 	next = args[i + 1];
-// 	if (next == NULL)
-// 		return (NULL);
-// 	if (ft_strcmp(next, "-n") != 0)
-// 		return (next);
-// 	next = args[i + 2];
-// 	if (next != NULL)
-// 		return (next);
-// 	return (NULL);
-// }

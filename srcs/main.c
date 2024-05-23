@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/22 20:48:50 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/23 22:38:19 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,12 @@ int	read_prompt(t_mini *mini, char *c_cmd)
 		mini->fprompt = format_prompt(prompt);
 		free(prompt);
 		mini->token = split_fprompt(mini->fprompt, ' ');
-		check_dollar(mini);
-		// envvars_manager(mini->token, mini);
+		if (mini->token)
+			check_dollar(mini);
 		mini->type = create_type(mini);
 		check_type(mini);
 		check_quoted_type(mini->type, mini->token);
 		update_env(mini);
-		/***  temp: for checking  ***/
-		// printf("f_prompt:%s\n", mini->fprompt);
-		// temp_display_tabs(mini->token, mini->type);
 	}
 	else
 		quit(mini, prompt, mini->lastcode);
@@ -153,6 +150,10 @@ void	quit(t_mini *mini, char *prompt, int k)
 }
 
 /***draft */
+/***  temp: for checking  ***/
+// printf("f_prompt:%s\n", mini->fprompt);
+// temp_display_tabs(mini->token, mini->type);
+
 // ft_putstr_fd("stdin\n", STD_IN);
 // ft_putstr_fd("stdout\n", STD_OUT);
 // ft_putstr_fd("stderr\n", STD_ERR);
