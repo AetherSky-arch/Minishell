@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 22:28:02 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 22:30:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:42:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	idx_dollar(char *str, int start)
 				return (-1);
 			if (is_quote(str[i + 1]) == 1)
 				return (-1);
-			if (str[i + 1] == '=')
+			if (str[i + 1] == '=' || str[i + 1] == '/' || str[i + 1] == ':')
 				return (-1);
 			if (str[i + 1] != '$')
 				return (i);
@@ -58,7 +58,7 @@ int	end_dollar(char *str, int start)
 			break ;
 		}
 		if (str[k] == '$' || str[k] == '=' || is_space(str[k]) == 1
-			|| is_quote(str[k]) == 1 || str[k] == '/')
+			|| is_quote(str[k]) == 1 || str[k] == '/' || str[k] == ':')
 			break ;
 		k++;
 	}
