@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 00:32:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:09:13 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	exec_cmd(t_mini mini, char **envp)
 	path_cmd = check_path(mini.paths, mini.cmd_arg);
 	if (!path_cmd || ft_strlen(mini.cmd_arg[0]) == 0)
 	{
+		if (path_cmd)
+			free(path_cmd);
 		putstr_error(mini.cmd_arg[0], ERR_CMD);
 		free_close_exit(&mini, EXIT_NOCMD, 1);
 	}
