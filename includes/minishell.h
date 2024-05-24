@@ -88,35 +88,30 @@ typedef enum e_type
 
 typedef struct s_mini
 {
-	// prompt
-	char *fprompt; // to be free'd
-	char **token;  // to be free'd
-	t_type *type;  // to be free'd
+	char	*fprompt;
+	char	**token;
+	t_type	*type;
 	int		type_len;
 	int		stx_err_idx;
-	// exec
-	char **cmd_arg; // to be free'd
-	char **paths;   // to be free'd
-	char **envvars; // to be free'd
-	// file descriptor
-	int fd_in;    // to be closed
-	int fd_out;   // to be closed
-	int fd[2];    // to be closed
-	int prev_fd0; // to be closed
+	char	**cmd_arg;
+	char	**paths;
+	char	**envvars;
+	int		fd_in;
+	int		fd_out;
+	int		fd[2];
+	int		prev_fd0;
 	int		is_pipe;
-	// fork/wait
 	pid_t	last_pid;
 	int		status;
 	int		is_last_pid;
 	int		exitcode;
 	int		lastcode;
-	// heredoc
 	int		is_heredoc;
 	int		hd_pos;
 	int		hd_idx;
 	char	*lim;
-	int hd_fd;      // to be closed
-	char **hd_name; // to be free'd
+	int		hd_fd;
+	char	**hd_name;
 }			t_mini;
 
 typedef struct s_trash
@@ -309,7 +304,7 @@ void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c
 int			ft_unset(char **args, t_mini *mini);
 // main_init_utils.c
-void        main_init_utils(int *pexit, int *gvar);
+void		main_init_utils(int *pexit, int *gvar);
 
 // /***************temp temp temp *****************/
 // // void		wait_exitcode(t_mini *mini);
