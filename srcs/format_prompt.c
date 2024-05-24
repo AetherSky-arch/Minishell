@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/30 23:19:35 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/14 05:03:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 02:22:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@ char	*format_prompt(char *prompt)
 		return (NULL);
 	f_prompt = get_prompt_plus_space(tmp_prompt);
 	free(tmp_prompt);
-	// tmp_prompt = check_doll(f_prompt);
-	// free(f_prompt);
-	// if (!tmp_prompt)
-	// 	return (NULL);
-	// f_prompt = check_dolldoll(tmp_prompt);
-	// free(tmp_prompt);	
 	if (!f_prompt)
 		return (NULL);
 	return (f_prompt);
@@ -56,11 +50,9 @@ int	len_prompt_minus_space(char *prompt)
 			i++;
 		}
 	}
-	// printf("len-=%d\n", len);
 	return (len);
 }
 
-/************** malloc to be free'd ************************/
 char	*get_prompt_minus_space(char *prompt)
 {
 	char	*tmp_prompt;
@@ -86,7 +78,6 @@ char	*get_prompt_minus_space(char *prompt)
 			other_in_get_minus(tmp_prompt, prompt, &i, &j);
 	}
 	tmp_prompt[i] = '\0';
-	// printf("strlen-=%d\n", (int)ft_strlen(tmp_prompt));
 	return (tmp_prompt);
 }
 
@@ -111,11 +102,9 @@ int	len_prompt_plus_space(char *prompt)
 			len++;
 		}
 	}
-	// printf("len+=%d\n", len);
 	return (len);
 }
 
-/************** malloc to be free'd ************************/
 char	*get_prompt_plus_space(char *prompt)
 {
 	char	*f_prompt;
@@ -141,6 +130,5 @@ char	*get_prompt_plus_space(char *prompt)
 			other_in_get_plus(f_prompt, prompt, &i, &j);
 	}
 	f_prompt[i] = '\0';
-	// printf("strlen+=%d\n", (int)ft_strlen(f_prompt));
 	return (f_prompt);
 }

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 22:33:29 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/09 19:37:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 02:21:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	other_in_get_minus(char *tmp_prompt, char *prompt, int *i, int *j)
 
 void	quote_in_len_plus(char *prompt, int *i, int *len, int q)
 {
-	// if (*i > 0 && prompt[*i - 1] && (is_space(prompt[*i - 1]) == 0))
-	// 	(*len)++;
 	if (prompt[*i + 1])
 	{
 		(*i)++;
@@ -41,8 +39,6 @@ void	quote_in_len_plus(char *prompt, int *i, int *len, int q)
 		(*i)++;
 		(*len)++;
 	}
-	// if (prompt[*i] && (is_space(prompt[*i]) == 0))
-	// 	(*len)++;
 }
 
 void	symbol_in_len_plus(char *prompt, int *i, int *len)
@@ -57,11 +53,6 @@ void	symbol_in_len_plus(char *prompt, int *i, int *len)
 
 void	squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j)
 {
-	// if (*j > 0 && prompt[*j - 1] && (is_space(prompt[*j - 1]) == 0))
-	// {
-	// 	f_prompt[*i] = ' ';
-	// 	(*i)++;
-	// }
 	if (prompt[*j])
 	{
 		f_prompt[*i] = prompt[*j];
@@ -85,9 +76,4 @@ void	squote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j)
 		(*j)++;
 		(*i)++;
 	}
-	// if (prompt[*j] && (is_space(prompt[*j]) == 0))
-	// {
-	// 	f_prompt[*i] = ' ';
-	// 	(*i)++;
-	// }
 }

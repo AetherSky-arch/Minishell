@@ -3,14 +3,15 @@ NAME = minishell
 SRCS := srcs/main.c \
 		srcs/signal.c \
 		srcs/check_quotes.c \
+		srcs/check_quotes2.c \
 		srcs/syntax_checker.c \
-		srcs/syntax_checker_utils.c \
 		srcs/format_prompt.c \
 		srcs/format_prompt_utils.c \
 		srcs/format_prompt_utils2.c \
 		srcs/format_prompt_utils3.c \
 		srcs/format_prompt_utils4.c \
 		srcs/split_fprompt.c \
+		srcs/split_fprompt_utils.c \
 		srcs/type.c \
 		srcs/type_utils.c \
 		srcs/files.c \

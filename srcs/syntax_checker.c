@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/05/24 02:01:59 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 02:05:28 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	check_syntax(t_mini *mini)
 {
 	char	*tmp1;
 	char	*tmp2;
-	
+
 	if (check_pipe(mini) == FAILURE)
 	{
 		if (mini->token[mini->stx_err_idx])
 		{
 			tmp1 = ft_strjoin(ERR_HDX, mini->token[mini->stx_err_idx]);
 			tmp2 = ft_strjoin(tmp1, "'\n");
-			ft_putstr_fd(tmp2, STD_ERR);			
+			ft_putstr_fd(tmp2, STD_ERR);
 			free(tmp1);
 			free(tmp2);
 		}
@@ -70,17 +70,15 @@ int	check_type_sequence(t_mini *mini)
 	{
 		if (GREAT <= mini->type[i] && mini->type[i] <= HEREDOC)
 		{
-			if ((i + 1 == mini->type_len) || (GREAT <= mini->type[i + 1]
-					&& mini->type[i + 1] <= HEREDOC) || (mini->type[i
-					+ 1] == PIPE))
+			if ((GREAT <= mini->type[i + 1] && mini->type[i + 1] <= HEREDOC)
+				|| (mini->type[i + 1] == PIPE) || (i + 1 == mini->type_len))
 			{
 				if (i + 1 == mini->type_len)
 					tmp = ft_strjoin(ERR_HDX, "newline");
 				else
 					tmp = ft_strjoin(ERR_HDX, mini->token[i + 1]);
 				mini->stx_err_idx = i + 1;
-				ft_putstr_fd(tmp, STD_ERR);
-				ft_putstr_fd("'\n", STD_ERR);
+				(ft_putstr_fd(tmp, STD_ERR), ft_putstr_fd("'\n", STD_ERR));
 				free(tmp);
 				mini->exitcode = EXIT_STX;
 				return (FAILURE);

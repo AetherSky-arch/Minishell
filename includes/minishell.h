@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 01:57:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 02:43:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,16 +135,15 @@ void		quit(t_mini *mini, char *prompt, int k);
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
 void		check_quoted_type(t_type *type, char **token);
-int			inside_quotes(char const *str, int i);
 char		*remove_quote(char *str);
-
+// check_quote2.c
+int			inside_quotes(char const *str, int i);
 // format_prompt.c
 char		*format_prompt(char *prompt);
 int			len_prompt_minus_space(char *prompt);
 char		*get_prompt_minus_space(char *prompt);
 int			len_prompt_plus_space(char *prompt);
 char		*get_prompt_plus_space(char *prompt);
-
 // format_prompt_utils.c
 int			is_space(char c);
 int			is_symbol(char c);
@@ -163,22 +162,19 @@ void		quote_in_len_plus(char *prompt, int *i, int *len, int q);
 void		symbol_in_len_plus(char *prompt, int *i, int *len);
 void		squote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		squote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j);
-
 // format_prompt_utils4.c
 void		dquote_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		dquote_in_get_plus2(char *f_prompt, char *prompt, int *i, int *j);
 void		symbol_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
-
 // split_fprompt.c
 char		**split_fprompt(char const *s, char c);
-
+// split_fprompt_utils.c
+char		**free_splits(char **split, int i, int j);
 // syntax_checker.c
 int			check_syntax(t_mini *mini);
 int			check_pipe(t_mini *mini);
 int			check_type_sequence(t_mini *mini);
-
-
 // heredoc_setting.c
 void		open_heredoc(t_mini *mini, int nbr_hd);
 void		fill_heredoc(t_mini *mini, int fd);

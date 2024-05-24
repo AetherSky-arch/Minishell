@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 23:27:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/21 19:33:54 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 02:16:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,13 @@ static char	**fill_split_fp(char **split, char const *s, char c)
 		k = next_k(s, c, k);
 		split[i] = malloc(sizeof(char) * (len_word(s, c, k) + 1));
 		if (!split[i])
-		{
-			while (j < i)
-			{
-				free(split[j]);
-				j++;
-			}	
-			free(split);
-			return (NULL);
-		}
+			return (free_splits(split, i, j));
 		while (s[k] && (s[k] != c || (s[k] == c && inside_quotes(s, k) != 0)))
 		{
 			split[i][j] = s[k];
 			j++;
 			k++;
 		}
-			
 		split[i][j] = '\0';
 		k++;
 		i++;
