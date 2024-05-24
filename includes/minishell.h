@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 02:43:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 03:02:01 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,12 @@ typedef struct s_trash
 }			t_trash;
 
 // main.c
-int			read_prompt(t_mini *mini, char *c_cmd);
-void		wait_exitcode(t_mini *mini);
+void		mini_shell(t_mini *mini);
+int			read_prompt(t_mini *mini);
+void		read_prompt_next(t_mini *mini);
 void		quit(t_mini *mini, char *prompt, int k);
-
+// main.c
+void		wait_exitcode(t_mini *mini);
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
