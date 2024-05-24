@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 03:19:53 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:20:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	prev_exit = 0;
-	g_exitcode = 0;
+	main_init_utils(&prev_exit, &g_exitcode);
 	envvars = double_dup(envp);
 	if (envvars == NULL)
 		return (EXIT_FAILURE);

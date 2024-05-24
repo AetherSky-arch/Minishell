@@ -1,6 +1,7 @@
 NAME = minishell
 
 SRCS := srcs/main.c \
+		srcs/main_init_utils.c \
 		srcs/wait.c \
 		srcs/signal.c \
 		srcs/check_quotes.c \

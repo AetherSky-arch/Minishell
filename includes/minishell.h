@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 03:02:01 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 03:17:11 by aether           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,6 +308,8 @@ char		*get_pwd(t_mini *mini);
 void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c
 int			ft_unset(char **args, t_mini *mini);
+// main_init_utils.c
+void        main_init_utils(int *pexit, int *gvar);
 
 // /***************temp temp temp *****************/
 // // void		wait_exitcode(t_mini *mini);
