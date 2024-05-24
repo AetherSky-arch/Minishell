@@ -21,8 +21,8 @@ void	double_free(void **str)
 	i = 0;
 	while (str[i] != NULL)
 	{
-        if (str[i] != NULL)
-		    free(str[i]);
+		if (str[i] != NULL)
+			free(str[i]);
 		i++;
 	}
 	free(str);
