@@ -6,13 +6,12 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 19:58:45 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/22 00:07:18 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:27:43 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/****************malloc to be free'd***********/
 t_type	*create_type(t_mini *mini)
 {
 	t_type	*type;
@@ -21,7 +20,6 @@ t_type	*create_type(t_mini *mini)
 	if (!(*mini).token)
 		return (NULL);
 	(*mini).type_len = ft_tabstr_len((*mini).token);
-	// type = malloc(sizeof(t_type) * (*mini).type_len);
 	type = malloc(sizeof(int) * (*mini).type_len);
 	if (!type)
 		return (NULL);
@@ -88,14 +86,14 @@ void	check_type(t_mini *mini)
 
 	i = 0;
 	start = 0;
-	j = 0;	
+	j = 0;
 	while (i < nbr_block(*mini))
 	{
 		check_type_block(mini, start);
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
 			j++;
 		if (j < mini->type_len)
-			j++;	
+			j++;
 		start = j;
 		i++;
 	}
@@ -128,55 +126,3 @@ void	check_type_block(t_mini *mini, int start)
 		i++;
 	}
 }
-
-int	get_cmd_idx(t_mini mini, int start)
-{
-	int	i;
-	int	cmd_idx;
-
-	cmd_idx = ft_tabstr_len(mini.token);
-	i = start;
-	while ((i < mini.type_len) && (mini.type[i] != PIPE))
-	{
-		if (mini.type[i] == CMD)
-		{
-			cmd_idx = i;
-			break ;
-		}
-		i++;
-	}
-	return (cmd_idx);
-}
-
-int	ft_tabstr_len(char **tab)
-{
-	int	i;
-
-	if (!tab)
-		return (0);
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-// draft
-
-// void	check_type(t_type *type, char **token)
-// {
-// 	int	i;
-
-// 	if (!type || !token)
-// 		return ;
-// 	i = 0;
-// 	while (i < ft_tabstr_len(token))
-// 	{
-// 		if (type[i] == ARG)
-// 		{
-// 			if (i > 0 && (type[i - 1] == INFILE || type[i - 1] == OUTFILE
-// 					|| type[i - 1] == OUTFAPP || type[i - 1] == LIMITER))
-// 				type[i] = CMD;
-// 		}
-// 		i++;
-// 	}
-// }

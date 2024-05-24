@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 00:11:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 01:57:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,62 +173,58 @@ void		other_in_get_plus(char *f_prompt, char *prompt, int *i, int *j);
 // split_fprompt.c
 char		**split_fprompt(char const *s, char c);
 
-// type.c
-t_type		*create_type(t_mini *mini);
-t_type		get_type(char **token, int i);
-t_type		get_type2(char **token, int i);
-void		check_type(t_mini *mini);
-void		check_type_block(t_mini *mini, int start);
-int			get_cmd_idx(t_mini mini, int start);
-int			ft_tabstr_len(char **tab);
-
 // syntax_checker.c
 int			check_syntax(t_mini *mini);
 int			check_pipe(t_mini *mini);
 int			check_type_sequence(t_mini *mini);
 
+
 // heredoc_setting.c
 void		open_heredoc(t_mini *mini, int nbr_hd);
+void		fill_heredoc(t_mini *mini, int fd);
+// heredoc_name.c
 char		**create_hd_name(t_mini *mini);
 char		*heredoc_name(void);
-void		fill_heredoc(t_mini *mini, int fd);
-void		limiter_err_mal(t_mini mini);
-
-// files.c
-int			is_infile(t_mini *mini, int start);
-void		open_infile(t_mini *mini, char *infile);
-int			is_outfile(t_mini *mini, int start);
-void		check_files(t_mini *mini, int start);
-int			is_ambigous(char *str);
-void		free_ambigous(t_mini *mini, char *str);
-
 // heredoc_to_exec.c
 int			nbr_heredoc(t_mini mini);
 void		get_heredoc(t_mini *mini, int start);
 int			get_heredoc_idx(t_mini *mini, int hd_pos);
 void		unlink_free_hdname(t_mini *mini);
 int			check_heredoc(t_mini *mini);
-
+// files.c
+int			is_infile(t_mini *mini, int start);
+void		open_infile(t_mini *mini, char *infile);
+int			is_outfile(t_mini *mini, int start);
+void		check_files(t_mini *mini, int start);
+// files_utils.c
+int			is_ambigous(char *str);
+void		free_ambigous(t_mini *mini, char *str);
 // to_exec.c
 int			nbr_block(t_mini mini);
 void		blocks_to_exec(t_mini *mini, char **envp, int nbr_block);
+// to_exec_child.c
 void		child(t_mini *mini, char **envp, int start);
 void		close_prev_pipe(t_mini mini);
-
+// exec.c
+int			check_slash(char *str);
+void		exec_arg(t_mini mini, char **envp, int start);
+void		exec_cmd(t_mini mini, char **envp);
+void		exec_abs(t_mini mini, char **envp);
+void		is_a_directory(t_mini *mini, char *is_cmd_or_dir);
+// type.c
+t_type		*create_type(t_mini *mini);
+t_type		get_type(char **token, int i);
+t_type		get_type2(char **token, int i);
+void		check_type(t_mini *mini);
+void		check_type_block(t_mini *mini, int start);
+// type_utils.c
+int			get_cmd_idx(t_mini mini, int start);
+int			ft_tabstr_len(char **tab);
 // path.c
 void		get_paths(t_mini *mini, char **envp);
 void		slash_paths(t_mini *mini);
 int			check_in_str(char *s1, char *s2);
 char		*check_path(char **paths, char **cmd);
-
-// exec.c
-int			check_slash(char *str);
-void		exec_arg(t_mini mini, char **envp, int start);
-void		get_cmd_arg(t_mini *mini, int start);
-void		exec_cmd(t_mini mini, char **envp);
-void		exec_abs(t_mini mini, char **envp);
-void		is_a_directory(t_mini *mini, char *is_cmd_or_dir);
-
 // buitins.c
 int			is_builtin(t_mini mini, int start);
 void		builtin(t_mini *mini, int start);
@@ -245,6 +241,8 @@ void		perror_close_exit(char *err, t_mini *mini, int k);
 void		perror_open_free(t_mini *mini, char *filename);
 void		free_close_exit(t_mini *mini, int exit_code, int is_paths);
 void		putstr_error(char *cmd0, char *err_str);
+// free_close_exit2.c
+void		perr_cl_ex_save(char *err, t_mini *mini, int k, int save_fd);
 // signal.c
 void		manage_signal(void);
 void		handle_sigint(int signal);

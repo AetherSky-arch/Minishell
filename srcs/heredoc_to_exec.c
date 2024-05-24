@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/07 02:32:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 01:48:36 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	nbr_heredoc(t_mini mini)
 	return (count);
 }
 
-// we need to be sure there is a LIMITER just after HEREDOC (to be checked in STX_ERR)
 void	get_heredoc(t_mini *mini, int start)
 {
 	int	i;
@@ -58,7 +57,6 @@ void	get_heredoc(t_mini *mini, int start)
 	}
 }
 
-// no need if child order is well the executed order - just to be sure
 int	get_heredoc_idx(t_mini *mini, int hd_pos)
 {
 	int	i;

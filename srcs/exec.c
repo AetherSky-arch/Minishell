@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 20:07:30 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/20 22:54:49 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 00:32:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	exec_arg(t_mini mini, char **envp, int start)
 	create_cmd_arg(&mini, start);
 	if (mini.cmd_arg)
 	{
-		// if (checkfor_dir(mini.cmd_arg[0]) != 0)
 		if (check_slash(mini.cmd_arg[0]) == 1)
 		{
 			is_a_directory(&mini, mini.cmd_arg[0]);
@@ -46,7 +45,6 @@ void	exec_arg(t_mini mini, char **envp, int start)
 		else
 			exec_cmd(mini, envp);
 	}
-	// else if (mini.fprompt)
 	else if (mini.type)
 		free_close_exit(&mini, EXIT_SUCCESS, 0);
 	else
@@ -56,51 +54,7 @@ void	exec_arg(t_mini mini, char **envp, int start)
 	}
 }
 
-// same as create_cmd_arg in buitins.c
-void	get_cmd_arg(t_mini *mini, int start)
-{
-	int		j;
-	char	*tmp1;
-	char	*tmp2;
-
-	j = start;
-	tmp1 = NULL;
-	while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
-	{
-		if ((*mini).type[j] == CMD)
-		{
-			tmp1 = ft_strdup((*mini).token[j]);
-			j++;
-			while (j < (*mini).type_len && (*mini).type[j] != PIPE)
-			{
-				if ((*mini).type[j] == ARG)
-				{
-					tmp2 = ft_strjoin(tmp1, " ");
-					free(tmp1);
-					tmp1 = ft_strjoin(tmp2, (*mini).token[j]);
-					free(tmp2);
-				}
-				j++;
-			}
-		}
-		else
-			j++;
-	}
-	(*mini).cmd_arg = ft_split(tmp1, ' ');
-	free(tmp1);
-	// //
-	// j = 0;
-	// ft_putstr_fd("cmd_arg:", 2);
-	// ft_putstr_fd("\n", 2);
-	// while (mini->cmd_arg[j])
-	// {
-	// 	ft_putstr_fd(mini->cmd_arg[j], 2);
-	// 	ft_putstr_fd("\n", 2);
-	// 	j++;
-	// }
-	// ft_putstr_fd("\n", 2);
-	// //
-}
+//
 
 // int execve(const char *pathname, char *const argv[], char *const envp[]);
 void	exec_cmd(t_mini mini, char **envp)
@@ -150,10 +104,8 @@ void	is_a_directory(t_mini *mini, char *is_cmd_or_dir)
 
 	if (is_cmd_or_dir)
 	{
-		// ft_putstr_fd("ici", 2);
 		if (stat(is_cmd_or_dir, &statbuf) != -1)
 		{
-			// ft_putstr_fd("la", 2);
 			if (S_ISDIR(statbuf.st_mode) != 0)
 			{
 				putstr_error(is_cmd_or_dir, ERR_ISD);
@@ -167,3 +119,37 @@ void	is_a_directory(t_mini *mini, char *is_cmd_or_dir)
 		}
 	}
 }
+
+// same as create_cmd_arg in buitins.c
+// void	get_cmd_arg(t_mini *mini, int start)
+// {
+// 	int		j;
+// 	char	*tmp1;
+// 	char	*tmp2;
+
+// 	j = start;
+// 	tmp1 = NULL;
+// 	while ((j < (*mini).type_len) && (*mini).type[j] != PIPE)
+// 	{
+// 		if ((*mini).type[j] == CMD)
+// 		{
+// 			tmp1 = ft_strdup((*mini).token[j]);
+// 			j++;
+// 			while (j < (*mini).type_len && (*mini).type[j] != PIPE)
+// 			{
+// 				if ((*mini).type[j] == ARG)
+// 				{
+// 					tmp2 = ft_strjoin(tmp1, " ");
+// 					free(tmp1);
+// 					tmp1 = ft_strjoin(tmp2, (*mini).token[j]);
+// 					free(tmp2);
+// 				}
+// 				j++;
+// 			}
+// 		}
+// 		else
+// 			j++;
+// 	}
+// 	(*mini).cmd_arg = ft_split(tmp1, ' ');
+// 	free(tmp1);
+// }

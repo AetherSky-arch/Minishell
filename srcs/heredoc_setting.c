@@ -6,161 +6,114 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/18 00:46:53 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/24 01:47:53 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	name_open_fill_hd(t_mini *mini, int i, int *j)
+{
+	int	fd;
+
+	if (mini->token[i + 1])
+		mini->lim = mini->token[i + 1];
+	mini->hd_name[*j] = heredoc_name();
+	fd = open(mini->hd_name[*j], O_RDWR | O_CREAT, 0666);
+	if (fd < 0)
+		perror_open_free(mini, mini->hd_name[*j]);
+	fill_heredoc(mini, fd);
+	close(fd);
+	while (mini->hd_name[*j])
+		*j = *j + 1;
+}
 
 // << | << eof = stx_err vs << eof | << = open before stx_err
 // nbr_heredoc(*mini)
 void	open_heredoc(t_mini *mini, int nbr_hd)
 {
 	int	i;
-	int	fd;
 	int	j;
 
 	i = 0;
 	j = 0;
-	if (nbr_hd)
+	if (!nbr_hd)
+		return ;
+	mini->hd_name = create_hd_name(mini);
+	if (mini->hd_name)
 	{
-		mini->hd_name = create_hd_name(mini);
-		if (mini->hd_name)
+		while ((i < mini->type_len - 1) && (g_exitcode != 130))
 		{
-			while ((i < mini->type_len - 1) && (g_exitcode != 130))
+			if (mini->type[i] == HEREDOC && mini->type[i + 1] == LIMITER
+				&& j < nbr_hd)
 			{
-				if (mini->type[i] == HEREDOC && mini->type[i + 1] == LIMITER
-					&& j < nbr_hd)
-				{
-					if (mini->token[i + 1])
-						mini->lim = mini->token[i + 1];
-					mini->hd_name[j] = heredoc_name();
-					fd = open(mini->hd_name[j], O_RDWR | O_CREAT, 0666);
-					if (fd < 0)
-						perror_open_free(mini, mini->hd_name[j]);
-					fill_heredoc(mini, fd);
-					close(fd);
-					while (mini->hd_name[j])
-						j++;
-				}
-				i++;
+				name_open_fill_hd(mini, i, &j);
 			}
+			i++;
 		}
 	}
 }
 
-char	**create_hd_name(t_mini *mini)
+static void	fill_hd_save_in(t_mini *mini, int *save_in)
 {
-	char	**hd_name;
-	int		i;
-	int		nb;
-
-	nb = nbr_heredoc(*mini);
-	if (nb > 16)
-	{
-		ft_putstr_fd(ERR_NHD, STD_ERR);
-		free_close_exit(mini, EXIT_STX, 0);
-	}
-	hd_name = malloc(sizeof(char *) * (nb + 1));
-	if (!hd_name)
-	{
-		ft_putstr_fd(ERR_MAL, STD_ERR);
-		return (mini->exitcode = EXIT_FAILURE, NULL);
-	}
-	i = 0;
-	while (i < nb)
-	{
-		hd_name[i] = NULL;
-		i++;
-	}
-	hd_name[i] = NULL;
-	return (hd_name);
+	*save_in = dup(STD_IN);
+	if (*save_in == -1)
+		perror_close_exit("minishell: dup", mini, EXIT_FAILURE);
 }
 
-// name to be free'd
-char	*heredoc_name(void)
+static void	fill_hd_get_in(t_mini *mini, int *save_in)
 {
-	char				*name;
-	unsigned long int	nbr;
-	char				*number;
-
-	nbr = 0;
-	name = NULL;
-	while (nbr < ULONG_MAX)
-	{
-		number = ft_ulitoa(nbr);
-		name = ft_strjoin("/tmp/heredoc_", number);
-		free(number);
-		if (name)
-		{
-			if (access(name, F_OK) != 0)
-				break ;
-		}
-		nbr++;
-		free(name);
-	}
-	return (name);
+	if (dup2(*save_in, STD_IN) == -1)
+		perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, *save_in);
+	close(*save_in);
 }
 
 void	fill_heredoc(t_mini *mini, int fd)
 {
 	char	*line;
-	char	*limiter;
 	int		save_in;
 
 	g_exitcode = 0;
-	save_in = dup(STD_IN);
+	fill_hd_save_in(mini, &save_in);
 	signal(SIGINT, &handle_sigint_in_hd);
-	//
-	limiter = ft_strjoin((*mini).lim, "\n");
-	if (!limiter)
-		limiter_err_mal(*mini);
-	//
 	while (g_exitcode != 130)
 	{
 		line = readline("> ");
-		// ft_putstr_fd("> ", STD_IN);
-		// line = get_next_line(STD_IN);
 		if (!line && g_exitcode == 130)
-		{
-			dup2(save_in, STD_IN);
-			close(save_in);
-		}
+			fill_hd_get_in(mini, &save_in);
 		else if (!line)
 		{
-			// ft_putstr_fd(ERR_GNL, STD_ERR);
-			ft_putstr_fd(ERR_RDL, STD_ERR); // Modify text ??? --> ctrl+d
+			ft_putstr_fd(ERR_RDL, STD_ERR);
 			break ;
 		}
-		// else if (ft_strcmp(line, limiter) == 0)
 		else if (ft_strcmp(line, (*mini).lim) == 0)
 			break ;
-		// else if (ft_strcmp(line, "") == 0)
-		// 	ft_putstr_fd("\n", fd);
 		else
-		{
-			ft_putstr_fd(line, fd);
-			ft_putstr_fd("\n", fd);
-		}
+			(ft_putstr_fd(line, fd), ft_putstr_fd("\n", fd));
 		free(line);
 	}
-	close(save_in);
-	free(line);
-	free(limiter);
+	(close(save_in), free(line));
 }
 
-void	limiter_err_mal(t_mini mini)
-{
-	ft_putstr_fd(ERR_MAL, STD_ERR);
-	free_close_exit(&mini, EXIT_FAILURE, 0);
-}
+/***draft GNL ****/
 
-/***draft ****/
+// char	*limiter;
+// //
+// limiter = ft_strjoin((*mini).lim, "\n");
+// if (!limiter)
+// 	limiter_err_mal(*mini);
+// //
+// free(limiter);
 
-// int					tmp_fd;
-// tmp_fd = -1;
-// if (name)
-// 	tmp_fd = open(name, O_RDWR | O_CREAT | O_EXCL, 0666);
-// if (tmp_fd != -1)
-// 	break ;
-// close(tmp_fd);
+// ft_putstr_fd("> ", STD_IN);
+// line = get_next_line(STD_IN);
+// ft_putstr_fd(ERR_GNL, STD_ERR);
+// else if (ft_strcmp(line, limiter) == 0)
+// else if (ft_strcmp(line, "") == 0)
+// 	ft_putstr_fd("\n", fd);
+
+// void	limiter_err_mal(t_mini mini)
+// {
+// 	ft_putstr_fd(ERR_MAL, STD_ERR);
+// 	free_close_exit(&mini, EXIT_FAILURE, 0);
+// }

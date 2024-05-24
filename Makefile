@@ -12,10 +12,14 @@ SRCS := srcs/main.c \
 		srcs/format_prompt_utils4.c \
 		srcs/split_fprompt.c \
 		srcs/type.c \
-		srcs/heredoc_setting.c \
+		srcs/type_utils.c \
 		srcs/files.c \
+		srcs/files_utils.c \
 		srcs/heredoc_to_exec.c \
+		srcs/heredoc_setting.c \
+		srcs/heredoc_name.c \
 		srcs/to_exec.c \
+		srcs/to_exec_child.c \
 		srcs/path.c \
 		srcs/exec.c \
 		srcs/builtins.c \
@@ -35,6 +39,7 @@ SRCS := srcs/main.c \
 		srcs/envvars_utils2.c \
 		srcs/unset.c \
 		srcs/free_close_exit.c \
+		srcs/free_close_exit2.c \
 		srcs/dollar.c \
 		srcs/dollar_utils.c \
 		srcs/ft_getenv.c
