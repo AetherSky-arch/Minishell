@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 03:17:11 by aether           ###   ########.fr       */
+/*   Updated: 2024/05/27 15:55:45 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ int			is_valid_start(char *str);
 int			is_valid_name(char *str);
 // pwd.c
 int			ft_pwd(t_mini *mini);
-char		*get_pwd(t_mini *mini);
+char		*get_pwd(void);
 void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c
 int			ft_unset(char **args, t_mini *mini);

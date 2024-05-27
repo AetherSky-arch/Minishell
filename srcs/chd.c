@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/23 21:16:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:29:05 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,19 @@ static int	cd_with_arg(t_mini *mini)
 		return (chd_str_err(mini->cmd_arg[1], ": Not a directory\n"), 1);
 	else
 	{
-		pwd = get_pwd(mini);
+		pwd = get_pwd();
 		if (chdir(mini->cmd_arg[1]) != 0)
 			return (free(pwd), perror("minishell: chdir"), 1);
-		else
+		else if (pwd)
 		{
 			update_pwd(mini, "OLDPWD=", pwd);
 			free(pwd);
-			pwd = get_pwd(mini);
-			update_pwd(mini, "PWD=", pwd);
+			pwd = get_pwd();
+			if (pwd)
+				update_pwd(mini, "PWD=", pwd);
 			free(pwd);
-			return (0);
 		}
+		return (0);
 	}
 }
 
@@ -59,18 +60,19 @@ static int	cd_no_arg(t_mini *mini)
 	homedr = ft_getenv(mini, "HOME");
 	if (homedr)
 	{
-		pwd = get_pwd(mini);
+		pwd = get_pwd();
 		if (chdir(homedr) != 0)
 			return (free(pwd), free(homedr), perror("minishell: chdir"), 1);
-		else
+		else if (pwd)
 		{
 			update_pwd(mini, "OLDPWD=", pwd);
 			free(pwd);
-			pwd = get_pwd(mini);
-			update_pwd(mini, "PWD=", pwd);
+			pwd = get_pwd();
+			if (pwd)
+				update_pwd(mini, "PWD=", pwd);
 			free(pwd);
-			return (free(homedr), 0);
 		}
+		return (free(homedr), 0);
 	}
 	else
 		return (free(homedr), chd_str_err("No HOME variable", "\n"), 1);

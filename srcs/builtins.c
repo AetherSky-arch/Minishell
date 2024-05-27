@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 01:55:41 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/27 15:48:15 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,7 @@ int	builtin_outfile(t_mini *mini, int i)
 		free(tmp);
 		return (-1);
 	}
+	// else if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
+	// 	unlink(mini->token[i]);
 	return (1);
 }
