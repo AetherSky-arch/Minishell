@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/25 23:33:15 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:23:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	check_files(t_mini *mini, int start)
 		{
 			if (tmp_fd < 0)
 				perror_open_free(mini, mini->token[i]);
-			close(tmp_fd);
+			if (tmp_fd > 0)	
+				close(tmp_fd);
 			free_ambigous(mini, mini->token[i]);
 		}
 		i++;

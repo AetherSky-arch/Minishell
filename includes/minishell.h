@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/27 15:55:45 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 02:52:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,7 @@ void		perr_cl_ex_save(char *err, t_mini *mini, int k, int save_fd);
 void		manage_signal(void);
 void		handle_sigint(int signal);
 void		handle_sigint_in_child(int signal);
+void		handle_sigquit_in_child(int sign);
 void		handle_sigint_in_hd(int signal);
 // dollar.c
 void		check_dollar(t_mini *mini);
@@ -264,7 +265,7 @@ char		*ft_getenv(t_mini *mini, char *varname);
 
 //--------------------- BUILTINS ------------------------------------//
 // chd.c
-int			checkfor_dir(t_mini *mini, char *path);
+int			checkfor_dir(char *path);
 int			ft_chd(t_mini *mini);
 void		chd_str_err(char *path, char *err_str);
 // echo.c
@@ -298,7 +299,7 @@ void		exp_str_err(char *arg, char *err_str);
 int			is_valid_start(char *str);
 int			is_valid_name(char *str);
 // pwd.c
-int			ft_pwd(t_mini *mini);
+int			ft_pwd(void);
 char		*get_pwd(void);
 void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c

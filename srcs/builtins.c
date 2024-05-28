@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/27 15:48:15 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:22:27 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	wh_b(t_mini *mini, int start, int tmp_out)
 	if (k == EXPORT)
 		mini->exitcode = ft_export_to_envvars(mini, mini->cmd_arg);
 	if (k == PWD)
-		mini->exitcode = ft_pwd(mini);
+		mini->exitcode = ft_pwd();
 	if (k == UNSET)
 		mini->exitcode = ft_unset(mini->cmd_arg, mini);
 }
@@ -81,6 +81,7 @@ void	builtin(t_mini *mini, int start)
 			if (dup2(tmp_out, STD_OUT) == -1)
 				perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 			close(tmp_out);
+			/***** exit a verfif ici ******/
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
 	}
@@ -133,8 +134,6 @@ int	builtin_outfile(t_mini *mini, int i)
 		perror(tmp);
 		free(tmp);
 		return (-1);
-	}
-	// else if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
-	// 	unlink(mini->token[i]);
+	}	
 	return (1);
 }

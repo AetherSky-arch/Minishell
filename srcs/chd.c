@@ -6,21 +6,21 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/27 16:29:05 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 01:40:52 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // return 0 if not a directory
-int	checkfor_dir(t_mini *mini, char *path)
+int	checkfor_dir(char *path)
 {
 	struct stat	statbuf;
 
 	if (path)
 	{
 		if (stat(path, &statbuf) == -1)
-			perror_close_exit("minishell: stat", mini, EXIT_FAILURE);
+			return (perror("minishell: stat"), 0);
 		return (S_ISDIR(statbuf.st_mode));
 	}
 	return (0);
@@ -32,22 +32,20 @@ static int	cd_with_arg(t_mini *mini)
 
 	if (access(mini->cmd_arg[1], F_OK) != 0)
 		return (chd_str_err(mini->cmd_arg[1], ERR_DIR), 1);
-	else if (checkfor_dir(mini, mini->cmd_arg[1]) == 0)
+	else if (checkfor_dir(mini->cmd_arg[1]) == 0)
 		return (chd_str_err(mini->cmd_arg[1], ": Not a directory\n"), 1);
 	else
 	{
-		pwd = get_pwd();
 		if (chdir(mini->cmd_arg[1]) != 0)
-			return (free(pwd), perror("minishell: chdir"), 1);
-		else if (pwd)
-		{
-			update_pwd(mini, "OLDPWD=", pwd);
-			free(pwd);
-			pwd = get_pwd();
-			if (pwd)
-				update_pwd(mini, "PWD=", pwd);
-			free(pwd);
-		}
+			return (perror("minishell: chdir"), 1);		
+		pwd = ft_getenv(mini, "PWD");
+		// if (ft_strcmp(pwd, "") != 0) // condition utile ???
+		update_pwd(mini, "OLDPWD=", pwd);
+		free(pwd);		
+		pwd = get_pwd();
+		if (pwd)
+			update_pwd(mini, "PWD=", pwd);
+		free(pwd);		
 		return (0);
 	}
 }
@@ -60,18 +58,13 @@ static int	cd_no_arg(t_mini *mini)
 	homedr = ft_getenv(mini, "HOME");
 	if (homedr)
 	{
-		pwd = get_pwd();
 		if (chdir(homedr) != 0)
-			return (free(pwd), free(homedr), perror("minishell: chdir"), 1);
-		else if (pwd)
-		{
-			update_pwd(mini, "OLDPWD=", pwd);
-			free(pwd);
-			pwd = get_pwd();
-			if (pwd)
-				update_pwd(mini, "PWD=", pwd);
-			free(pwd);
-		}
+			return (free(homedr), perror("minishell: chdir"), 1);
+		pwd = ft_getenv(mini, "PWD");
+		// if (ft_strcmp(pwd, "") != 0) // condition utile ???
+		update_pwd(mini, "OLDPWD=", pwd);
+		free(pwd);
+		update_pwd(mini, "PWD=", homedr);
 		return (free(homedr), 0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 23:53:44 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/23 22:47:44 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:15:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,18 @@ void	handle_sigint(int signal)
 }
 
 // do nothing but not ignore it
-void	handle_sigint_in_child(int signal)
+void	handle_sigint_in_child(int sign)
 {
-	(void)signal;
+	(void)sign;	
+	g_exitcode = 130;	
+}
+
+
+void	handle_sigquit_in_child(int sign)
+{
+	(void)sign;
+	g_exitcode = 131;	
+	write(1, "Quit (core dumped)\n", 19);	
 }
 
 void	handle_sigint_in_hd(int signal)

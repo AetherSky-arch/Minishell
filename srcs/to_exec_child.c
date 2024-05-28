@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:57:09 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 00:58:13 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 02:49:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	child(t_mini *mini, char **envp, int start)
 
 	get_heredoc(mini, start);
 	signal(SIGINT, &handle_sigint_in_child);
+	signal(SIGQUIT, &handle_sigquit_in_child);
 	pid = fork();
 	if (mini->is_last_pid == 1)
 		mini->last_pid = pid;

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/25 20:52:16 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 03:20:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	main(int argc, char **argv, char **envp)
 			mini_shell(&mini);
 		envvars = double_dup(mini.envvars);
 		double_free((void **)mini.envvars);
-		if (g_exitcode == 130)
-			mini.exitcode = 130;
+		if (g_exitcode == 130 || g_exitcode == 131)
+			mini.exitcode = g_exitcode;
 		prev_exit = mini.exitcode;
 	}
 	return (rl_clear_history(), mini.exitcode);
@@ -51,6 +51,7 @@ void	mini_shell(t_mini *mini)
 	else
 	{
 		open_heredoc(mini, nbr_heredoc(*mini));
+		/*****131 ***/
 		if (g_exitcode != 130)
 			blocks_to_exec(mini, mini->envvars, nbr_block(*mini));
 		close_prev_pipe(*mini);
@@ -67,6 +68,7 @@ int	read_prompt(t_mini *mini)
 	char	*prompt;
 
 	prompt = readline("~$ ");
+	/******131 ****/
 	if (g_exitcode == 130)
 		mini->lastcode = 130;
 	if (prompt)

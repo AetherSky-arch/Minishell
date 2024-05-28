@@ -6,20 +6,21 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:50:26 by aether            #+#    #+#             */
-/*   Updated: 2024/05/27 16:22:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 00:11:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_pwd(t_mini *mini)
+int	ft_pwd(void)
 {
 	char	cwd[PATH_MAX];
 
 	if (getcwd(cwd, PATH_MAX) != NULL)
 		ft_printf("%s\n", cwd);
 	else
-		perror_close_exit("minishell: getcwd", mini, EXIT_FAILURE);
+		return (perror("minishell: pwd: error retrieving current directory: getcwd"),
+			EXIT_FAILURE);
 	return (0);
 }
 
