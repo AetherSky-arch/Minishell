@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 13:40:42 by aether            #+#    #+#             */
-/*   Updated: 2024/05/24 00:16:41 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:44:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	sort_exp(char **env)
 	}
 }
 
-// ft_printf("%s", "export ");
+// ft_printf("%s", "declare -x ");
 void	export_void(char **env)
 {
 	int		i;
@@ -109,7 +109,7 @@ void	export_void(char **env)
 		{
 			if (tab[i][0] != '_')
 			{
-				ft_printf("%s", "declare -x ");
+				ft_printf("%s", "export ");
 				ft_printf("%s\n", tab[i]);
 			}
 			i++;

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 03:20:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:24:23 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	mini_shell(t_mini *mini)
 	else
 	{
 		open_heredoc(mini, nbr_heredoc(*mini));
-		/*****131 ***/
 		if (g_exitcode != 130)
 			blocks_to_exec(mini, mini->envvars, nbr_block(*mini));
 		close_prev_pipe(*mini);
@@ -67,10 +66,9 @@ int	read_prompt(t_mini *mini)
 {
 	char	*prompt;
 
-	prompt = readline("~$ ");
-	/******131 ****/
-	if (g_exitcode == 130)
-		mini->lastcode = 130;
+	prompt = readline("mini-0.2$ ");
+	if (g_exitcode == 130 || g_exitcode == 131)
+		mini->lastcode = g_exitcode;
 	if (prompt)
 	{
 		add_history(prompt);

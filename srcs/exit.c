@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 22:11:46 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:12:24 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	check_numeric(char *str, long long *exit_code)
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0)
-			return (0);		
+			return (0);
 		i++;
 	}
 	if (is_space_inside(str) == 1)

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 03:22:27 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 00:12:42 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	builtin(t_mini *mini, int start)
 			if (dup2(tmp_out, STD_OUT) == -1)
 				perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 			close(tmp_out);
-			/***** exit a verfif ici ******/
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
 	}
@@ -134,6 +133,6 @@ int	builtin_outfile(t_mini *mini, int i)
 		perror(tmp);
 		free(tmp);
 		return (-1);
-	}	
+	}
 	return (1);
 }

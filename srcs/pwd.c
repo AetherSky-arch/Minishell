@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 19:50:26 by aether            #+#    #+#             */
-/*   Updated: 2024/05/28 00:11:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:23:37 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@ int	ft_pwd(void)
 	if (getcwd(cwd, PATH_MAX) != NULL)
 		ft_printf("%s\n", cwd);
 	else
-		return (perror("minishell: pwd: error retrieving current directory: getcwd"),
-			EXIT_FAILURE);
+	{
+		perror("minishell: pwd: error retrieving current directory: getcwd");
+		return (EXIT_FAILURE);
+	}
 	return (0);
 }
 
-// char	*get_pwd(t_mini *mini)
 char	*get_pwd(void)
 {
 	char	cwd[PATH_MAX];
@@ -45,11 +46,6 @@ char	*get_pwd(void)
 		}
 		pwd[i] = '\0';
 	}
-	// else
-	// {
-	// 	// perror_close_exit("minishell: getcwd", mini, EXIT_FAILURE);
-	// 	return (perror("minishell: getcwd"), NULL);
-	// }
 	return (pwd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/28 01:40:52 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 23:24:11 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,14 @@ static int	cd_with_arg(t_mini *mini)
 	else
 	{
 		if (chdir(mini->cmd_arg[1]) != 0)
-			return (perror("minishell: chdir"), 1);		
+			return (perror("minishell: chdir"), 1);
 		pwd = ft_getenv(mini, "PWD");
-		// if (ft_strcmp(pwd, "") != 0) // condition utile ???
 		update_pwd(mini, "OLDPWD=", pwd);
-		free(pwd);		
+		free(pwd);
 		pwd = get_pwd();
 		if (pwd)
 			update_pwd(mini, "PWD=", pwd);
-		free(pwd);		
+		free(pwd);
 		return (0);
 	}
 }
@@ -61,7 +60,6 @@ static int	cd_no_arg(t_mini *mini)
 		if (chdir(homedr) != 0)
 			return (free(homedr), perror("minishell: chdir"), 1);
 		pwd = ft_getenv(mini, "PWD");
-		// if (ft_strcmp(pwd, "") != 0) // condition utile ???
 		update_pwd(mini, "OLDPWD=", pwd);
 		free(pwd);
 		update_pwd(mini, "PWD=", homedr);

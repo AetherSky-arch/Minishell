@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 01:47:53 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 00:10:07 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	fill_heredoc(t_mini *mini, int fd)
 			fill_hd_get_in(mini, &save_in);
 		else if (!line)
 		{
-			ft_putstr_fd(ERR_RDL, STD_ERR);
+			ft_putstr_fd(ERR_RHD, STD_ERR);
 			break ;
 		}
 		else if (ft_strcmp(line, (*mini).lim) == 0)
