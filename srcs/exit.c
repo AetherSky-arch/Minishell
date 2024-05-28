@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 02:33:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/28 22:11:46 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	ft_exit(t_mini *mini, int tmp_fd)
 
 	if (mini->cmd_arg[1])
 	{
-		if (mini->cmd_arg[2])
-		{
-			ft_putstr_fd("minishell: exit: too many arguments\n", STD_ERR);
-			exit_code = 1;
-		}
-		else if (check_numeric(mini->cmd_arg[1], &exit_code) == 0)
+		if (check_numeric(mini->cmd_arg[1], &exit_code) == 0)
 		{
 			exit_str_err(mini->cmd_arg[1], ": numeric argument required\n");
 			exit_code = 2;
+		}
+		else if (mini->cmd_arg[2])
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", STD_ERR);
+			exit_code = 1;
 		}
 	}
 	else
@@ -60,11 +60,11 @@ int	check_numeric(char *str, long long *exit_code)
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0 && ft_isspace(str[i]) == 0)
-			return (0);
-		if (i > 0 && ft_isdigit(str[i]) == 1 && ft_isspace(str[i - 1]) == 0)
-			return (0);
+			return (0);		
 		i++;
 	}
+	if (is_space_inside(str) == 1)
+		return (0);
 	return (is_longlong(str + k, exit_code));
 }
 
