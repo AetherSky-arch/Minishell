@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 00:12:42 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:25:37 by arguez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	builtin(t_mini *mini, int start)
 	{
 		create_cmd_arg(mini, start);
 		if (mini->cmd_arg && mini->cmd_arg[0])
-			(wh_b(mini, start, tmp_out), double_free((void **)(mini->cmd_arg)));
+			(wh_b(mini, start, tmp_out), double_free((void **)(mini->cmd_arg)), mini->cmd_arg = NULL);
 		else
 		{
 			ft_putstr_fd(ERR_MAL, STD_ERR);
