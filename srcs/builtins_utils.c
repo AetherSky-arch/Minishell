@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 18:04:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:14:26 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	dup_if_pipe(t_mini *mini)
 
 static void	dup_if_files_ok(t_mini *mini)
 {
-	if (mini->fd_out && dup2(mini->fd_out, STD_OUT) == -1)
+	if (mini->fd_out > 0 && dup2(mini->fd_out, STD_OUT) == -1)
 		perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
 	close(mini->fd_out);
 }
