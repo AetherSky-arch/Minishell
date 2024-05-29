@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 23:24:23 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:25:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
 	while (1)
 	{
-		mini = (t_mini){0};
+		mini = (t_mini){0};		
 		mini.envvars = double_dup(envvars);
 		mini.lastcode = prev_exit;
 		(double_free((void **)envvars), manage_signal());
