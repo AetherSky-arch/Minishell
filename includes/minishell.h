@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 00:09:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:52:02 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define STD_IN 0
 # define STD_OUT 1
 # define STD_ERR 2
-# define ERR_RHD "minishell: warning: here-document end-of-fle expected\n"
+# define ERR_RHD "minishell: warning: here-document end-of-file expected\n"
 # define ERR_STX "minishell: syntax error\n"
 # define ERR_SQX "minishell: syntax error (squote opened)\n"
 # define ERR_DQX "minishell: syntax error (dquote opened)\n"

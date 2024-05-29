@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:57:09 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 22:11:58 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 18:05:41 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	child_outfile(t_mini *mini, int start)
 {
 	if (is_outfile(mini, start) == 1)
 	{
-		if (dup2(mini->fd_out, STD_OUT) == -1)
+		if (mini->fd_out > 0 && dup2(mini->fd_out, STD_OUT) == -1)
 			perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
 		close(mini->fd_out);
 	}
