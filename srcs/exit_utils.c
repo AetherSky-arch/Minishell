@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:21:39 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 22:48:09 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 03:54:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ int	is_space_inside(char *str)
 	{
 		if (ft_isspace(str[i]) == 1)
 		{
-			if (ft_isdigit(str[i - 1]) == 1 && ft_isdigit(str[i + 1]) == 1
-				&& i > 0)
-				return (1);
+			if (i > 0 && ft_isdigit(str[i - 1]) == 1)
+			{
+				while (str[i] && ft_isspace(str[i]) == 1)
+					i++;
+				if (str[i] && ft_isdigit(str[i]) == 1)
+					return (1);
+			}
 		}
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (0);
 }
