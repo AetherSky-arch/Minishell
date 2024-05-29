@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 03:00:18 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 22:13:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:14:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	wait_exitcode(t_mini *mini)
 			{
 				(*mini).exitcode = WEXITSTATUS((*mini).status);
 			}
+			else
+				(*mini).exitcode = 128 + WTERMSIG((*mini).status);
 		}
 	}
 }
