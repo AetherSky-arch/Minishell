@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 15:48:36 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:02:38 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	close_exit(t_mini mini, int k)
 	if (mini.hd_fd > 2)
 		close(mini.hd_fd);
 	if (mini.prev_fd0 > 2)
-		close(mini.prev_fd0);		
+		close(mini.prev_fd0);
 	exit(k);
 }
 
@@ -33,9 +33,15 @@ void	perror_close_exit(char *err, t_mini *mini, int k)
 {
 	perror(err);
 	if (mini->cmd_arg)
+	{
 		double_free((void **)mini->cmd_arg);
+		mini->cmd_arg = NULL;
+	}
 	if (mini->paths)
+	{
 		double_free((void **)mini->paths);
+		mini->paths = NULL;
+	}
 	double_free((void **)mini->hd_name);
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);
@@ -62,9 +68,16 @@ void	perror_open_free(t_mini *mini, char *filename)
 
 void	free_close_exit(t_mini *mini, int exit_code, int is_paths)
 {
-	double_free((void **)mini->cmd_arg);
+	if (mini->cmd_arg)
+	{
+		double_free((void **)mini->cmd_arg);
+		mini->cmd_arg = NULL;
+	}
 	if (is_paths == 1)
+	{
 		double_free((void **)mini->paths);
+		mini->paths = NULL;
+	}
 	double_free((void **)mini->hd_name);
 	double_free((void **)mini->token);
 	double_free((void **)mini->envvars);

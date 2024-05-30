@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 15:36:14 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:25:56 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_mini
 	int		hd_idx;
 	char	*lim;
 	int		hd_fd;
-	char	**hd_name;	
+	char	**hd_name;
 }			t_mini;
 
 typedef struct s_trash

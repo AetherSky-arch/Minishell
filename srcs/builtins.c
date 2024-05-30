@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 16:24:03 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:25:49 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	is_builtin(t_mini mini, int start)
 }
 
 // which_builtin
-static void	wh_b(t_mini *mini, int start, int tmp_out)
+static void	which_b(t_mini *mini, int start, int tmp_out)
 {
 	int	k;
 
@@ -69,17 +69,19 @@ void	builtin(t_mini *mini, int start)
 
 	tmp_out = dup(STD_OUT);
 	if (tmp_out == -1)
-		perror_close_exit("minishell: dup", mini, EXIT_FAILURE);
+		perror("minishell: dup");
 	if (builtin_files(mini, start) == SUCCESS)
 	{
 		create_cmd_arg(mini, start);
 		if (mini->cmd_arg && mini->cmd_arg[0])
-			(wh_b(mini, start, tmp_out), double_free((void **)(mini->cmd_arg)), mini->cmd_arg = NULL);
+		{
+			which_b(mini, start, tmp_out);
+			double_free((void **)(mini->cmd_arg));
+		}
 		else
 		{
 			ft_putstr_fd(ERR_MAL, STD_ERR);
 			dup2(tmp_out, STD_OUT);
-				//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 			close(tmp_out);
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
@@ -87,7 +89,6 @@ void	builtin(t_mini *mini, int start)
 	else
 		mini->exitcode = 1;
 	dup2(tmp_out, STD_OUT);
-		//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 	close(tmp_out);
 }
 

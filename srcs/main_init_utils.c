@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 03:15:18 by aether            #+#    #+#             */
-/*   Updated: 2024/05/30 15:45:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:11:18 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	main_init_utils(int *pexit, int *gvar, int argc, char **argv)
 {
 	(void)argc;
-	(void)argv;	
+	(void)argv;
 	*pexit = 0;
 	*gvar = 0;
 }

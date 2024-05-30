@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 16:24:34 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:05:19 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,16 @@ void	open_heredoc(t_mini *mini, int nbr_hd)
 	}
 }
 
-static void	fill_hd_save_in(t_mini *mini, int *save_in)
+static void	fill_hd_save_in(int *save_in)
 {
 	*save_in = dup(STD_IN);
 	if (*save_in == -1)
-		perror_close_exit("minishell: dup", mini, EXIT_FAILURE);
+		perror("minishell: dup");
 }
 
-static void	fill_hd_get_in(t_mini *mini, int *save_in)
+static void	fill_hd_get_in(int *save_in)
 {
 	dup2(*save_in, STD_IN);
-		//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, *save_in);
 	close(*save_in);
 }
 
@@ -74,13 +73,13 @@ void	fill_heredoc(t_mini *mini, int fd)
 	int		save_in;
 
 	g_exitcode = 0;
-	fill_hd_save_in(mini, &save_in);
+	fill_hd_save_in(&save_in);
 	signal(SIGINT, &handle_sigint_in_hd);
 	while (g_exitcode != 130)
 	{
 		line = readline("> ");
 		if (!line && g_exitcode == 130)
-			fill_hd_get_in(mini, &save_in);
+			fill_hd_get_in(&save_in);
 		else if (!line)
 		{
 			ft_putstr_fd(ERR_RHD, STD_ERR);

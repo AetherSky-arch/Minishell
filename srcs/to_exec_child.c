@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:57:09 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 16:04:20 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:39:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ void	child(t_mini *mini, char **envp, int start)
 	int		tmp_out;
 
 	tmp_out = dup(STD_OUT);
-	get_heredoc(mini, start);
-	signal(SIGINT, &handle_sigint_in_child);
+	if (tmp_out == -1)
+		perror("minishell: dup");
+	(get_heredoc(mini, start), signal(SIGINT, &handle_sigint_in_child));
 	signal(SIGQUIT, &handle_sigquit_in_child);
 	pid = fork();
 	if (mini->is_last_pid == 1)
@@ -63,16 +64,15 @@ void	child(t_mini *mini, char **envp, int start)
 		perror_close_exit("minishell: fork", mini, EXIT_FAILURE);
 	if (pid == 0)
 	{
-		child_infile(mini, start);
-		child_outfile(mini, start, tmp_out);
-		exec_arg(*mini, envp, start);
+		(close(tmp_out), child_infile(mini, start));
+		(child_outfile(mini, start, tmp_out), exec_arg(*mini, envp, start));
 	}
 	close(mini->fd[1]);
 	if (mini->prev_fd0 > 2)
 		close(mini->prev_fd0);
 	mini->prev_fd0 = dup(mini->fd[0]);
 	if (mini->prev_fd0 == -1)
-		perror_close_exit("minishell: dup", mini, EXIT_FAILURE);
+		perror("minishell: dup");
 	(close(mini->fd[0]), close(tmp_out));
 }
 
