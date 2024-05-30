@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 01:48:36 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:03:25 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	get_heredoc(t_mini *mini, int start)
 
 	i = start;
 	mini->is_heredoc = 0;
-	if (mini->hd_fd > 0)
+	if (mini->hd_fd > 2)
 		close(mini->hd_fd);
 	while ((i < mini->type_len) && (mini->type[i] != PIPE))
 	{
 		if (mini->type[i] == HEREDOC)
 		{
-			if (mini->hd_fd > 0)
+			if (mini->hd_fd > 2)
 				close(mini->hd_fd);
 			mini->is_heredoc = 1;
 			mini->hd_pos = i;

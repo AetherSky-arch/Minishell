@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 23:52:56 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 18:25:37 by arguez           ###   ########.fr       */
+/*   Updated: 2024/05/30 16:24:03 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ void	builtin(t_mini *mini, int start)
 		else
 		{
 			ft_putstr_fd(ERR_MAL, STD_ERR);
-			if (dup2(tmp_out, STD_OUT) == -1)
-				perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
+			dup2(tmp_out, STD_OUT);
+				//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 			close(tmp_out);
 			free_close_exit(mini, EXIT_FAILURE, 0);
 		}
 	}
 	else
 		mini->exitcode = 1;
-	if (dup2(tmp_out, STD_OUT) == -1)
-		perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
+	dup2(tmp_out, STD_OUT);
+		//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, tmp_out);
 	close(tmp_out);
 }
 

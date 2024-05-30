@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 20:28:48 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 18:14:26 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:23:04 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	close_and_dup(t_mini *mini)
 {
-	if (mini->prev_fd0 > 0)
+	if (mini->prev_fd0 > 2)
 		close(mini->prev_fd0);
 	mini->prev_fd0 = dup(mini->fd[0]);
 	if (mini->prev_fd0 == -1)
@@ -22,16 +22,16 @@ static void	close_and_dup(t_mini *mini)
 	close(mini->fd[0]);
 }
 
-static void	dup_if_pipe(t_mini *mini)
-{
-	if (dup2(mini->fd[1], STD_OUT) == -1)
-		perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
-}
+// static void	dup_if_pipe(t_mini *mini)
+// {
+// 	if (dup2(mini->fd[1], STD_OUT) == -1)
+// 		perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
+// }
 
 static void	dup_if_files_ok(t_mini *mini)
 {
-	if (mini->fd_out > 0 && dup2(mini->fd_out, STD_OUT) == -1)
-		perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
+	dup2(mini->fd_out, STD_OUT);
+		//perror_close_exit("minishell: dup2", mini, EXIT_FAILURE);
 	close(mini->fd_out);
 }
 
@@ -60,6 +60,6 @@ int	builtin_files(t_mini *mini, int start)
 	if (res == 1)
 		dup_if_files_ok(mini);
 	else if (mini->is_pipe == 1)
-		dup_if_pipe(mini);
+		dup2(mini->fd[1], STD_OUT);
 	return (close(mini->fd[1]), SUCCESS);
 }

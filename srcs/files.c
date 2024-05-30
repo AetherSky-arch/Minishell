@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:07:15 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 22:46:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:59:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	is_infile(t_mini *mini, int start)
 			if (mini->hd_pos < i)
 			{
 				is_infile = 1;
-				if (prev_fd_in > -1)
+				if (prev_fd_in > 2)
 					close(prev_fd_in);
 				prev_fd_in = mini->fd_in;
 			}
@@ -61,7 +61,7 @@ int	is_outfile(t_mini *mini, int start)
 	{
 		if (mini->type[i] == OUTFILE || mini->type[i] == OUTFAPP)
 		{
-			if (mini->fd_out > 0)
+			if (mini->fd_out > 2)
 				close(mini->fd_out);
 			is_outfile = 1;
 			if (mini->type[i] == OUTFILE)
@@ -98,7 +98,7 @@ void	check_files(t_mini *mini, int start)
 		{
 			if (tmp_fd < 0)
 				perror_open_free(mini, mini->token[i]);
-			if (tmp_fd > 0)
+			if (tmp_fd > 2)
 				close(tmp_fd);
 			free_ambigous(mini, mini->token[i]);
 		}

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 17:52:02 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:36:14 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_mini
 	int		hd_idx;
 	char	*lim;
 	int		hd_fd;
-	char	**hd_name;
+	char	**hd_name;	
 }			t_mini;
 
 typedef struct s_trash
@@ -126,8 +126,11 @@ void		mini_shell(t_mini *mini);
 int			read_prompt(t_mini *mini);
 void		read_prompt_next(t_mini *mini);
 void		quit(t_mini *mini, char *prompt, int k);
-// main.c
+// wait.c
 void		wait_exitcode(t_mini *mini);
+// main_init_utils.c
+void		main_init_utils(int *pexit, int *gvar, int argc, char **argv);
+void		close_and_save_fd(t_mini *mini);
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
@@ -305,8 +308,6 @@ char		*get_pwd(void);
 void		update_pwd(t_mini *mini, char *varequal, char *pwd);
 // unset.c
 int			ft_unset(char **args, t_mini *mini);
-// main_init_utils.c
-void		main_init_utils(int *pexit, int *gvar);
 
 // /***************temp temp temp *****************/
 // // void		wait_exitcode(t_mini *mini);

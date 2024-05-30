@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 23:03:17 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 16:09:22 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:48:36 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 void	close_exit(t_mini mini, int k)
 {
-	if (mini.fd_in > -1)
+	if (mini.fd_in > 2)
 		close(mini.fd_in);
-	if (mini.fd_out > -1)
+	if (mini.fd_out > 2)
 		close(mini.fd_out);
-	if (mini.fd[0] > -1)
+	if (mini.fd[0] > 2)
 		close(mini.fd[0]);
-	if (mini.fd[1] > -1)
+	if (mini.fd[1] > 2)
 		close(mini.fd[1]);
-	if (mini.hd_fd > -1)
+	if (mini.hd_fd > 2)
 		close(mini.hd_fd);
-	if (mini.prev_fd0 > -1)
-		close(mini.prev_fd0);
+	if (mini.prev_fd0 > 2)
+		close(mini.prev_fd0);		
 	exit(k);
 }
 

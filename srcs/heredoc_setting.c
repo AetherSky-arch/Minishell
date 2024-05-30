@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 00:31:13 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 00:10:07 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/30 16:24:34 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static void	fill_hd_save_in(t_mini *mini, int *save_in)
 
 static void	fill_hd_get_in(t_mini *mini, int *save_in)
 {
-	if (dup2(*save_in, STD_IN) == -1)
-		perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, *save_in);
+	dup2(*save_in, STD_IN);
+		//perr_cl_ex_save("minishell: dup2", mini, EXIT_FAILURE, *save_in);
 	close(*save_in);
 }
 
