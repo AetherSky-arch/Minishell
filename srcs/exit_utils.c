@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 20:21:39 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/29 03:54:30 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:24:57 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-int	is_exit_pipe(t_mini mini)
+int	is_in_pipe(t_mini mini)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:01:31 by aether            #+#    #+#             */
-/*   Updated: 2024/05/23 20:54:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:25:10 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	ft_unset(char **args, t_mini *mini)
 	char	**copy;
 	int		to_copy;
 
+	if (is_in_pipe(*mini) == 1)
+		return (0);
 	if ((args == NULL) || (args[1] == NULL))
 		return (0);
 	copy = envvars_copy(mini->envvars, args);
@@ -106,7 +108,5 @@ int	ft_unset(char **args, t_mini *mini)
 		j++;
 	}
 	copy[k] = NULL;
-	double_free((void **)mini->envvars);
-	mini->envvars = copy;
-	return (0);
+	return (double_free((void **)mini->envvars), mini->envvars = copy, 0);
 }

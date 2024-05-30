@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/11 01:24:36 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/28 23:12:24 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:24:20 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	ft_exit(t_mini *mini, int tmp_fd)
 {
 	long long	exit_code;
 
+	ft_putstr_fd("exit\n", tmp_fd);
 	if (mini->cmd_arg[1])
 	{
 		if (check_numeric(mini->cmd_arg[1], &exit_code) == 0)
@@ -31,9 +32,8 @@ int	ft_exit(t_mini *mini, int tmp_fd)
 	}
 	else
 		exit_code = mini->lastcode;
-	if (is_exit_pipe(*mini) == 0)
+	if (is_in_pipe(*mini) == 0 && exit_code != 1)
 	{
-		ft_putstr_fd("exit\n", tmp_fd);
 		close(tmp_fd);
 		rl_clear_history();
 		free_close_exit(mini, exit_code % 256, 0);

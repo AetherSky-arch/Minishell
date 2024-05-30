@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 17:25:56 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:25:48 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ int			is_longlong_minus(char *str, long long *nbr, int i);
 // exit_utils.c
 void		exit_str_err(char *path, char *err_str);
 int			ft_isspace(char c);
-int			is_exit_pipe(t_mini mini);
+int			is_in_pipe(t_mini mini);
 int			is_space_inside(char *str);
 // export.c
 char		**append(char **tab, char *str);

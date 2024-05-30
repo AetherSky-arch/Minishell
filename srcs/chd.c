@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 14:34:53 by aether            #+#    #+#             */
-/*   Updated: 2024/05/28 23:24:11 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:27:36 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	cd_with_arg(t_mini *mini)
 		return (chd_str_err(mini->cmd_arg[1], ERR_DIR), 1);
 	else if (checkfor_dir(mini->cmd_arg[1]) == 0)
 		return (chd_str_err(mini->cmd_arg[1], ": Not a directory\n"), 1);
-	else
+	else if (is_in_pipe(*mini) == 0)
 	{
 		if (chdir(mini->cmd_arg[1]) != 0)
 			return (perror("minishell: chdir"), 1);
@@ -47,6 +47,7 @@ static int	cd_with_arg(t_mini *mini)
 		free(pwd);
 		return (0);
 	}
+	return (0);
 }
 
 static int	cd_no_arg(t_mini *mini)
@@ -75,8 +76,9 @@ int	ft_chd(t_mini *mini)
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	if (mini->cmd_arg[1])
 		return (cd_with_arg(mini));
-	else
+	else if (is_in_pipe(*mini) == 0)
 		return (cd_no_arg(mini));
+	return (0);
 }
 
 void	chd_str_err(char *path, char *err_str)
