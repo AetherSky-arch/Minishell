@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:57:09 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 17:39:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:58:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	child_infile(t_mini *mini, int start)
 	{
 		dup2(mini->fd_in, STD_IN);
 		close(mini->fd_in);
+		if (mini->hd_fd > 2)
+			close(mini->hd_fd);
 	}
 	else if (mini->is_heredoc == 1)
 	{
@@ -74,6 +76,7 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->prev_fd0 == -1)
 		perror("minishell: dup");
 	(close(mini->fd[0]), close(tmp_out));
+	printf("%d\n", mini->hd_fd);
 }
 
 void	close_prev_pipe(t_mini mini)

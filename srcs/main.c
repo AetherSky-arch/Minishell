@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/31 16:23:17 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:45:29 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ void	mini_shell(t_mini *mini)
 		open_heredoc(mini, nbr_heredoc(*mini));
 		if (g_exitcode != 130)
 			blocks_to_exec(mini, mini->envvars, nbr_block(*mini));
+			
 		close_prev_pipe(*mini);
+		printf("%d\n", mini->hd_fd);
 		wait_exitcode(mini);
 	}
 	unlink_free_hdname(mini);
