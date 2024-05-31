@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/24 16:27:57 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:25:31 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	check_dollar(t_mini *mini)
 
 	i = 0;
 	start = 0;
-	stop = 0;
+	stop = 0;	
 	while ((*mini).token[i])
 	{
 		idx = idx_dollar((*mini).token[i], start);
@@ -117,7 +117,7 @@ void	check_dollar(t_mini *mini)
 		if (start == -1)
 		{
 			i++;
-			start = 0;
-		}
+			start = 0;			
+		}		
 	}
 }

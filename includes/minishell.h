@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/31 00:59:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:17:55 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void		quit(t_mini *mini, char *prompt, int k);
 void		wait_exitcode(t_mini *mini);
 // main_init_utils.c
 void		main_init_utils(int *pexit, int *gvar, int argc, char **argv);
+char	*chain_join(char **tab);
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
@@ -315,7 +316,7 @@ int			ft_unset(char **args, t_mini *mini);
 // char		**ft_split(char const *s, char c);
 
 // // temp.c
-// void		temp_display_tabs(char **token, t_type *type);
+void		temp_display_tabs(char **token, t_type *type);
 // // size_t		ft_tabint_len(int *tab);
 // // size_t		ft_tabtype_len(t_type *tab);
 

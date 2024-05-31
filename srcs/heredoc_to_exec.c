@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 20:00:10 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 16:03:25 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:10:37 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	unlink_free_hdname(t_mini *mini)
 	if (mini->hd_name)
 	{
 		while (mini->hd_name[i])
-		{
+		{			
 			unlink(mini->hd_name[i]);
 			free(mini->hd_name[i]);
 			i++;

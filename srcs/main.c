@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 17:08:27 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:23:17 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,21 @@ int	read_prompt(t_mini *mini)
 
 void	read_prompt_next(t_mini *mini)
 {
+	char	*tmp;
+
 	if (mini->token)
 		check_dollar(mini);
+	tmp = chain_join(mini->token);
+	double_free((void **)mini->token);
+	mini->token = split_fprompt(tmp, ' ');
+	free(tmp);
 	mini->type = create_type(mini);
 	check_type(mini);
 	check_quoted_type(mini->type, mini->token);
 	update_env(mini);
+	/***  temp: for checking  ***/
+	printf("f_prompt:%s\n", mini->fprompt);
+	temp_display_tabs(mini->token, mini->type);
 }
 
 void	quit(t_mini *mini, char *prompt, int k)
