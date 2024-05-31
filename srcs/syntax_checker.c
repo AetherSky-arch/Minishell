@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:07:30 by aether            #+#    #+#             */
-/*   Updated: 2024/05/24 02:05:28 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 02:06:09 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,47 @@ int	check_pipe(t_mini *mini)
 	return (SUCCESS);
 }
 
+static int	sub_check_type_sequence(t_mini *mini, int *i)
+{
+	char	*tmp;
+
+	if (!mini->token[*i + 1])
+	{
+		tmp = ft_strjoin(ERR_HDX, "newline");
+		mini->stx_err_idx = *i;
+		(ft_putstr_fd(tmp, STD_ERR), ft_putstr_fd("'\n", STD_ERR));
+		free(tmp);
+		mini->exitcode = EXIT_STX;
+		return (FAILURE);
+	}
+	if ((GREAT <= mini->type[*i + 1] && mini->type[*i + 1] <= HEREDOC)
+		|| (mini->type[*i + 1] == PIPE) || (*i + 1 == mini->type_len))
+	{
+		if (*i + 1 == mini->type_len)
+			tmp = ft_strjoin(ERR_HDX, "newline");
+		else
+			tmp = ft_strjoin(ERR_HDX, mini->token[*i + 1]);
+		mini->stx_err_idx = *i + 1;
+		(ft_putstr_fd(tmp, STD_ERR), ft_putstr_fd("'\n", STD_ERR));
+		free(tmp);
+		mini->exitcode = EXIT_STX;
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 // must be after create type
 int	check_type_sequence(t_mini *mini)
 {
-	int		i;
-	char	*tmp;
+	int	i;
 
 	i = 0;
 	while (mini->token[i])
 	{
 		if (GREAT <= mini->type[i] && mini->type[i] <= HEREDOC)
 		{
-			if ((GREAT <= mini->type[i + 1] && mini->type[i + 1] <= HEREDOC)
-				|| (mini->type[i + 1] == PIPE) || (i + 1 == mini->type_len))
-			{
-				if (i + 1 == mini->type_len)
-					tmp = ft_strjoin(ERR_HDX, "newline");
-				else
-					tmp = ft_strjoin(ERR_HDX, mini->token[i + 1]);
-				mini->stx_err_idx = i + 1;
-				(ft_putstr_fd(tmp, STD_ERR), ft_putstr_fd("'\n", STD_ERR));
-				free(tmp);
-				mini->exitcode = EXIT_STX;
+			if (sub_check_type_sequence(mini, &i) == FAILURE)
 				return (FAILURE);
-			}
 		}
 		i++;
 	}

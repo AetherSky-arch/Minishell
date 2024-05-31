@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 00:50:16 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/30 23:14:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 01:15:55 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,10 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 	int	i;
 	int	start;
 	int	j;
-	//char **copenv;
 
 	i = 0;
 	start = 0;
 	j = 0;
-	//copenv = double_dup(envp);
 	while (i < nbr_block)
 	{
 		while ((j < mini->type_len) && (mini->type[j] != PIPE))
@@ -71,5 +69,4 @@ void	blocks_to_exec(t_mini *mini, char **envp, int nbr_block)
 		start = j;
 		i++;
 	}
-	//double_free((void **)copenv);
 }

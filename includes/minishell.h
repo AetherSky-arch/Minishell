@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:56:00 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/31 00:25:48 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 00:59:33 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void		quit(t_mini *mini, char *prompt, int k);
 void		wait_exitcode(t_mini *mini);
 // main_init_utils.c
 void		main_init_utils(int *pexit, int *gvar, int argc, char **argv);
-void		close_and_save_fd(t_mini *mini);
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
