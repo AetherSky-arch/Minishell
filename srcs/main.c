@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 22:55:50 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/31 16:45:29 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:06:54 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ void	mini_shell(t_mini *mini)
 		open_heredoc(mini, nbr_heredoc(*mini));
 		if (g_exitcode != 130)
 			blocks_to_exec(mini, mini->envvars, nbr_block(*mini));
-			
 		close_prev_pipe(*mini);
-		printf("%d\n", mini->hd_fd);
 		wait_exitcode(mini);
 	}
 	unlink_free_hdname(mini);
@@ -104,9 +102,6 @@ void	read_prompt_next(t_mini *mini)
 	check_type(mini);
 	check_quoted_type(mini->type, mini->token);
 	update_env(mini);
-	/***  temp: for checking  ***/
-	printf("f_prompt:%s\n", mini->fprompt);
-	temp_display_tabs(mini->token, mini->type);
 }
 
 void	quit(t_mini *mini, char *prompt, int k)

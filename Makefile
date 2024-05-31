@@ -44,7 +44,6 @@ SRCS := srcs/main.c \
 		srcs/free_close_exit.c \
 		srcs/free_close_exit2.c \
 		srcs/dollar.c \
-		srcs/temp.c \
 		srcs/dollar_utils.c \
 		srcs/ft_getenv.c
 				

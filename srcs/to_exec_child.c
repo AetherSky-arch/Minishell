@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 00:57:09 by caguillo          #+#    #+#             */
-/*   Updated: 2024/05/31 16:58:33 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:05:58 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	child(t_mini *mini, char **envp, int start)
 	if (mini->prev_fd0 == -1)
 		perror("minishell: dup");
 	(close(mini->fd[0]), close(tmp_out));
-	printf("%d\n", mini->hd_fd);
 }
 
 void	close_prev_pipe(t_mini mini)

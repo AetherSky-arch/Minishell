@@ -6,7 +6,7 @@
 /*   By: caguillo <caguillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 03:15:18 by aether            #+#    #+#             */
-/*   Updated: 2024/05/31 16:17:38 by caguillo         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:06:30 by caguillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static char	*append_space(char *str)
 
 char	*chain_join(char **tab)
 {
-	char *res;
-	char *tmp;
-	int i;
+	char	*res;
+	char	*tmp;
+	int		i;
 
 	i = 0;
 	res = ft_strdup("");
