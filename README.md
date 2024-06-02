@@ -15,6 +15,15 @@ Among the things that bash does that msh doesn't, the most important are:
 - Escape characters (\\)
 - Semicolons
 
+## Dependencies
+This program requires the ```libreadline-dev``` package to work correctly.
+It can be installed with whatever package manager your Linux distribution uses, for example:
+- On Debian-based distributions:
+```sudo apt-get install libreadline-dev```
+
+- On Arch-based distributions:
+```sudo pacman -S libreadline-dev```
+
 ## Usage
 Compile with ```make```.
 
