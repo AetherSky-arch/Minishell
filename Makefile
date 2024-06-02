@@ -80,9 +80,9 @@ fclean:	clean
 
 re:	fclean all
 
-valgrind: all
-		valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
-		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
-    	./minishell
+# valgrind: all
+#		valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
+#		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
+#    	./minishell
 
 .PHONY: clean fclean re all libft

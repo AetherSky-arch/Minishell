@@ -130,7 +130,7 @@ void		quit(t_mini *mini, char *prompt, int k);
 void		wait_exitcode(t_mini *mini);
 // main_init_utils.c
 void		main_init_utils(int *pexit, int *gvar, int argc, char **argv);
-char	*chain_join(char **tab);
+char		*chain_join(char **tab);
 // check_quote.c
 int			check_quotes(char *str);
 int			check_quotes_output(int s_open, int d_open);
