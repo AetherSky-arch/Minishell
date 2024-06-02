@@ -12,7 +12,7 @@ Minishell is a (very) simplified copy of bash.
 Among the things that bash does that msh doesn't, the most important are:
 - Logical operators such as && and ||
 - Wildcards (*)
-- Escape characters (\)
+- Escape characters (\\)
 - Semicolons
 
 
