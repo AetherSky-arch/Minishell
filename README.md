@@ -8,12 +8,13 @@ You will learn a lot about processes and file descriptors.
 ```
 ~ The subject for this project
 
-Minishell is a (very) simplified copy of bash.
+Minishell is a simplified copy of bash.
 Among the things that bash does that msh doesn't, the most important are:
 - Logical operators such as && and ||
 - Wildcards (*)
 - Escape characters (\\)
 - Semicolons
+- Msh is not a command language like bash is!
 
 ## Dependencies
 This program requires the ```libreadline-dev``` package to work correctly.
