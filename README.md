@@ -31,6 +31,11 @@ Compile with ```make```.
 Delete object files with ```make clean```.
 
 Delete all files generated during compiling with ```make fclean```.
+
+## Known Issues
+- Minishell does not update the SHLVL environment variable.
+- Minishell instances that open other shells do not stop listening to signals.
+  + This leads to odd behaviour such as writing N newlines to stdout when pressing ctrl+c, where N is the number of opened recursive minishells.
 \
 \
 \
